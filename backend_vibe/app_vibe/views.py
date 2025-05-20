@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 # Create your views here.
-def main(request):
-    return render(request, "index.html")
+class Main(APIView):
+    def get(self, request):
+        return Response("mesange", "hola desde DJANGO")
