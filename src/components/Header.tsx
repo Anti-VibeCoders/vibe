@@ -31,7 +31,7 @@ function Header() {
                     navigate('/')
                 }}>
                     <Avatar>
-                        <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">V</AvatarFallback>
+                        <AvatarFallback className="bg-black font-semibold text-white text-xl">V</AvatarFallback>
                     </Avatar>
                     <h1 className="text-3xl font-bold">Vibe</h1>
                 </div>
