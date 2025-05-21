@@ -11,12 +11,15 @@ function App() {
     <>
     <div className="min-h-screen flex flex-col">
       <Header />
-      {home && (
+      {home ? (
         <div className="home-container w-full flex-1 flex justify-center items-center">
           <Home />
         </div>
+      ) : (
+        <div className="outlet-container w-full flex-1 flex justify-center items-center">
+          <Outlet />
+        </div>
       )}
-      <Outlet />
       <Footer />
     </div>
     </>

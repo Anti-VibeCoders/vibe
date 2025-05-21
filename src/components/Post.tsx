@@ -8,7 +8,7 @@ function Post() {
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [showPreview, setShowPreview] = useState<boolean>(false)
 
-    const imageUrl = "https://cdn.discordapp.com/attachments/1361502775992651818/1365498050793177188/OVgQ3bL.png?ex=682d2aa9&is=682bd929&hm=4998dce18abfe3ca84431bbaee5ce963fa18c3cc58b47d438d715424005c5498&"
+    const imageUrl = "https://cdn.discordapp.com/attachments/1361502775992651818/1365498050793177188/OVgQ3bL.png?ex=682f24e9&is=682dd369&hm=b254da41edd42a0482ede84ddbac05adfc372cefe18d1a8f12c521261478f742&"
 
     useEffect(() => {
         if (!showPreview) return
@@ -26,7 +26,7 @@ function Post() {
 
     return (
         <>
-            <div className="card w-2xl mx-auto h-full border dark:border-neutral-700 p-4 rounded-sm">
+            <div className="card w-2xl max-lg:w-[95%] mx-auto h-full border dark:border-neutral-700 p-4 rounded-sm max-sm:w-full">
                 <div className="card-top">
                     <div className="card-user cursor-pointer">
                         <div className="card-user-avatar flex gap-2">
@@ -34,22 +34,22 @@ function Post() {
                                 <AvatarImage src="https://github.com/shadcn.png" />
                                 <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">V</AvatarFallback>
                             </Avatar>
-                            <div className="user-info flex gap-4 relative items-start">
-                                <span className="text-xl font-bold">Usuario Vibe</span>
-                                <span className="text-neutral-500 mt-0.5">@usuario</span>
+                            <div className="user-info flex gap-4 relative items-start max-sm:items-start">
+                                <span className="text-xl font-bold max-sm:text-[16px]">Usuario Vibe</span>
+                                <span className="text-neutral-500 mt-0.5 max-sm:mt-0">@usuario</span>
                                 <p className="absolute bottom-0 left-0.5 text-neutral-500 z-10 cursor-auto">Hace 1 día</p>
                             </div>
                         </div>
                     </div>
                     <div className="card-description mt-1.5">
-                        <p>Visitando la nueva exposición en el museo de arte de RamCode</p>
+                        <p className="max-sm:text-[15px]">Visitando la nueva exposición en el museo de arte de RamCode</p>
                     </div>
-                    <div className="card-i h-full">
-                        <img src={imageUrl} className="rounded-sm p-4 cursor-pointer" onClick={() => {
+                    <div className="card-i h-full my-1">
+                        <img src={imageUrl} className="rounded-sm p-4 cursor-pointer max-sm:p-1" onClick={() => {
                             setShowPreview(!showPreview)
                         }} />
                     </div>
-                    <div className="card-footer flex gap-8 items-center">
+                    <div className="card-footer flex gap-8 items-center max-sm:mt-3">
                         <div className="likes flex gap-2 items-center">
                             <Heart isClick={isLiked} onClick={() => setIsLiked(!isLiked)}/>
                             <span>{isLiked ? 77 : 76}</span>
