@@ -35,13 +35,13 @@ function Header() {
                     </Avatar>
                     <h1 className="text-3xl font-bold">Vibe</h1>
                 </div>
-                <div className="header-center w-1/2 h-9">
+                <div className="header-center w-1/2 h-9 max-md:hidden">
                     <div className="search-input w-full h-full relative">
                         <Search className="absolute left-2 top-2 size-5 dark:stroke-gray-600 placeholder:dark:text-gray-600 placeholder:text-gray-800 bg-none"/>
                         <input type="text" id="search" name="search" className="border rounded-sm w-full h-full dark:border-gray-700 outline-0 px-4 pl-9 placeholder:text-gray-500 dark:placeholder:text-gray-600" placeholder="Buscar algo..." />
                     </div>
                 </div>
-                <div className="header-right flex gap-10 items-center">
+                <div className="header-right flex gap-10 items-center max-lg:gap-6">
                     {darkMode ? (
                         <Sun className="cursor-pointer size-5" onClick={() => {
                             setDarkMode(!darkMode)
