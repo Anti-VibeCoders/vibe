@@ -1,0 +1,99 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { MessageCircle, Share } from "lucide-react"
+import { useState, useEffect } from "react"
+import Heart from './Heart'
+import { motion, AnimatePresence } from 'framer-motion'
+
+function Post() {
+    const [isLiked, setIsLiked] = useState<boolean>(false)
+    const [showPreview, setShowPreview] = useState<boolean>(false)
+
+    const imageUrl = "https://cdn.discordapp.com/attachments/1361502775992651818/1365498050793177188/OVgQ3bL.png?ex=682d2aa9&is=682bd929&hm=4998dce18abfe3ca84431bbaee5ce963fa18c3cc58b47d438d715424005c5498&"
+
+    useEffect(() => {
+        if (!showPreview) return
+        const handleKeyDown = (e:KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setShowPreview(false)
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+        return () => {
+            removeEventListener('keydown', handleKeyDown)
+        }
+    }, [showPreview])
+
+    return (
+        <>
+            <div className="card w-2xl mx-auto h-full border dark:border-neutral-700 p-4 rounded-sm">
+                <div className="card-top">
+                    <div className="card-user cursor-pointer">
+                        <div className="card-user-avatar flex gap-2">
+                            <Avatar className="size-12">
+                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">V</AvatarFallback>
+                            </Avatar>
+                            <div className="user-info flex gap-4 relative items-start">
+                                <span className="text-xl font-bold">Usuario Vibe</span>
+                                <span className="text-neutral-500 mt-0.5">@usuario</span>
+                                <p className="absolute bottom-0 left-0.5 text-neutral-500 z-10 cursor-auto">Hace 1 día</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card-description mt-1.5">
+                        <p>Visitando la nueva exposición en el museo de arte de RamCode</p>
+                    </div>
+                    <div className="card-i h-full">
+                        <img src={imageUrl} className="rounded-sm p-4 cursor-pointer" onClick={() => {
+                            setShowPreview(!showPreview)
+                        }} />
+                    </div>
+                    <div className="card-footer flex gap-8 items-center">
+                        <div className="likes flex gap-2 items-center">
+                            <Heart isClick={isLiked} onClick={() => setIsLiked(!isLiked)}/>
+                            <span>{isLiked ? 77 : 76}</span>
+                        </div>
+                        <div className="Comments flex gap-2 items-center">
+                            <MessageCircle className="cursor-pointer" />
+                            <span>12</span>
+                        </div>
+                        <div className="Share flex gap-2 items-center">
+                            <Share className="cursor-pointer" />
+                            <span>8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <AnimatePresence>
+            {showPreview && (
+                <motion.div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 overflow-hidden"
+                onClick={() => setShowPreview(false)}
+                onKeyDown={(e) => {
+                    if (e.key === 'ESC') {
+                        setShowPreview(false)
+                    }
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                >
+                    <motion.img src={imageUrl} className="max-h-[90dvh] max-w-[90vw] rounded shadow-lg" onClick={(e) => e.stopPropagation()}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    />
+                    <motion.button className="absolute top-4 right-4 text-white text-3xl font-bold cursor-pointer"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    >×</motion.button>
+                </motion.div>
+            )}
+            </AnimatePresence>
+        </>
+    )
+}
+
+export default Post
