@@ -1,6 +1,24 @@
+import { Outlet, useLocation } from 'react-router-dom'
+import Home from '@/pages/Home'
+import Header from './components/Header'
+import Footer from './components/Footer'
+
 function App() {
+  const location = useLocation()
+  const home = location.pathname === '/'
+
   return (
     <>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      {home && (
+        <div className="home-container w-full flex-1 flex justify-center items-center">
+          <Home />
+        </div>
+      )}
+      <Outlet />
+      <Footer />
+    </div>
     </>
   )
 }
