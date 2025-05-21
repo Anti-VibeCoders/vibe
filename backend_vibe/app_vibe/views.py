@@ -1,7 +1,8 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework import viewsets
+from .serializer import UserSerializer
+from .models import User
 
 # Create your views here.
-class Main(APIView):
-    def get(self, request):
-        return Response("mesange", "hola desde DJANGO")
+class UserViewSet(viewsets.ModelViewSet):
+    queryset =User.objects.all()
+    serializer_class=UserSerializer
