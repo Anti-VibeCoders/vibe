@@ -1,3 +1,6 @@
+from rest_framework import viewsets
+from .serializer import UserSerializer, PublicacionSerializer, ComentarioSerializer, SeguidorSerializer
+from .models import User, Publicacion, Comentario, Seguidor
 # from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -10,6 +13,21 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 
 # Create your views here.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class PublicacionViewSet(viewsets.ModelViewSet):
+    queryset = Publicacion.objects.all()
+    serializer_class = PublicacionSerializer
+
+class ComentarioViewSet(viewsets.ModelViewSet):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+class SeguidorViewSet(viewsets.ModelViewSet):
+    queryset = Seguidor.objects.all()
+    serializer_class = SeguidorSerializer
 # class UserViewSet(viewsets.ModelViewSet):
 #     queryset =User.objects.all()
 #     serializer_class=UserSerializer   
