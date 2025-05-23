@@ -21,5 +21,9 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
+<<<<<<< Updated upstream
 *.sw?
 __pycache__
+=======
+*.sw?
+>>>>>>> Stashed changes

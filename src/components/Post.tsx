@@ -8,7 +8,7 @@ function Post() {
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const [showPreview, setShowPreview] = useState<boolean>(false)
 
-    const imageUrl = "https://cdn.discordapp.com/attachments/1361502775992651818/1365498050793177188/OVgQ3bL.png?ex=682f24e9&is=682dd369&hm=b254da41edd42a0482ede84ddbac05adfc372cefe18d1a8f12c521261478f742&"
+    const imageUrl = "https://c.tenor.com/9RsYHkzRE0EAAAAd/tenor.gif"
 
     useEffect(() => {
         if (!showPreview) return

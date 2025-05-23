@@ -66,7 +66,7 @@ function Header() {
                             <DropdownMenuItem className="cursor-pointer"><Link to="/">Perfil</Link></DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer"><Link to="/">Pagos</Link></DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer"><Link to="/">Equipo</Link></DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer"><Link to="/">Cerrar sesión</Link></DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer"><Link to="/login">Cerrar sesión</Link></DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
