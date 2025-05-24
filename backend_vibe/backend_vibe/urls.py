@@ -21,7 +21,4 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("app_vibe.urls")),
-    path('admin/', admin.site.urls),
-    path('api/auth/', include('app_vibe.urls')),
-
 ]
