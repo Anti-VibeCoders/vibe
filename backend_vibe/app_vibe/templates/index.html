@@ -1,14 +1,53 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="es">
+<head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vibe</title>
-    <link rel="stylesheet" href="C:\Users\USER\OneDrive\Desktop\proyectos\vibe\vibe\src\index.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="C:\Users\USER\OneDrive\Desktop\proyectos\vibe\vibe\src\main.tsx"></script>
-  </body>
+    <title>Subir Archivo</title>
+</head>
+<body>
+    <h1>Subir Archivo</h1>
+    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <input type="file" id="archivo" name="archivo" required />
+        <button type="submit">Subir</button>
+
+      </form>
+      <img id="archivoPreview" src="" alt="Archivo subido" style="display:none; max-width:300px;"/>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('archivo');
+            const formData = new FormData();
+            formData.append('archivo', fileInput.files[0]);
+
+            // Obtener el token CSRF
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch('/api/Subir/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.mensaje || 'Archivo subido!');
+                if (data.archivo_url) {
+                  const img = document.getElementById("archivoPreview");
+                  img.src = data.archivo_url;
+                  img.style.display = "block";
+                }
+            })
+            .catch(error => {
+                alert('Error al subir el archivo.');
+                console.error(error);
+            });
+        });
+
+    </script>
+</body>
 </html>
