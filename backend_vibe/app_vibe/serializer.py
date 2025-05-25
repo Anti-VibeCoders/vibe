@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import  User
+from .models import  User, Publicacion, Comentario, Seguidor
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +26,19 @@ class LoginSerializer(serializers.Serializer):
 
 class LogoutSerializer(serializers.Serializer):
     token = serializers.CharField()
+
+class PublicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publicacion
+        fields = ["id", "user", "contenido", "fecha_creacion"]
+        read_only_fields = ["id", "user", "fecha_creacion"]
+
+class ComentarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: Comentario
+        fields = ["id", "publicacion", "user", "contenido", "fecha_creacion"]
+
+class SeguidorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seguidor
+        fields = ["id", "user", "seguido"]

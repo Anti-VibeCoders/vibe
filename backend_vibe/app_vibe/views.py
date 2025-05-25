@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from .serializer import RegistroSerializer, LoginSerializer, UserSerializer
+from .serializer import RegistroSerializer, LoginSerializer, UserSerializer, PublicacionSerializer
 from .models import Publicacion, Comentario, Seguidor, User
 # from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
@@ -19,7 +19,7 @@ from rest_framework.authtoken.models import Token
 # class PublicacionViewSet(viewsets.ModelViewSet):
 #     queryset = Publicacion.objects.all()
 #     serializer_class = PublicacionSerializer
-
+    
 # class ComentarioViewSet(viewsets.ModelViewSet):
 #     queryset = Comentario.objects.all()
 #     serializer_class = ComentarioSerializer
@@ -79,3 +79,21 @@ def profileView(request):
 def LogoutView(request):
     # serializer = UserSerializer(request.user)
     pass
+
+@api_view(["GET"])
+def PublicacionView(request):
+    queryset = Publicacion.objects.all()
+    serializer = PublicacionSerializer(queryset, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def PublicacionCreateView(request):
+    serializer = PublicacionSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
