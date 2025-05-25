@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import  User, Publicacion, Comentario, Seguidor
+from .models import  User, Publicacion, Comentario, Seguidor, mensaje
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,3 +42,8 @@ class SeguidorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seguidor
         fields = ["id", "user", "seguido"]
+
+class MensajeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = mensaje
+        fields = ["id", "sender", "receiver", "content", "timestamp", "status", "is_read"]

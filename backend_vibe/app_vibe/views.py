@@ -1,5 +1,5 @@
 from rest_framework.decorators import api_view
-from .serializer import RegistroSerializer, LoginSerializer, UserSerializer, PublicacionSerializer
+from .serializer import RegistroSerializer, LoginSerializer, UserSerializer, PublicacionSerializer, ComentarioSerializer
 from .models import Publicacion, Comentario, Seguidor, User
 # from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
@@ -91,6 +91,24 @@ def PublicacionView(request):
 @permission_classes([IsAuthenticated])
 def PublicacionCreateView(request):
     serializer = PublicacionSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+def CommentarioView(request):
+    queryset = Comentario.objects.all()
+    serializer = ComentarioSerializer(queryset, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def CommentarioCreateView(request):
+    serializer = ComentarioSerializer(data=request.data)
     
     if serializer.is_valid():
         serializer.save(user=request.user)

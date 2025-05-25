@@ -22,3 +22,14 @@ class Comentario(models.Model):
 class Seguidor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seguidores')
     seguido = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seguidos')
+
+class mensaje(models.Model):
+    content = models.TextField()
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mensajes_enviados')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mensajes_recibidos')
+    timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default='sent')  # e.g., 'sent', 'delivered', 'read'
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.sender.username} to {self.receiver.username}: {self.content[:20]}"
