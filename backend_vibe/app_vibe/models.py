@@ -22,3 +22,10 @@ class Comentario(models.Model):
 class Seguidor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seguidores')
     seguido = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seguidos')
+
+class Archivo(models.Model):
+    archivo = models.FileField(upload_to='archivos/')
+    fecha_subida = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.archivo.name
