@@ -8,23 +8,22 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
+    username: z.string().min(1),
     email: z.string().email(),
-    password: z.string().min(8)
+    password: z.string().min(8),
 })
 
-function Login() {
+function Register() {
     const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            username: "",
             email: "",
+            password: "",
         }
     })
-
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values)
-    }
 
     return (
         <>
@@ -41,11 +40,11 @@ function Login() {
                     </div>
                     <div className="login-container w-full flex justify-center items-center mt-4">
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                            <form className="flex flex-col gap-4">
                                 
                             <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="username"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
@@ -112,4 +111,4 @@ function Login() {
     )
 }
 
-export default Login
+export default Register

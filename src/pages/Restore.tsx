@@ -7,9 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 const formSchema = z.object({
-    username: z.string().min(1),
     email: z.string().email(),
-    password: z.string().min(8)
 })
 
 function Restore() {
