@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
@@ -33,9 +32,6 @@ function Login() {
                 <div className="header flex px-8 h-15 items-center cursor-pointer max-sm:justify-center" onClick={() => {
                     navigate('/login')
                 }}>
-                    <Avatar>
-                        <AvatarFallback className="bg-black font-semibold text-white text-xl">V</AvatarFallback>
-                    </Avatar>
                     <h1 className="text-3xl font-bold">Vibe</h1>
                 </div>
                 <div className="form-container w-full my-auto h-[90dvh] flex flex-col gap-4 justify-center items-center">
@@ -68,7 +64,7 @@ function Login() {
                                                 <Input type="password" placeholder="Contraseña" {...field} className="h-12 dark:bg-neutral-500 max-sm:w-xs" />
                                             </FormControl>
                                             <FormDescription className="text-right text-blue-400">
-                                                <Link to="/register">¿Olvidaste tu contraseña?</Link>
+                                                <Link to="/restore">¿Olvidaste tu contraseña?</Link>
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
