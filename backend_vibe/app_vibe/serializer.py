@@ -1,18 +1,22 @@
 from rest_framework import serializers
-from .models import  User
+from .models import  User, Archivo
 
 class UserSerializer(serializers.ModelSerializer):
+    # Especificamos las filas q queremos mostrar
     class Meta:
         model = User
         fields =  ["id", "username", "password", "email"]
 
 class RegistroSerializer(serializers.ModelSerializer):
+    # Hacemos que el password solo sea escrubir y no se muestre
     password = serializers.CharField(write_only=True)
     
+    # Especificamos las filas q queremos mostrar
     class Meta:
         model = User
         fields = ["username", "password", "email", "first_name", "last_name"]
 
+    # Validamos todos los datos optenidos
     def create(self, validated_data):
         password = validated_data.pop('password')
         user = User(**validated_data)
@@ -25,4 +29,16 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
 class LogoutSerializer(serializers.Serializer):
+    """EN PROCESO....."""
     token = serializers.CharField()
+
+class ArchivoSerializer(serializers.ModelSerializer):
+
+    # Especificamos las filas q queremos mostrar
+    class Meta:
+        model = Archivo
+        fields = ["archivo"]
+    
+    def create(self, validated_data):
+        # Guardar en el modelo Archivo
+        return Archivo.objects.create(**validated_data)

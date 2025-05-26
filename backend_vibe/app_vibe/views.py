@@ -1,8 +1,8 @@
-from rest_framework.decorators import api_view
-from .serializer import RegistroSerializer, LoginSerializer, UserSerializer
+from .serializer import RegistroSerializer, LoginSerializer, UserSerializer, ArchivoSerializer
 from .models import Publicacion, Comentario, Seguidor, User
 # from rest_framework import viewsets
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
+from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -45,7 +45,6 @@ def RegistroView(request):
             "email": user.email,
             "first_name": user.first_name,
             "last_name": user.last_name,
-            # Agrega otros campos que quieras devolver
         }
         return Response({
             "Token": token.key,
@@ -69,13 +68,40 @@ def LoginView(request):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def profileView(request):
-    print(request.user)
-    
+    # devover info del usuario solo cuando esta logueado
     serializer = UserSerializer(request.user)
-    # return Response("You are login with {}".format(request.user.username), status=status.HTTP_200_OK)
     return Response(serializer.data, status=status.HTTP_200_OK) 
 
 @api_view(["POST"])
 def LogoutView(request):
+    """EN PROCESO ......"""
     # serializer = UserSerializer(request.user)
     pass
+
+
+class SubirArchivoApiView(APIView):
+    def post(self, request, format=None):
+        # Agarramos el archivo enviado
+        serializer = ArchivoSerializer(data = request.data)
+        # Verificamos q sea valido
+        if serializer.is_valid():
+            # Guardamos
+            archivo_obj = serializer.save()
+            # Verificamos q hay archivos
+            if archivo_obj.archivo:
+                # Conceguimos una url para mostrar posteriormente el archivos
+                archivo_url = request.build_absolute_uri(archivo_obj.archivo.url)
+            else:
+                # En caso de no archivos
+                archivo_url = None
+            
+            # En caso de q todo este bien enviamos un mesaje y la url del archivo
+            return Response({"mensaje": "Archivo subido correctamente",
+                             "archivo_url": archivo_url}, status=status.HTTP_201_CREATED)
+            
+        # En caso de q no soltamos un error a comerse al usuario
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+# ejemplo para probra la subida de archivoz
+def mi_vista(request):
+    return render(request, 'index.html')
