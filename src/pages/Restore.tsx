@@ -20,10 +20,6 @@ function Restore() {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values)
-    }
-
     return (
         <>
             <div className="min-h-[100dvh] w-full">
@@ -39,7 +35,7 @@ function Restore() {
                     </div>
                     <div className="login-container w-full flex justify-center items-center mt-4">
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                            <form className="flex flex-col gap-4">
                                 <FormField
                                     control={form.control}
                                     name="email"
