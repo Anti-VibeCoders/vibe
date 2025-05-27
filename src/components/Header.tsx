@@ -52,7 +52,7 @@ function Header() {
                         }}/>
                     )}
                     <Bell className="cursor-pointer size-5" />
-                    <MessageSquare className="cursor-pointer size-5" />
+                    <Link to="/messages"><MessageSquare className="cursor-pointer size-5" /></Link>
                     <DropdownMenu >
                         <DropdownMenuTrigger>
                             <Avatar className="cursor-pointer">

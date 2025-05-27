@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
@@ -9,23 +8,22 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
+    username: z.string().min(1),
     email: z.string().email(),
-    password: z.string().min(8)
+    password: z.string().min(8),
 })
 
-function Login() {
+function Register() {
     const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            username: "",
             email: "",
+            password: "",
         }
     })
-
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values)
-    }
 
     return (
         <>
@@ -33,9 +31,6 @@ function Login() {
                 <div className="header flex px-8 h-15 items-center cursor-pointer max-sm:justify-center" onClick={() => {
                     navigate('/login')
                 }}>
-                    <Avatar>
-                        <AvatarFallback className="bg-black font-semibold text-white text-xl">V</AvatarFallback>
-                    </Avatar>
                     <h1 className="text-3xl font-bold">Vibe</h1>
                 </div>
                 <div className="form-container w-full my-auto h-[90dvh] flex flex-col gap-4 justify-center items-center">
@@ -45,11 +40,11 @@ function Login() {
                     </div>
                     <div className="login-container w-full flex justify-center items-center mt-4">
                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                            <form className="flex flex-col gap-4">
                                 
                             <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="username"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
@@ -116,4 +111,4 @@ function Login() {
     )
 }
 
-export default Login
+export default Register
