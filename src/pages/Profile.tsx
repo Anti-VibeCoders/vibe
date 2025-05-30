@@ -22,8 +22,8 @@ const userProfile = {
     id: 1,
     name: "Usuario Vibe",
     username: "@Usuario Vibe",
-    bio: "Lobo es gay",
-    location: "Venezuela D:",
+    bio: "Nuevo usuario de vibe",
+    location: "Venezuela",
     website: "https://said-coverletter.vercel.app",
     joinDate: "Mayo 2025",
     avatar: "https://github.com/shadcn.png",
@@ -47,7 +47,7 @@ const mockPosts = [
     {
         id: 2,
         content:
-            "Jota es moreno D:",
+            "Probando la nueva red social Vibe!",
         timestamp: "Hace 1 día",
         likes: 45,
         comments: 12,
