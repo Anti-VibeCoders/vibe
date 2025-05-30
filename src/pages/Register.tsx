@@ -11,6 +11,7 @@ const formSchema = z.object({
     username: z.string().min(1),
     email: z.string().email(),
     password: z.string().min(8),
+    repeat_password: z.string()
 })
 
 function Register() {
@@ -22,6 +23,7 @@ function Register() {
             username: "",
             email: "",
             password: "",
+            repeat_password: ""
         }
     })
 
@@ -83,7 +85,7 @@ function Register() {
                                 </FormField>
                                 <FormField
                                     control={form.control}
-                                    name="password"
+                                    name="repeat_password"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
