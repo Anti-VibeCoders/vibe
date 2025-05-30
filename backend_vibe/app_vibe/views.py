@@ -73,10 +73,10 @@ def profileView(request):
     return Response(serializer.data, status=status.HTTP_200_OK) 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def LogoutView(request):
-    """EN PROCESO ......"""
-    # serializer = UserSerializer(request.user)
-    pass
+    request.user.auth_token.delete()
+    return Response({"mensaje": "Se a cerrado sesion"}, status=status.HTTP_200_OK)
 
 
 class SubirArchivoApiView(APIView):
