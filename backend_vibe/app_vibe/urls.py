@@ -1,16 +1,19 @@
 from django.urls import path
 # from rest_framework import routers
-from .views import RegistroView, LoginView, LogoutView, profileView, SubirArchivoApiView, mi_vista
+# from .views import RegistroView, LoginView, LogoutView, profileView, SubirArchivoApiView, mi_vista,user_detail, user_config
+from app_vibe import views
 
 # routers=routers.DefaultRouter()
 # routers.register(r"User", UserViewSet)
 
 urlpatterns = [
     # path('', include(routers.urls)),
-    path('register/', RegistroView, name='register'),
-    path('login/', LoginView, name='login'),
-    path('logout/', LogoutView, name='logout'),
-    path('profile/', profileView, name='logout'),
-    path('Subir/', SubirArchivoApiView.as_view(), name='Subir'),
-    path("tem/", mi_vista, name="tem")
+    path('register/', views.RegistroView, name='register'),
+    path('login/', views.LoginView, name='login'),
+    path('logout/', views.LogoutView, name='logout'),
+    path('profile/', views.profileView, name='logout'),
+    path('Subir/', views.SubirArchivoApiView.as_view(), name='Subir'),
+    path("tem/", views.mi_vista, name="tem"),
+    path('user/<int:user_id>/', views.user_detail, name='user-detail'),
+    path("user_config/<int:user_id>/", views.user_config, name="user-config")
 ]
