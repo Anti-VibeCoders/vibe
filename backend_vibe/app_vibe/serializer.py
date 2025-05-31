@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import  User, Archivo
+from .models import  User, Archivo, Publicacion, Comentario, Seguidor
 
 class UserSerializer(serializers.ModelSerializer):
     # Especificamos las filas q queremos mostrar
@@ -42,3 +42,19 @@ class ArchivoSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Guardar en el modelo Archivo
         return Archivo.objects.create(**validated_data)
+
+class PublicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publicacion
+        fields = ["id", "user", "contenido", "fecha_creacion"]
+        read_only_fields = ["id", "user", "fecha_creacion"]
+
+class ComentarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: Comentario
+        fields = ["id", "publicacion", "user", "contenido", "fecha_creacion"]
+
+class SeguidorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seguidor
+        fields = ["id", "user", "seguido"]
