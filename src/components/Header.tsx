@@ -26,9 +26,9 @@ function Header() {
 
     return (
         <>
-            <header className="border-b dark:border-b-gray-700 flex h-16 items-center justify-between px-8 transition-all duration-300">
+            <header className="border-b dark:border-b-gray-700 flex h-15 w-full items-center justify-between px-8 transition-all duration-300">
                 <div className="header-left flex gap-2 items-center cursor-pointer" onClick={() => {
-                    navigate('/')
+                    navigate('/home')
                 }}>
                     <Avatar>
                         <AvatarFallback className="bg-black font-semibold text-white text-xl">V</AvatarFallback>
@@ -51,8 +51,8 @@ function Header() {
                             setDarkMode(!darkMode)
                         }}/>
                     )}
-                    <Bell className="cursor-pointer size-5" />
-                    <Link to="/messages"><MessageSquare className="cursor-pointer size-5" /></Link>
+                    <Link to="notifications"><Bell className="cursor-pointer size-5" /></Link>
+                    <Link to="messages"><MessageSquare className="cursor-pointer size-5" /></Link>
                     <DropdownMenu >
                         <DropdownMenuTrigger>
                             <Avatar className="cursor-pointer">
@@ -63,10 +63,10 @@ function Header() {
                         <DropdownMenuContent className="dark:bg-neutral-950 dark:text-white mr-4 border dark:border-gray-600">
                             <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <Link to="/profile"><DropdownMenuItem className="cursor-pointer">Perfil</DropdownMenuItem></Link>
-                            <Link to="/"><DropdownMenuItem className="cursor-pointer">Pagos</DropdownMenuItem></Link>
-                            <Link to="/"><DropdownMenuItem className="cursor-pointer">Equipo</DropdownMenuItem></Link>
-                            <Link to="/login"><DropdownMenuItem className="cursor-pointer">Cerrar sesión</DropdownMenuItem></Link>
+                            <Link to="profile"><DropdownMenuItem className="cursor-pointer">Perfil</DropdownMenuItem></Link>
+                            <Link to="/home"><DropdownMenuItem className="cursor-pointer">Pagos</DropdownMenuItem></Link>
+                            <Link to="/home"><DropdownMenuItem className="cursor-pointer">Equipo</DropdownMenuItem></Link>
+                            <Link to="/"><DropdownMenuItem className="cursor-pointer">Cerrar sesión</DropdownMenuItem></Link>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
