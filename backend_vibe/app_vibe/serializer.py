@@ -5,7 +5,17 @@ class UserSerializer(serializers.ModelSerializer):
     # Especificamos las filas q queremos mostrar
     class Meta:
         model = User
-        fields =  ["id", "username", "password", "email"]
+        fields =  ["username", "first_name","last_name", "bio", "email", "profile_image"]
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    bio = serializers.CharField(source='profile.bio', read_only=True)
+    profile_image = serializers.ImageField(source='profile.profile_image', read_only=True)
+    username = serializers.CharField(read_only=True)
+    email = serializers.EmailField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'bio', 'profile_image']
 
 class RegistroSerializer(serializers.ModelSerializer):
     # Hacemos que el password solo sea escrubir y no se muestre
