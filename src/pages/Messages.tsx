@@ -88,7 +88,7 @@ function Messages() {
 
     return (
         <>
-            <div className="messages-cont w-full overflow-y-scroll h-[90dvh] flex">
+            <div className="messages-cont w-full overflow-y-scroll h-full flex">
                 <div className="messages-left relative w-sm dark:border-r-neutral-800 border-r py-4">
                     <div className="header-messages-left flex flex-col gap-6 border-b dark:border-b-neutral-800 pb-4 px-7">
                         <h2 className="text-2xl font-bold">Mensajes</h2>
