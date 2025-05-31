@@ -68,7 +68,7 @@ function Login() {
                                 >
                                 </FormField>
                                 <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
-                                    navigate('/')
+                                    navigate('/home')
                                 }}>Iniciar Sesión</Button>
                                 <p className="text-center">¿No tienes cuenta? <Link to="/register" className="text-blue-500"> Regístrate</Link></p>
                             </form>

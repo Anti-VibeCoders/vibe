@@ -1,11 +1,21 @@
 from rest_framework import serializers
-from .models import  User, Archivo
+from .models import  User, Archivo, Publicacion, Comentario, Seguidor
 
 class UserSerializer(serializers.ModelSerializer):
     # Especificamos las filas q queremos mostrar
     class Meta:
         model = User
-        fields =  ["id", "username", "password", "email"]
+        fields =  ["username", "first_name","last_name", "bio", "email", "profile_image"]
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    bio = serializers.CharField(source='profile.bio', read_only=True)
+    profile_image = serializers.ImageField(source='profile.profile_image', read_only=True)
+    username = serializers.CharField(read_only=True)
+    email = serializers.EmailField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'bio', 'profile_image']
 
 class RegistroSerializer(serializers.ModelSerializer):
     # Hacemos que el password solo sea escrubir y no se muestre
@@ -42,3 +52,19 @@ class ArchivoSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Guardar en el modelo Archivo
         return Archivo.objects.create(**validated_data)
+
+class PublicacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publicacion
+        fields = ["id", "user", "contenido", "fecha_creacion"]
+        read_only_fields = ["id", "user", "fecha_creacion"]
+
+class ComentarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model: Comentario
+        fields = ["id", "publicacion", "user", "contenido", "fecha_creacion"]
+
+class SeguidorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seguidor
+        fields = ["id", "user", "seguido"]

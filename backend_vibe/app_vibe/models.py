@@ -7,6 +7,8 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     username = models.CharField(max_length=150, unique=True)
+    bio = models.TextField(blank=True)
+    profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
     website = models.URLField(blank=True)
 
 class Publicacion(models.Model):

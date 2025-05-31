@@ -1,4 +1,6 @@
-from .serializer import RegistroSerializer, LoginSerializer, UserSerializer, ArchivoSerializer
+
+from .serializer import RegistroSerializer, LoginSerializer, UserSerializer, ArchivoSerializer, PublicacionSerializer, ComentarioSerializer, SeguidorSerializer
+
 from .models import Publicacion, Comentario, Seguidor, User
 # from rest_framework import viewsets
 from django.shortcuts import get_object_or_404, render
@@ -73,10 +75,10 @@ def profileView(request):
     return Response(serializer.data, status=status.HTTP_200_OK) 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def LogoutView(request):
-    """EN PROCESO ......"""
-    # serializer = UserSerializer(request.user)
-    pass
+    request.user.auth_token.delete()
+    return Response({"mensaje": "Se a cerrado sesion"}, status=status.HTTP_200_OK)
 
 
 class SubirArchivoApiView(APIView):
@@ -105,3 +107,62 @@ class SubirArchivoApiView(APIView):
 # ejemplo para probra la subida de archivoz
 def mi_vista(request):
     return render(request, 'index.html')
+
+
+@api_view(['GET'])
+def user_detail(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    serializer = UserProfileSerializer(user)
+    return Response(serializer.data)
+
+@api_view(["GET", "PATCH"])
+def user_config(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    
+    if request.method == "GET":
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    
+    elif request.method == "PATCH":
+        serializer = UserSerializer(user, request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+def PublicacionView(request):
+    queryset = Publicacion.objects.all()
+    serializer = PublicacionSerializer(queryset, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def PublicacionCreateView(request):
+    serializer = PublicacionSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+def CommentarioView(request):
+    queryset = Comentario.objects.all()
+    serializer = ComentarioSerializer(queryset, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def CommentarioCreateView(request):
+    serializer = ComentarioSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

@@ -1,3 +1,4 @@
+
 import { Outlet, useLocation } from "react-router-dom";
 import Home from "@/pages/Home";
 import Header from "./components/Header";
@@ -7,6 +8,12 @@ function App() {
   const location = useLocation();
   const home = location.pathname === "/";
   let userId = localStorage.getItem('userId');
+=======
+import Login from './pages/Login'
+
+function App() {
+  let userId = localStorage.getItem('userId')
+
 
   if (!userId) {
     userId = crypto.randomUUID();
@@ -15,6 +22,7 @@ function App() {
 
   return (
     <>
+
       <div className="min-h-screen flex flex-col">
         <Header />
         {home ? (
@@ -26,6 +34,9 @@ function App() {
         )}
         <Footer />
       </div>
+=======
+    <Login />
+
     </>
   );
 }
