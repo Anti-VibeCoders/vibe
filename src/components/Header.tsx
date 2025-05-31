@@ -63,10 +63,10 @@ function Header() {
                         <DropdownMenuContent className="dark:bg-neutral-950 dark:text-white mr-4 border dark:border-gray-600">
                             <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="cursor-pointer"><Link to="/">Perfil</Link></DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer"><Link to="/">Pagos</Link></DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer"><Link to="/">Equipo</Link></DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer"><Link to="/login">Cerrar sesión</Link></DropdownMenuItem>
+                            <Link to="/profile"><DropdownMenuItem className="cursor-pointer">Perfil</DropdownMenuItem></Link>
+                            <Link to="/"><DropdownMenuItem className="cursor-pointer">Pagos</DropdownMenuItem></Link>
+                            <Link to="/"><DropdownMenuItem className="cursor-pointer">Equipo</DropdownMenuItem></Link>
+                            <Link to="/login"><DropdownMenuItem className="cursor-pointer">Cerrar sesión</DropdownMenuItem></Link>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

@@ -4,6 +4,7 @@ import Error from '@/pages/Error'
 import Register from '@/pages/Register'
 import Restore from '@/pages/Restore'
 import Messages from '@/pages/Messages'
+import Profile from './pages/Profile'
 
 const routes = [
     {
@@ -20,6 +21,10 @@ const routes = [
                         element: <Messages />
                     }
                 ]
+            },
+            {
+                path: '/profile',
+                element: <Profile />,
             }
         ]
     },
