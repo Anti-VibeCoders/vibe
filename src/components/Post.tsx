@@ -26,7 +26,7 @@ function Post() {
 
   return (
     <>
-      <div className="card w-2xl max-lg:w-[95%] mx-auto h-full border dark:border-neutral-700 p-4 rounded-sm max-sm:w-full">
+      <div className="card w-2xl max-lg:w-[95%] h-full border dark:border-neutral-700 p-4 rounded-sm max-sm:w-full">
         <div className="card-top">
           <div className="card-user cursor-pointer">
             <div className="card-user-avatar flex gap-2">
