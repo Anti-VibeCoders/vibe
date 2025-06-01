@@ -118,3 +118,37 @@
     @apply bg-background text-foreground;
   }
 }
+/*HOME HEADER START */
+.header_container {
+  @apply border-b dark:border-b-gray-700 flex h-16 items-center w-full px-8 transition-all duration-300 md:grid grid-cols-[auto_40em_auto] justify-between md:justify-baseline;
+
+  .header_logo {
+    @apply flex gap-2 items-center cursor-pointer;
+  }
+  .header_search {
+    @apply w-full h-9 max-md:hidden justify-self-center translate-x-35;
+  }
+  .header_buttons {
+    @apply flex gap-10 items-center max-lg:gap-6 justify-self-end;
+  }
+}
+
+/*HEADER END */
+
+/* HOMEPAGE START */
+.homepage_container {
+  @apply w-full h-full flex-1 flex md:grid md:grid-cols-[0.2fr_auto] px-8;
+
+  .homepage_asideNav {
+    @apply w-50 h-full flex-col gap-7 hidden md:flex pt-14 justify-evenly;
+  }
+  .homepage_postContainer {
+    @apply flex-1 flex flex-col gap-12 overflow-y-auto h-[100dvh] self-center py-12 max-lg:w-full max-lg:ml-0 max-sm:px-2 max-sm:py-6 items-center;
+
+    .post_cardContainer {
+      @apply w-2xl max-lg:w-[95%]  h-full border dark:border-neutral-700 p-4 rounded-sm max-sm:w-full max-h-200;
+    }
+  }
+}
+
+/* HOMEPAGE END */
