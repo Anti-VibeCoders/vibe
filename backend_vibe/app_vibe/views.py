@@ -129,7 +129,7 @@ def user_config(request, user_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-=
+
 @api_view(["GET"])
 def PublicacionView(request):
     queryset = Publicacion.objects.all()
