@@ -1,28 +1,35 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageCircle, Share } from "lucide-react";
-import { useState, useEffect } from "react";
-import Heart from "./Heart";
-import { motion, AnimatePresence } from "framer-motion";
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Heart, MessageCircle, MoreHorizontal, Share } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+
+
 
 function Post() {
+
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [showPreview, setShowPreview] = useState<boolean>(false);
+ 
+    const [showPreview, setShowPreview] = useState<boolean>(false)
 
-  const imageUrl = "https://c.tenor.com/9RsYHkzRE0EAAAAd/tenor.gif";
+    useEffect(() => {
+        if (!showPreview) return
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setShowPreview(false)
+            }
+        }
 
-  useEffect(() => {
-    if (!showPreview) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setShowPreview(false);
-      }
-    };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       removeEventListener("keydown", handleKeyDown);
     };
   }, [showPreview]);
+
 
   return (
     <>

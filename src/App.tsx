@@ -1,3 +1,4 @@
+
 import { Outlet, useLocation } from "react-router-dom";
 import Home from "@/pages/Home";
 import Header from "./components/Header";
@@ -22,6 +23,20 @@ function App() {
         )}
         <Footer />
       </div>
+
+import Login from './pages/Login'
+
+function App() {
+  let userId = localStorage.getItem('userId')
+
+  if (!userId) {
+    userId = crypto.randomUUID()
+    localStorage.setItem('userId', userId)
+  }
+
+  return (
+    <>
+    <Login />
     </>
   );
 }

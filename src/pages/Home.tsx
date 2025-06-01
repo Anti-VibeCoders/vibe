@@ -1,3 +1,4 @@
+
 import SideNav from "@/components/SideNav";
 import Post from "@/components/Post";
 
@@ -13,6 +14,7 @@ function Home() {
       </div>
     </>
   );
+
 }
 
 export default Home;
