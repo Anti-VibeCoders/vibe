@@ -17,8 +17,10 @@ urlpatterns = [
     path("tem/", views.mi_vista, name="tem"),
     path('user/<int:user_id>/', views.user_detail, name='user-detail'),
     path("user_config/<int:user_id>/", views.user_config, name="user-config")
+
     path('Publications/', PublicacionView, name='Publicacion'),
     path("Publications/create/", PublicacionCreateView, name="Publicacion-create"),
     path("Comments/", CommentarioView, name="Comentario"),
     path("Comments/create/", CommentarioCreateView, name="Comentario-create"),
+
 ]
