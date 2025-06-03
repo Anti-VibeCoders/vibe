@@ -1,6 +1,12 @@
+/* =====================
+   Tailwind Imports
+   ===================== */
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* =====================
+   Custom Theme Variables
+   ===================== */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme inline {
@@ -39,11 +45,6 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-}
-
-html, body, #root {
-  height: 100%;
-  overflow: hidden;
 }
 
 :root {
@@ -115,11 +116,140 @@ html, body, #root {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* =====================
+   Base Layout & Resets
+   ===================== */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+/* =====================
+   Header Styles
+   ===================== */
+.header__container {
+  @apply border-b dark:border-b-gray-700 flex h-15 w-full items-center justify-between px-8 transition-all duration-300;
+}
+
+.header__logo {
+  @apply flex gap-2 items-center cursor-pointer;
+}
+
+.header__search {
+  @apply w-1/2 h-9 max-md:hidden;
+}
+
+.header__nav {
+  @apply flex gap-10 items-center max-lg:gap-6;
+}
+
+/* =====================
+   Home Page Layout
+   ===================== */
+.home_container {
+  @apply flex flex-1 min-h-0;
+}
+
+.post__container {
+  @apply flex w-full h-full;
+}
+
+.post__items {
+  @apply flex-1 flex flex-col gap-12 overflow-y-auto h-full px-8 py-12 max-lg:w-full max-lg:ml-0 max-sm:px-2 max-sm:py-6;
+}
+
+/* =====================
+   Aside Navigation
+   ===================== */
+.sideNav__container {
+  @apply w-64 h-full md:flex flex-shrink-0 flex-col gap-4 justify-center pl-4 hidden;
+}
+
+/* =====================
+   Card & Notifications
+   ===================== */
+.card_container {
+  @apply bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm;
+}
+
+.notifications__container {
+  @apply flex flex-col h-full overflow-y-auto gap-5 mx-5 md:mx-auto pt-10 w-full px-5;
+}
+
+.notifications__card {
+  @apply border-1 border-neutral-700 w-2/3 h-max flex flex-row p-7 bg-card gap-5 rounded-xl items-center relative mx-auto;
+}
+
+.notifications__avatar {
+  @apply size-[10em] rounded-full object-cover;
+}
+
+.notifications__content {
+  @apply border-l-1 pl-5 border-neutral-700 flex flex-col gap-2 py-5 w-120;
+}
+
+.notification-badge {
+  @apply absolute bg-neutral-200 size-5 m-3 top-0 right-0 rounded-full outline-1 outline-neutral-700 font-bold;
+}
+
+.notification-badge::before {
+  content: "Nueva";
+  position: absolute;
+  right: 1em;
+  top: 0;
+  width: 4em;
+  font-style: italic;
+  font-size: 0.75rem;
+}
+
+.notifications_cardTime {
+  @apply absolute bottom-3 right-15 text-neutral-400;
+}
+
+/* =====================
+   Popup Notificaciones Compactas
+   ===================== */
+.notif-Compact__Container {
+  @apply absolute left-[-1em] top-[2em] translate-x-[-60%] mt-2 shadow-lg z-50 bg-neutral-950 rounded-2xl outline-1 p-4;
+}
+
+.compact {
+  @apply max-h-96 w-110 p-0 rounded-2xl p-3;
+}
+
+.compact .notifications__card {
+  @apply p-1 gap-2 max-h-50 border-0 mt-2;
+}
+
+.compact .notifications__avatar {
+  @apply size-[6em] rounded-full object-cover mx-auto;
+}
+
+.compact .notifications__content {
+  @apply pl-2 gap-0.5 py-0 w-2/3;
+}
+
+.compact .notification-type {
+  @apply text-xs px-1 py-0.5;
+}
+
+.compact .notifications_cardTime {
+  @apply text-xs right-2 bottom-2;
+}
+
+.compact .notification-badge {
+  @apply size-3 m-1;
 }
