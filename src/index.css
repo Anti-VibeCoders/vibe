@@ -143,15 +143,12 @@ body,
 .header__container {
   @apply border-b dark:border-b-gray-700 flex h-15 w-full items-center justify-between px-8 transition-all duration-300;
 }
-
 .header__logo {
   @apply flex gap-2 items-center cursor-pointer;
 }
-
 .header__search {
   @apply w-1/2 h-9 max-md:hidden;
 }
-
 .header__nav {
   @apply flex gap-10 items-center max-lg:gap-6;
 }
@@ -225,31 +222,28 @@ body,
 .notif-Compact__Container {
   @apply absolute left-[-1em] top-[2em] translate-x-[-60%] mt-2 shadow-lg z-50 bg-neutral-950 rounded-2xl outline-1 p-4;
 }
-
 .compact {
   @apply max-h-96 w-110 p-0 rounded-2xl p-3;
 }
-
 .compact .notifications__card {
   @apply p-1 gap-2 max-h-50 border-0 mt-2;
 }
-
 .compact .notifications__avatar {
   @apply size-[6em] rounded-full object-cover mx-auto;
 }
-
 .compact .notifications__content {
   @apply pl-2 gap-0.5 py-0 w-2/3;
 }
-
 .compact .notification-type {
   @apply text-xs px-1 py-0.5;
 }
-
 .compact .notifications_cardTime {
   @apply text-xs right-2 bottom-2;
 }
-
 .compact .notification-badge {
   @apply size-3 m-1;
 }
+
+/* =====================
+   END: Card & Notifications
+   ===================== */
