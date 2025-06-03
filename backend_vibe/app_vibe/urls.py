@@ -1,16 +1,26 @@
 from django.urls import path
-# from rest_framework import routers
-from .views import RegistroView, LoginView, LogoutView, profileView, SubirArchivoApiView, mi_vista
-
-# routers=routers.DefaultRouter()
-# routers.register(r"User", UserViewSet)
+from app_vibe.view import auth_views, user_views, profile_views, conexion_views
 
 urlpatterns = [
-    # path('', include(routers.urls)),
-    path('register/', RegistroView, name='register'),
-    path('login/', LoginView, name='login'),
-    path('logout/', LogoutView, name='logout'),
-    path('profile/', profileView, name='logout'),
-    path('Subir/', SubirArchivoApiView.as_view(), name='Subir'),
-    path("tem/", mi_vista, name="tem")
+    # auths
+    path('auth/register/', auth_views.RegistroView, name='auth-register'),
+    path('auth/login/', auth_views.LoginView, name='auth-login'),
+    path('auth/logout/', auth_views.LogoutView, name='auth-logout'),
+    
+    # user
+    path('users/<int:user_id>/', user_views.user_detail, name='user-detail'),
+    path("users/<int:user_id>/config/", user_views.user_config, name="user-config"),
+    
+    # profile
+    path('profile/', profile_views.profileView, name='logout'),
+    
+    # publicactions
+    path('Publications/', conexion_views.PublicacionView, name='Publicacion'),
+    path("Publications/create/", conexion_views.PublicacionCreateView, name="Publicacion-create"),
+    
+    #coments
+    path("Comments/", conexion_views.CommentarioView, name="Comentario"),
+    path("Comments/create/", conexion_views.CommentarioCreateView, name="Comentario-create"),
+    
+    path('upload/', conexion_views.SubirArchivoApiView.as_view(), name='Subir'),
 ]
