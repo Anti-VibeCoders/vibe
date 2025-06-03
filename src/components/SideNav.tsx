@@ -12,9 +12,11 @@ import {
 import { Link } from "react-router-dom";
 
 function SideNav() {
+
   return (
     <>
       <div className="sideNav__container">
+
         <div className="side-nav-top">
           <div className="side-nav-top-left">
             <div className="user flex gap-2">
@@ -34,17 +36,22 @@ function SideNav() {
         <div className="side-nav-bottom">
           <div className="side-nav-bottom-left-bottom">
             <ul className="side-nav-bottom-left-bottom-list flex flex-col gap-2">
+
               <Link to="/home">
+
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <Home /> Inicio
                 </li>
               </Link>
+
               <Link to="/home">
+
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <Compass />
                   Explorar
                 </li>
               </Link>
+
               <Link to="notifications">
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <Bell />
@@ -52,27 +59,36 @@ function SideNav() {
                 </li>
               </Link>
               <Link to="messages">
+
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <MessageSquare />
                   Mensajes
                 </li>
               </Link>
+
               <Link to="/home">
+
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <Bookmark /> Listas
                 </li>
               </Link>
+
               <Link to="/home">
+
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <Users /> Amigos
                 </li>
               </Link>
+
               <Link to="profile">
+
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <User /> Perfil
                 </li>
               </Link>
+
               <Link to="/home">
+
                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                   <Bolt /> Configuración
                 </li>

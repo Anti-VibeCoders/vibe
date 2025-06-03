@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
+
 import { useState, useEffect, useRef } from "react";
 import Notifications from "@/pages/Notifications";
 function Header() {
@@ -48,6 +49,7 @@ function Header() {
           className="header__logo"
           onClick={() => {
             navigate("/home");
+
           }}
         >
           <Avatar>
@@ -57,7 +59,9 @@ function Header() {
           </Avatar>
           <h1 className="text-3xl font-bold">Vibe</h1>
         </div>
+
         <div className="header__search">
+
           <div className="search-input w-full h-full relative">
             <Search className="absolute left-2 top-2 size-5 dark:stroke-gray-600 placeholder:dark:text-gray-600 placeholder:text-gray-800 bg-none" />
             <input
@@ -69,7 +73,9 @@ function Header() {
             />
           </div>
         </div>
+
         <div className="header__nav">
+
           {darkMode ? (
             <Sun
               className="cursor-pointer size-5"
@@ -85,6 +91,7 @@ function Header() {
               }}
             />
           )}
+
           <a
             ref={notifRef}
             onClick={() => setShowNotif(!showNotif)}
@@ -103,6 +110,40 @@ function Header() {
               </div>
             )}
           </a>
+
+          <Bell className="cursor-pointer size-5" />
+          <MessageSquare className="cursor-pointer size-5" />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar className="cursor-pointer">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">
+                  A
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="dark:bg-neutral-950 dark:text-white mr-4 border dark:border-gray-600">
+              <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <Link to="/">Perfil</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Link to="/">Pagos</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Link to="/">Equipo</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Link to="/login">Cerrar sesión</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </header>
+    </>
+  );
+
 
           <Link to="messages">
             <MessageSquare className="cursor-pointer size-5" />
