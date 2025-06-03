@@ -1,16 +1,19 @@
 
-import SideNav from "@/components/SideNav";
+
 import Post from "@/components/Post";
 
 function Home() {
   return (
     <>
-      <SideNav />
 
-      <div className="homepage_postContainer">
-        {[1, 2, 3, 4].map((i) => {
-          return <Post key={i} />;
-        })}
+      <div className="post__container">
+        <div className="post__items">
+          <div className="posts w-2xl mx-auto flex flex-col items-center gap-10 max-md:w-full">
+            {[1, 2, 3, 4].map((i) => {
+              return <Post key={i} />;
+            })}
+          </div>
+        </div>
       </div>
     </>
   );
