@@ -111,8 +111,7 @@ function Header() {
             )}
           </a>
 
-          <Bell className="cursor-pointer size-5" />
-          <MessageSquare className="cursor-pointer size-5" />
+          <Link to="messages"><MessageSquare className="cursor-pointer size-5" /></Link>
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar className="cursor-pointer">
@@ -125,61 +124,18 @@ function Header() {
             <DropdownMenuContent className="dark:bg-neutral-950 dark:text-white mr-4 border dark:border-gray-600">
               <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/">Perfil</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/">Pagos</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/">Equipo</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/login">Cerrar sesión</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </header>
-    </>
-  );
-
-
-          <Link to="messages">
-            <MessageSquare className="cursor-pointer size-5" />
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar className="cursor-pointer">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">
-                  A
-                </AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="dark:bg-neutral-950 dark:text-white mr-4 border dark:border-gray-600">
-              <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <Link to="profile">
-                <DropdownMenuItem className="cursor-pointer">
-                  Perfil
-                </DropdownMenuItem>
-              </Link>
-              <Link to="/home">
-                <DropdownMenuItem className="cursor-pointer">
-                  Pagos
-                </DropdownMenuItem>
-              </Link>
-              <Link to="/home">
-                <DropdownMenuItem className="cursor-pointer">
-                  Equipo
-                </DropdownMenuItem>
-              </Link>
-              <Link to="/">
-                <DropdownMenuItem className="cursor-pointer">
-                  Cerrar sesión
-                </DropdownMenuItem>
-              </Link>
+              <Link to="profile"><DropdownMenuItem className="cursor-pointer">
+                Perfil
+              </DropdownMenuItem></Link>
+              <Link to="/"><DropdownMenuItem className="cursor-pointer">
+                Pagos
+              </DropdownMenuItem></Link>
+              <Link to="/"><DropdownMenuItem className="cursor-pointer">
+                Equipo
+              </DropdownMenuItem></Link>
+              <Link to="/"><DropdownMenuItem className="cursor-pointer">
+                Cerrar sesión
+              </DropdownMenuItem></Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -130,6 +130,7 @@ body,
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -158,9 +159,11 @@ body,
 .home_container {
   @apply flex flex-1 min-h-0;
 }
+
 .post__container {
   @apply flex w-full h-full;
 }
+
 .post__items {
   @apply flex-1 flex flex-col gap-12 overflow-y-auto h-full px-8 py-12 max-lg:w-full max-lg:ml-0 max-sm:px-2 max-sm:py-6;
 }
@@ -180,20 +183,25 @@ body,
 }
 
 .notifications__container {
-  @apply flex flex-col h-full overflow-y-auto gap-5 mx-5 md:mx-auto pt-10 w-full px-5;
+  @apply flex flex-col h-full overflow-y-auto gap-5 mx-5 md:mx-auto pt-10 w-full px-12
 }
+
 .notifications__card {
   @apply border-1 border-neutral-700 w-full h-max flex flex-row p-7 bg-card gap-5 rounded-xl items-center relative mx-auto;
 }
+
 .notifications__avatar {
   @apply size-[10em] rounded-full object-cover;
 }
+
 .notifications__content {
   @apply border-l-1 pl-5 border-neutral-700 flex flex-col gap-2 py-5 w-120;
 }
+
 .notification-badge {
   @apply absolute bg-neutral-200 size-5 m-3 top-0 right-0 rounded-full outline-1 outline-neutral-700 font-bold;
 }
+
 .notification-badge::before {
   content: "Nueva";
   position: absolute;
@@ -203,6 +211,7 @@ body,
   font-style: italic;
   font-size: 0.75rem;
 }
+
 .notifications_cardTime {
   @apply absolute bottom-3 right-15 text-neutral-400;
 }
@@ -238,4 +247,3 @@ body,
 /* =====================
    END: Card & Notifications
    ===================== */
-
