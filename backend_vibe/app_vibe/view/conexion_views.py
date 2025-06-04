@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 
 class SubirArchivoApiView(APIView):
+    
     def post(self, request, format=None):
         # Agarramos el archivo enviado
         serializer = ArchivoSerializer(data = request.data)
@@ -33,11 +34,12 @@ class SubirArchivoApiView(APIView):
         # En caso de q no soltamos un error a comerse al usuario
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(["GET"])
-def PublicacionView(request):
-    queryset = Publicacion.objects.all()
-    serializer = PublicacionSerializer(queryset, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+class PublicacionView(APIView):
+    def get(self, request):
+        queryset = Publicacion.objects.all()
+        serializer = PublicacionSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
