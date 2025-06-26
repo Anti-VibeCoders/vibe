@@ -6,7 +6,9 @@ import Messages from '@/pages/Messages'
 import Profile from '@/pages/Profile'
 import SidenavLayout from '@/layout/SidenavLayout'
 import Notifications from '@/pages/Notifications'
-
+import NewPost from './pages/NewPost'
+import Friends from './pages/Friends'
+import Chat from '@/pages/Chat';
 const routes = [
     {
         path: '/',
@@ -23,8 +25,8 @@ const routes = [
                 element: <Messages />,
                 children: [
                     {
-                        path: 'messages/:id',
-                        element: <Messages />
+                        path: ':id',
+                        element: <Chat />
                     }
                 ]
             },
@@ -35,6 +37,14 @@ const routes = [
             {
                 path: 'notifications',
                 element: <Notifications />
+            },
+            {
+                path: "newpost",
+                element: <NewPost/>
+            },
+            {
+                path: "friends",
+                element: <Friends/>
             }
         ]
     },

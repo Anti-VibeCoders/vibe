@@ -1,24 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
 import { MessageCircle, Heart, UserPlus, MessageSquare } from "lucide-react";
-
+import type { Notificacion } from "@/types";
+import { isNotification } from "@/utils";
 interface NotificationsProps {
     className?: string;
 }
 
 function Notifications({ className = "" }: NotificationsProps) {
-    type TipoNotificacion = "mensaje" | "like" | "seguidor" | "comentario";
-
-    type Notificacion = {
-        id: string;
-        titulo: string;
-        descripcion: string;
-        leido: boolean;
-        tipo: TipoNotificacion;
-        fecha: string;
-        avatarUrl?: string;
-    };
-
     const [notificaciones, setNotificaciones] = useState<Notificacion[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -60,12 +49,11 @@ function Notifications({ className = "" }: NotificationsProps) {
                     },
                 ],
             };
-            setNotificaciones(
-                response.data.map((notif: any) => ({
-                    ...notif,
-                    fecha: new Date(notif.fecha),
-                }))
-            );
+           if(Array.isArray(response.data) && response.data.every(isNotification)){
+                setNotificaciones(response.data as Notificacion[])
+           }else{
+                throw new Error("Error al cargar notificaciones")
+           }
         } catch (err) {
             setError("Error al cargar notificaciones");
             console.error(err);
