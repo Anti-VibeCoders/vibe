@@ -26,7 +26,7 @@ export default function ResponsiveSideNav() {
 
   return (
     <>
-      <div className="md:hidden p-2">
+      <div className="md:hidden p-2 fixed bg-black w-12 h-12 flex items-center justify-center z-40 rounded-full">
         <button
           onClick={toggleMenu}
           className="text-white hover:bg-neutral-800 p-2 rounded-md"

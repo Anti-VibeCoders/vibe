@@ -100,12 +100,9 @@ function Header() {
             <Bell className="cursor-pointer size-5" />
             {showNotif && (
               <div
-                className="notif-Compact__Container"
+                className="absolute w-72 m-auto top-10 -right-25 bg-black overflow-scroll z-50 h-[450px] sm:w-96 rounded-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
-                <h1 className="text-xl font-semibold text-neutral-200">
-                  Notificaciones
-                </h1>
                 <Notifications className="compact" />
               </div>
             )}
