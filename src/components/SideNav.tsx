@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Home,
   Compass,
@@ -9,89 +9,101 @@ import {
   User,
   Bolt,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "./Button";
+import { Link } from "react-router-dom";
 
 function SideNav() {
-  const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col gap-6 w-full text-white">
-      <div className="flex items-center gap-3">
-        <Avatar className="size-12">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">
-            V
-          </AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col">
-          <span className="text-lg font-bold">Usuario Vibe</span>
-          <span className="text-neutral-500 text-sm">@usuario</span>
+    <>
+      <div className="sideNav__container">
+
+        <div className="side-nav-top">
+          <div className="side-nav-top-left">
+            <div className="user flex gap-2">
+              <Avatar className="size-12">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">
+                  V
+                </AvatarFallback>
+              </Avatar>
+              <div className="user-info flex flex-col justify-between">
+                <span className="text-xl font-bold">Usuario Vibe</span>
+                <span className="text-neutral-500">@usuario</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="side-nav-bottom">
+          <div className="side-nav-bottom-left-bottom">
+            <ul className="side-nav-bottom-left-bottom-list flex flex-col gap-2">
+
+              <Link to="/home">
+
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <Home /> Inicio
+                </li>
+              </Link>
+
+              <Link to="/home">
+
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <Compass />
+                  Explorar
+                </li>
+              </Link>
+
+              <Link to="notifications">
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <Bell />
+                  Notificaciones
+                </li>
+              </Link>
+              <Link to="messages">
+
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <MessageSquare />
+                  Mensajes
+                </li>
+              </Link>
+
+              <Link to="/home">
+
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <Bookmark /> Listas
+                </li>
+              </Link>
+
+              <Link to="/home">
+
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <Users /> Amigos
+                </li>
+              </Link>
+
+              <Link to="profile">
+
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <User /> Perfil
+                </li>
+              </Link>
+
+              <Link to="/home">
+
+                <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
+                  <Bolt /> Configuración
+                </li>
+              </Link>
+            </ul>
+          </div>
+        </div>
+        <div className="create-post-btn">
+          <button className="btn bg-blue-500 font-semibold active:bg-blue-600 transition-all duration-200 cursor-pointer text-black w-full h-10 rounded-sm">
+            Crear post
+          </button>
         </div>
       </div>
-      <ul className="flex flex-col gap-2">
-        <Link to="/home">
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <Home size={18} /> Inicio
-          </li>
-        </Link>
-        <Link to="/home">
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <Compass size={18} />
-            Explorar
-          </li>
-        </Link>
-
-        <Link to="/home/notifications">
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <Bell size={18} />
-            Notificaciones
-          </li>
-        </Link>
-
-        <Link to="/home/messages/1"> 
-        {/* Aca se deberia poner un enlace con el
-        id de la ultima conversacion del usuario, de momento 1*/}
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <MessageSquare size={18} />
-            Mensajes
-          </li>
-        </Link>
-
-        <Link to="/home">
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <Bookmark size={18} />
-            Listas
-          </li>
-        </Link>
-
-        <Link to="/home/friends">
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <Users size={18} />
-            Amigos
-          </li>
-        </Link>
-
-        <Link to="/home/profile">
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <User size={18} />
-            Perfil
-          </li>
-        </Link>
-
-        <Link to="/home">
-          <li className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 cursor-pointer">
-            <Bolt size={18} />
-            Configuración
-          </li>
-        </Link>
-      </ul>
-      <Button
-        onClick={() => navigate("/home/newpost")}
-        text="Crear Post"
-        withClass="w-full -mt-4"
-      />
-    </div>
+    </>
   );
 }
+
 export default SideNav;
