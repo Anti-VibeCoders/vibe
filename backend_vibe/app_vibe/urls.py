@@ -1,26 +1,26 @@
 from django.urls import path
-from app_vibe.view import auth_views, user_views, profile_views, conexion_views
+from app_vibe.view import auth_views, user_views, upload_views, publication_views, coments_views, ai_views
 
 urlpatterns = [
     # auths
-    path('auth/register/', auth_views.RegistroView, name='auth-register'),
-    path('auth/login/', auth_views.LoginView, name='auth-login'),
-    path('auth/logout/', auth_views.LogoutView, name='auth-logout'),
+    path('auth/register/', auth_views.RegistroViewSet.as_view(), name='auth-register'),
+    path('auth/login/', auth_views.LoginViewSet.as_view(), name='auth-login'),
+    path('auth/logout/', auth_views.LogoutViewSet.as_view(), name='auth-logout'),
     
     # user
-    path('users/<int:user_id>/', user_views.user_detail, name='user-detail'),
-    path("users/<int:user_id>/config/", user_views.user_config, name="user-config"),
-    
-    # profile
-    path('profile/', profile_views.profileView, name='logout'),
+    path('users/<int:user_id>/', user_views.UserDetail.as_view(), name='user-detail'),
+    path("users/<int:user_id>/config/", user_views.UserConfig.as_view(), name="user-config"),
     
     # publicactions
-    path('Publications/', conexion_views.PublicacionView, name='Publicacion'),
-    path("Publications/create/", conexion_views.PublicacionCreateView, name="Publicacion-create"),
+    path('Publications/', publication_views.PostView.as_view(), name='Publication'),
+    path("Publications/create/", publication_views.PostCreateView.as_view(), name="Publication-create"),
     
     #coments
-    path("Comments/", conexion_views.CommentarioView, name="Comentario"),
-    path("Comments/create/", conexion_views.CommentarioCreateView, name="Comentario-create"),
+    path("Comments/", coments_views.CommentView.as_view(), name="Comment"),
+    path("Comments/create/", coments_views.CommentCreateView.as_view(), name="Comment-create"),
     
-    path('upload/', conexion_views.SubirArchivoApiView.as_view(), name='Subir'),
+    # AI
+    path('gemini/', ai_views.GeminiEndPoint.as_view(), name='gemini-endpoint'),
+  
+    path('upload/', upload_views.SubirArchivoApiView.as_view(), name='Subir'),
 ]
