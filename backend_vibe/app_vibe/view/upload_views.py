@@ -1,4 +1,4 @@
-from app_vibe.serializer import ArchivoSerializer
+from app_vibe.serializer import FilesPostSerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -6,7 +6,7 @@ from rest_framework.response import Response
 class SubirArchivoApiView(APIView):
     def post(self, request, format=None):
         # Agarramos el archivo enviado
-        serializer = ArchivoSerializer(data = request.data)
+        serializer = FilesPostSerializer(data = request.data)
         # Verificamos q sea valido
         if serializer.is_valid():
             # Guardamos

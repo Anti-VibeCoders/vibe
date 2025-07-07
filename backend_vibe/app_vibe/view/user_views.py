@@ -1,4 +1,4 @@
-from app_vibe.serializer import UserProfileSerializer, UserSerializer
+from app_vibe.serializer import  UserSerializer
 from app_vibe.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
@@ -16,7 +16,7 @@ class UserDetail(APIView):
         user = get_object_or_404(User, pk=user_id)
         
         # Buscamos y mostramos la info del user
-        serializer = UserProfileSerializer(user)
+        serializer = UserSerializer(user)
         return Response(serializer.data)
 
 # Este es para mostrar cuando un user ve su propia info y quiere cambiarla

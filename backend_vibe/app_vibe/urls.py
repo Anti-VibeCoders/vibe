@@ -12,12 +12,12 @@ urlpatterns = [
     path("users/<int:user_id>/config/", user_views.UserConfig.as_view(), name="user-config"),
     
     # publicactions
-    path('Publications/', publication_views.PublicacionView.as_view(), name='Publicacion'),
-    path("Publications/create/", publication_views.PublicacionCreateView.as_view(), name="Publicacion-create"),
+    path('Publications/', publication_views.PostView.as_view(), name='Publication'),
+    path("Publications/create/", publication_views.PostCreateView.as_view(), name="Publication-create"),
     
     #coments
-    path("Comments/", coments_views.CommentarioView.as_view(), name="Comentario"),
-    path("Comments/create/", coments_views.CommentarioCreateView.as_view(), name="Comentario-create"),
+    path("Comments/", coments_views.CommentView.as_view(), name="Comment"),
+    path("Comments/create/", coments_views.CommentCreateView.as_view(), name="Comment-create"),
     
     # AI
     path('gemini/', ai_views.GeminiEndPoint.as_view(), name='gemini-endpoint'),
