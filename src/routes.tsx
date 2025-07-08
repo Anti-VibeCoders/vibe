@@ -7,6 +7,7 @@ import Profile from '@/pages/Profile'
 import SidenavLayout from '@/layout/SidenavLayout'
 import Notifications from '@/pages/Notifications'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import NewPost from './pages/NewPost'
 import Friends from './pages/Friends'
 import Chat from '@/pages/Chat';
@@ -14,6 +15,11 @@ import Chat from '@/pages/Chat';
 import Following from '@/pages/Following'
 import { Children } from 'react'
 import path from 'path'
+=======
+import NewPost from './pages/NewPost'
+import Config from './pages/Config'
+import Following from './pages/Following'
+>>>>>>> 3809200 (fix: keep staged changes with the new changes in)
 
 >>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
 const routes = [
@@ -61,7 +67,18 @@ const routes = [
 =======
                 path: 'following/:id',
                 element: <Following/>
+<<<<<<< HEAD
 >>>>>>> 11e50e3 (cambio en la ruta ahora se accede a la pagina de siguiendo en perfil en el apartado de siguiendo y se le añadio un hover a ese mismo texto)
+=======
+            },
+            {
+                path: 'new-post',
+                element: <NewPost/>,
+            },
+            {
+                path: 'configuration',
+                element: <Config />
+>>>>>>> 3809200 (fix: keep staged changes with the new changes in)
             }
         ]
     },

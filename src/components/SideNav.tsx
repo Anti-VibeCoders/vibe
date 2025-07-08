@@ -9,9 +9,10 @@ import {
   User,
   Bolt,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SideNav() {
+    const navigate = useNavigate()
 
   return (
     <>
@@ -102,7 +103,7 @@ function SideNav() {
                                 </li>
                             </Link>
 
-                            <Link to="/home">
+                            <Link to="configuration">
 
                                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
                                     <Bolt /> Configuración
@@ -112,7 +113,7 @@ function SideNav() {
                     </div>
                 </div>
                 <div className="create-post-btn">
-                    <button className="btn bg-blue-500 font-semibold active:bg-blue-600 transition-all duration-200 cursor-pointer text-black w-full h-10 rounded-sm">
+                    <button className="btn bg-blue-500 font-semibold active:bg-blue-600 transition-all duration-200 cursor-pointer text-black w-full h-10 rounded-sm" onClick={() => navigate('new-post')}>
                         Crear post
                     </button>
                 </div>
