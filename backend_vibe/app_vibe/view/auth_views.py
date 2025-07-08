@@ -32,18 +32,18 @@ class RegistroViewSet(APIView):
 
 class LoginViewSet(APIView):
     def post(self, request):
-        User = get_object_or_404(User, Username=request.data["Username"])
+        user = get_object_or_404(User, Username=request.data["Username"])
     
-        if not User.check_password(request.data["password"]):
+        if not user.check_password(request.data["password"]):
          return Response({"error": "Invalid password"}, status=status.HTTP_400_BAD_REQUEST)
         
-        token, create = Token.objects.get_or_create(User=User)
-        serializer = LoginSerializer(User)
+        token, create = Token.objects.get_or_create(User=user)
+        serializer = LoginSerializer(user)
         return Response({"token": token.key, "User": serializer.data}, status=status.HTTP_200_OK)
     
 class LogoutViewSet(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        request.User.auth_token.delete()
+        request.user.auth_token.delete()
         return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
