@@ -8,13 +8,14 @@ function SidenavLayout() {
   const location = useLocation();
   const home = location.pathname === "/home";
   const messages = location.pathname === "/home/messages";
+  const configuration = location.pathname === '/home/configuration';
 
   return (
     <>
       <div className="flex flex-col h-[100dvh]">
         <Header />
         <div className="home_container">
-          {!messages && <SideNav />}
+          {!messages && !configuration && <SideNav />}
 
           {home ? <Home /> : <Outlet />}
         </div>
