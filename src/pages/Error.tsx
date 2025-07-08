@@ -8,10 +8,10 @@ function Error() {
     return (
         <>
             <div className="error-contain flex flex-col items-center justify-center w-full min-h-dvh">
-                <p className="text-white font-extrabold text-[410px] text-center uppercase max-lg:text-[300px] max-md:text-[250px] max-sm:text-[150px]">404</p>
+                <p className="dark:text-white font-extrabold text-[410px] text-center uppercase max-lg:text-[300px] max-md:text-[250px] max-sm:text-[150px]">404</p>
                 <motion.button
                     onClick={() => navigate('/')}
-                    className="bg-transparent dark:text-white border-b-2 border-b-white p-3 cursor-pointer uppercase font-bold tracking-widest flex"
+                    className="bg-transparent dark:text-white border-b-2 dark:border-b-white p-3 cursor-pointer uppercase font-bold tracking-widest flex"
                     style={{ letterSpacing: "0.2em", overflow: "hidden" }}
                     initial="rest"
                     whileHover="hover"
