@@ -78,7 +78,7 @@ function NewPost() {
 
                     <Card className="w-full">
                         <CardContent className="p-6 relative">
-                            <div className="flex space-x-4">
+                            <div className="flex space-x-4 max-sm:flex-col max-sm:items-center max-sm:gap-4">
                                 <Avatar className="h-12 w-12">
                                     <AvatarImage src="https://github.com/shadcn.png" className="rounded-full" />
                                     <AvatarFallback>UV</AvatarFallback>
@@ -89,10 +89,10 @@ function NewPost() {
                                         placeholder="¿Qué está pasando?"
                                         value={postContent}
                                         onChange={handlePostChange}
-                                        className="min-h-[120px] w-full resize-none border-none p-0 text-lg placeholder:text-muted-foreground focus-visible:ring-0 break-all"
+                                        className="min-h-[120px] w-full resize-none border-none p-0 text-lg placeholder:text-muted-foreground focus-visible:ring-0 break-all max-sm:h-54"
                                     />
 
-                                    <div className="flex items-center justify-between absolute w-[90%] bottom-0 left-1/2 -translate-x-1/2">
+                                    <div className="flex items-center justify-between absolute w-[90%] bottom-0 left-1/2 -translate-x-1/2 max-sm:flex-col max-sm:items-center max-sm:gap-4">
                                         <div className="flex items-center space-x-4">
                                             <Button variant="ghost" size="sm" className="cursor-pointer">
                                                 <ImageIcon className="h-4 w-4 mr-2" />
@@ -110,7 +110,7 @@ function NewPost() {
                                             >
                                                 {charCount}/{maxChars}
                                             </span>
-                                            <Button disabled={!postContent.trim() || charCount > maxChars} className="rounded-full px-6">
+                                            <Button disabled={!postContent.trim() || charCount > maxChars} className="rounded-full px-6 cursor-pointer">
                                                 Publicar
                                             </Button>
                                         </div>
@@ -119,35 +119,6 @@ function NewPost() {
                             </div>
                         </CardContent>
                     </Card>
-
-                    <div className="mt-8">
-                        <h2 className="text-lg font-semibold mb-4">Posts recientes</h2>
-                        <div className="space-y-4">
-                            {[1, 2].map((i) => (
-                                <Card key={i}>
-                                    <CardContent className="p-4">
-                                        <div className="flex space-x-3">
-                                            <Avatar className="h-10 w-10">
-                                                <AvatarImage src="https://github.com/shadcn.png" className='rounded-full' />
-                                                <AvatarFallback>U{i}</AvatarFallback>
-                                            </Avatar>
-                                            <div className="flex-1">
-                                                <div className="flex items-center space-x-2">
-                                                    <span className="font-medium">Usuario {i}</span>
-                                                    <span className="text-sm text-muted-foreground">@usuario{i}</span>
-                                                    <span className="text-sm text-muted-foreground">·</span>
-                                                    <span className="text-sm text-muted-foreground">2h</span>
-                                                </div>
-                                                <p className="mt-1 text-sm">
-                                                    Este es un ejemplo de post en la plataforma Vibe. El diseño es minimalista y elegante.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
                 </div>
             </main>
         </>
