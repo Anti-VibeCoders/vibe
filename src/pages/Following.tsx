@@ -78,14 +78,14 @@ function Following(){
     return (
     <>
     <div className="flex flex-col gap-4 my-6 items-center w-full h-full">
-        <div className="flex w-3/4 bg-[#1a1a1a6b] rounded-lg items-center p-2">
+        <div className="flex w-3/4 dark:bg-[#1a1a1a6b] border-1 rounded-lg items-center p-2">
          <svg
            xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2 text-gray-300">
            <path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" />
         </svg>
         <input
         type="text"
-        className="bg-transparent border-none outline-none text-white placeholder:text-gray-400 w-full ml-3"
+        className="bg-transparent border-none dark:bg-[#1a1a1a6b] outline-none dark:text-white placeholder:text-gray-400 w-full ml-3"
         placeholder="Buscar a un usuario..."
         />
         </div>
@@ -95,7 +95,7 @@ function Following(){
             {following.map((follow) => (
           <div
             key={follow.id}
-            className="group relative flex justify-between items-center w-full h-auto bg-zinc-900 rounded-lg p-4 border border-neutral-500 overflow-hidden"
+            className="group relative flex justify-between items-center w-full h-auto dark:bg-zinc-900 rounded-lg p-4 border border-neutral-500 overflow-hidden"
           >
             {follow.backgroundUser && (
               <div
