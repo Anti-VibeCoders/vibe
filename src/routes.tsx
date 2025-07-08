@@ -12,6 +12,8 @@ import Friends from './pages/Friends'
 import Chat from '@/pages/Chat';
 =======
 import Following from '@/pages/Following'
+import { Children } from 'react'
+import path from 'path'
 
 >>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
 const routes = [
@@ -45,6 +47,7 @@ const routes = [
             },
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 path: "newpost",
                 element: <NewPost/>
             },
@@ -55,6 +58,10 @@ const routes = [
                 path: 'following',
                 element: <Following />
 >>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
+=======
+                path: 'following/:id',
+                element: <Following/>
+>>>>>>> 11e50e3 (cambio en la ruta ahora se accede a la pagina de siguiendo en perfil en el apartado de siguiendo y se le añadio un hover a ese mismo texto)
             }
         ]
     },
