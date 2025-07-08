@@ -15,7 +15,7 @@ class User(AbstractUser):
 
 class AvatarUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    file_path = models.FileField(upload_to='avatar/')
+    file_path = models.URLField(blank=True)
     file_type = models.CharField(max_length=50)
     file_size = models.BigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
@@ -23,7 +23,7 @@ class AvatarUser(models.Model):
 
 class BackgroundUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    file_path = models.FileField(upload_to='backgrounds/')
+    file_path = models.URLField(blank=True)
     file_type = models.CharField(max_length=50)
     file_size = models.BigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
@@ -31,7 +31,6 @@ class BackgroundUser(models.Model):
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
     like = models.IntegerField(default=0)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -53,7 +52,7 @@ class Follows(models.Model):
 class FilesPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    file_path = models.FileField(upload_to='post_files/')
+    file_path = models.URLField(blank=True)
     file_type = models.CharField(max_length=50)
     file_size = models.BigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
@@ -72,7 +71,7 @@ class Message(models.Model):
 class FilesMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    file_path = models.FileField(upload_to='message_files/')
+    file_path = models.URLField(blank=True)
     file_type = models.CharField(max_length=50)
     file_size = models.BigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
@@ -86,3 +85,11 @@ class Notification(models.Model):
     type = models.CharField(max_length=50)
     read_status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Share(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    share_date = models.DateTimeField()
+
+    def str(self):
+        return f"{self.user.username} shared Post {self.post.id} on {self.share_date}"
