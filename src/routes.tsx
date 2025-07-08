@@ -19,7 +19,13 @@ import path from 'path'
 import NewPost from './pages/NewPost'
 import Config from './pages/Config'
 import Following from './pages/Following'
+<<<<<<< HEAD
 >>>>>>> 3809200 (fix: keep staged changes with the new changes in)
+=======
+import Saved from './pages/Saved'
+import Explore from './pages/Explore'
+import FollowingPost from './pages/FollowingPost'
+>>>>>>> de3925d (feat: add new routes for: saved, following, explore, etc.)
 
 >>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
 const routes = [
@@ -78,7 +84,22 @@ const routes = [
             {
                 path: 'configuration',
                 element: <Config />
+<<<<<<< HEAD
 >>>>>>> 3809200 (fix: keep staged changes with the new changes in)
+=======
+            },
+            {
+                path: 'saved',
+                element: <Saved />
+            },
+            {
+                path: 'explore',
+                element: <Explore />
+            },
+            {
+                path: 'following-posts',
+                element: <FollowingPost />
+>>>>>>> de3925d (feat: add new routes for: saved, following, explore, etc.)
             }
         ]
     },
