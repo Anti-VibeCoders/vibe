@@ -25,7 +25,11 @@ import Following from './pages/Following'
 import Saved from './pages/Saved'
 import Explore from './pages/Explore'
 import FollowingPost from './pages/FollowingPost'
+<<<<<<< HEAD
 >>>>>>> de3925d (feat: add new routes for: saved, following, explore, etc.)
+=======
+import Comments from './pages/Comments'
+>>>>>>> c2b8c38 (Creacion del componente Comments, donde se vera los comentarios de la publicaciones.)
 
 >>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
 const routes = [
@@ -99,8 +103,16 @@ const routes = [
             {
                 path: 'following-posts',
                 element: <FollowingPost />
+<<<<<<< HEAD
 >>>>>>> de3925d (feat: add new routes for: saved, following, explore, etc.)
             }
+=======
+            },
+            {
+                path: 'comment/:id',
+                element: <Comments/>
+            },
+>>>>>>> c2b8c38 (Creacion del componente Comments, donde se vera los comentarios de la publicaciones.)
         ]
     },
     {
