@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     User, AvatarUser, BackgroundUser, Post, Comment, Follows, 
-    FilesPost, Message, FilesMessage, Notification
+    FilesPost, Message, FilesMessage, Notification, Share
 )
 
 class UserSerializer(serializers.ModelSerializer):
@@ -50,7 +50,7 @@ class LogoutSerializer(serializers.Serializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ["id", "title", "content", "like", "user", "created_at"]
+        fields = ["id", "content", "like", "user", "created_at"]
         read_only_fields = ["id", "user", "created_at"]
 
 
@@ -93,3 +93,8 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = ["id", "body", "type", "post", "message", "user", "read_status", "created_at"]
         read_only_fields = ["created_at"]
+
+class ShareSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Share
+        fields = ["id", "user", "post", "share_date"]
