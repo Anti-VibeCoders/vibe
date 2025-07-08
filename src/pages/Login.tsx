@@ -25,7 +25,7 @@ function Login() {
         <>
             <div className="min-h-[100dvh] w-full">
                 <div className="header flex px-8 h-15 items-center cursor-pointer max-sm:justify-center" onClick={() => {
-                    navigate('/login')
+                    navigate('/')
                 }}>
                     <h1 className="text-3xl font-bold">Vibe</h1>
                 </div>
