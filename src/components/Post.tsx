@@ -126,7 +126,7 @@ function Post() {
                                 <Heart className="h-4 w-4 mr-2" />
                                 12
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer">
+                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer" onClick={() => navigate('/home/comment/')}>
                                 <MessageCircle className="h-4 w-4 mr-2" />
                                 13
                             </Button>
