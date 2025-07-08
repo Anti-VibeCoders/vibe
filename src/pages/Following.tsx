@@ -14,7 +14,6 @@ function Following(){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Datos de backends
     const loadFollow = async () =>{
         try {
         const response = {
@@ -44,12 +43,11 @@ function Following(){
                 id: 4,
                 avatarUser: "https://randomuser.me/api/portraits/lego/2.jpg",
                 backgroundUser: "https://images.unsplash.com/photo-1548983965-416c1920352e?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                username: "Satiago espárrago",
+                username: "Santiago espárrago",
                 follow: "True",
             },
         ]
         };
-        //Traferencia de los datos al atributo following del componente
         setFollowing(
                 response.data.map((follow: any) => ({
                     ...follow,
@@ -66,8 +64,7 @@ function Following(){
     useEffect(() => {
         loadFollow();
 
-        // Opcional: Configurar polling o WebSocket para actualizaciones
-        const interval = setInterval(loadFollow, 60000); // Actualizar cada minuto
+        const interval = setInterval(loadFollow, 60000); 
 
         return () => clearInterval(interval);
     }, []);
@@ -112,7 +109,7 @@ function Following(){
             </div>
 
             <button 
-            className="relative z-10 bg-blue-500 px-4 py-2 rounded-md text-black text-sm font-semibold">
+            className="relative z-10 bg-blue-500 px-4 py-2 rounded-md text-black text-sm font-semibold cursor-pointer">
               Siguiendo
             </button>
           </div>
