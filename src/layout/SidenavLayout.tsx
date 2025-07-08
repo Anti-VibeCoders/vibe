@@ -2,6 +2,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import SideNav from "@/components/SideNav";
 import Home from "@/pages/Home";
+import { Toaster } from "sonner";
 import { useLocation, Outlet } from "react-router-dom";
 
 function SidenavLayout() {
@@ -12,6 +13,7 @@ function SidenavLayout() {
 
   return (
     <>
+      <Toaster theme="dark" />
       <div className="flex flex-col h-[100dvh]">
         <Header />
         <div className="home_container">
