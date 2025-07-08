@@ -73,10 +73,10 @@ function SideNav() {
                                 </li>
                             </Link>
 
-                            <Link to="/home">
+                            <Link to="following">
 
                                 <li className="side-nav-bottom-left-bottom-list-item flex gap-2 hover:dark:bg-neutral-800 hover:bg-neutral-300 hover:dark:text-white hover:text-black transition-all duration-200 h-10 px-2 rounded-sm cursor-pointer items-center">
-                                    <Users /> Amigos
+                                    <Users /> Siguiendo
                                 </li>
                             </Link>
 

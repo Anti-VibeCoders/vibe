@@ -16,6 +16,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
+import { Link } from "react-router-dom"
 
 const userProfile = {
     id: 1,
@@ -154,7 +155,7 @@ function Profile() {
                                 <div className="flex gap-6 text-sm">
                                     <div>
                                         <span className="font-bold dark:text-white">{userProfile.following.toLocaleString()}</span>
-                                        <span className="text-zinc-400 ml-1">Siguiendo</span>
+                                        <Link to="/home/following" className="text-zinc-400 ml-1 cursor-pointer hover:text-blue-500 hover:underline">Siguiendo</Link>
                                     </div>
                                     <div>
                                         <span className="font-bold dark:text-white">{userProfile.followers.toLocaleString()}</span>

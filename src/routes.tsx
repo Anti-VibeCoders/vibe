@@ -6,6 +6,9 @@ import Messages from '@/pages/Messages'
 import Profile from '@/pages/Profile'
 import SidenavLayout from '@/layout/SidenavLayout'
 import Notifications from '@/pages/Notifications'
+import Following from '@/pages/Following'
+import { Children } from 'react'
+import path from 'path'
 
 const routes = [
     {
@@ -35,6 +38,10 @@ const routes = [
             {
                 path: 'notifications',
                 element: <Notifications />
+            },
+            {
+                path: 'following/:id',
+                element: <Following/>
             }
         ]
     },
