@@ -48,7 +48,7 @@ function Post() {
             <Card className="dark:bg-zinc-900 dark:border-zinc-800 h-max w-max max-lg:w-full">
                 <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/profile')}>
+                        <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/home/profile')}>
                             <Avatar className="h-10 w-10">
                                 <AvatarImage src="https://github.com/shadcn.png" />
                                 <AvatarFallback className="bg-zinc-700">UV</AvatarFallback>
