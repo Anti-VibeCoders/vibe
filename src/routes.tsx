@@ -9,6 +9,9 @@ import Notifications from '@/pages/Notifications'
 import NewPost from './pages/NewPost'
 import Config from './pages/Config'
 import Following from './pages/Following'
+import Saved from './pages/Saved'
+import Explore from './pages/Explore'
+import FollowingPost from './pages/FollowingPost'
 
 const routes = [
     {
@@ -50,6 +53,18 @@ const routes = [
             {
                 path: 'configuration',
                 element: <Config />
+            },
+            {
+                path: 'saved',
+                element: <Saved />
+            },
+            {
+                path: 'explore',
+                element: <Explore />
+            },
+            {
+                path: 'following-posts',
+                element: <FollowingPost />
             }
         ]
     },
