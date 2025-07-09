@@ -1,14 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useNavigate, Link } from "react-router-dom";
 import { Moon, Sun, Bell, MessageSquare, Search } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "./ui/dropdown-menu";
+  import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+  } from "./ui/dropdown-menu";
 
 import { useState, useEffect, useRef } from "react";
 import Notifications from "@/pages/Notifications";
