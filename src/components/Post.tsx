@@ -29,6 +29,7 @@ import { toast } from 'sonner'
 function Post() {
     const navigate = useNavigate()
     const [showPreview, setShowPreview] = useState<boolean>(false)
+    const [isLiked, setIsLiked] = useState(false)
 
     useEffect(() => {
         if (!showPreview) return
@@ -152,11 +153,18 @@ function Post() {
 
                     <div className="flex items-center justify-between pt-4 border-t dark:border-zinc-800">
                         <div className="flex items-center gap-6">
-                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-red-500 cursor-pointer">
-                                <Heart className="h-4 w-4 mr-2" />
-                                12
+                            <Button
+                            variant="ghost"
+                            size="sm"
+                            className={`text-zinc-400 hover:text-red-500 cursor-pointer ${isLiked && 'text-red-500'}`}
+                            onClick={() => {
+                                setIsLiked(!isLiked)
+                            }}
+                            >
+                                <Heart className={`h-4 w-4 mr-2 ${isLiked && 'stroke-red-500 fill-red-500'}`} />
+                                {isLiked ? '13' : '12'}
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer" onClick={() => navigate('/home/comment/')}>
+                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer" onClick={() => navigate('/home/comment/1')}>
                                 <MessageCircle className="h-4 w-4 mr-2" />
                                 13
                             </Button>
