@@ -24,8 +24,8 @@ function SidenavLayout() {
         </div>
         <Footer />
       </div>
-      <div className="chatbot-container fixed right-40 bottom-1">
-                <Chatbot />
+      <div className="!absolute !bottom-20">
+        <Chatbot />
       </div>
     </>
   );

@@ -68,7 +68,7 @@ function Chatbot() {
             },
         }}
         styles={{
-            chatButtonStyle: { scale: 0.9 }
+            chatButtonStyle: { scale: 0.9, bottom: '32px', right: '30px' },
         }}
         />
     )
