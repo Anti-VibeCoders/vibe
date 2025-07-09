@@ -23,6 +23,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from './ui/textarea'
+import { toast } from 'sonner'
 
 
 function Post() {
@@ -74,7 +75,7 @@ function Post() {
                             <DropdownMenuContent>
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <DropdownMenuItem className="cursor-pointer text-red-400" onSelect={e => e.preventDefault()}>
+                                        <DropdownMenuItem className="cursor-pointer text-red-400 hover:!text-red-400" onSelect={e => e.preventDefault()}>
                                             <MessageSquareWarningIcon className="text-red-400" /> <span className="w-full">Reportar</span>
                                         </DropdownMenuItem>
                                     </DialogTrigger>
@@ -97,11 +98,40 @@ function Post() {
                                     </DialogContent>
                                 </Dialog>
 
-                                <DropdownMenuItem className="cursor-pointer">
-                                    <UserLock /> <Link to="/" className="w-full">Bloquear</Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">
-                                    <Bookmark /> <Link to="/" className="w-full">Guardar</Link>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <DropdownMenuItem className="cursor-pointer" onSelect={e => e.preventDefault()}>
+                                            <UserLock /> <span className="w-full">Bloquear</span>
+                                        </DropdownMenuItem>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>¿Estás seguro que quieres bloquear a este usuario?</DialogTitle>
+                                            <DialogDescription>
+                                                Después del bloqueo reajustaremos su Feed para que no te muestre publicaciones del usuario.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter>
+                                            <DialogClose asChild>
+                                                <Button variant="outline" className="cursor-pointer">Cancelar</Button>
+                                            </DialogClose>
+                                            <DialogClose asChild>
+                                                <Button className="cursor-pointer">Bloquear</Button>
+                                            </DialogClose>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
+                                <DropdownMenuItem className="cursor-pointer" onSelect={e => e.preventDefault()} onClick={() =>
+                                    toast("Se ha guardado la publicación", {
+                                        description: new Date().toLocaleString(),
+                                        action: {
+                                            label: "Deshacer",
+                                            onClick: () => console.log("Deshizo")
+                                        }
+                                    })
+                                }>
+                                    <Bookmark /> <span className="w-full">Guardar</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
