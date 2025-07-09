@@ -12,6 +12,7 @@ import Following from './pages/Following'
 import Saved from './pages/Saved'
 import Explore from './pages/Explore'
 import FollowingPost from './pages/FollowingPost'
+import Comments from './pages/Comments'
 
 const routes = [
     {
@@ -65,7 +66,11 @@ const routes = [
             {
                 path: 'following-posts',
                 element: <FollowingPost />
-            }
+            },
+            {
+                path: 'comment/:id',
+                element: <Comments/>
+            },
         ]
     },
     {

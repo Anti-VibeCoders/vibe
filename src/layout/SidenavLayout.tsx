@@ -4,6 +4,7 @@ import SideNav from "@/components/SideNav";
 import Home from "@/pages/Home";
 import { Toaster } from "sonner";
 import { useLocation, Outlet } from "react-router-dom";
+import Chatbot from "@/components/Chatbot";
 
 function SidenavLayout() {
   const location = useLocation();
@@ -22,6 +23,9 @@ function SidenavLayout() {
           {home ? <Home /> : <Outlet />}
         </div>
         <Footer />
+      </div>
+      <div className="chatbot-container fixed right-40 bottom-1">
+                <Chatbot />
       </div>
     </>
   );
