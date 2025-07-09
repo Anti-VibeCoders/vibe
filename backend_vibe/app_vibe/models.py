@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.dispatch import receiver as r
+from django.db.models.signals import pre_save
+from .services.supabase_service import SupabaseStorageService
+
+
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
@@ -56,6 +61,7 @@ class FilesPost(models.Model):
     file_type = models.CharField(max_length=50)
     file_size = models.BigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
+    temp_file = models.FileField(upload_to='temp/', blank=True, null=True)
 
 
 class Message(models.Model):
@@ -75,6 +81,7 @@ class FilesMessage(models.Model):
     file_type = models.CharField(max_length=50)
     file_size = models.BigIntegerField()
     upload_date = models.DateTimeField(auto_now_add=True)
+    temp_file = models.FileField(upload_to='temp/', blank=True, null=True)
 
 
 class Notification(models.Model):
@@ -93,3 +100,23 @@ class Share(models.Model):
 
     def str(self):
         return f"{self.user.username} shared Post {self.post.id} on {self.share_date}"
+
+@r(pre_save, sender=FilesPost)
+def handle_post_file(sender, instance, **kwargs):
+    if instance.temp_file:
+        storage = SupabaseStorageService()
+        instance.file_path = storage.upload_post_file(instance.temp_file, instance.post.id)
+        instance.file_type = instance.temp_file.content_type
+        instance.file_size = instance.temp_file.size
+        instance.temp_file.delete(save=False)
+
+
+@r(pre_save, sender=FilesMessage)
+def handle_message_file(sender, instance, **kwargs):
+    if instance.temp_file:
+        storage = SupabaseStorageService()
+        instance.file_path = storage.upload_message_file(instance.temp_file, instance.message.id)
+        instance.file_type = instance.temp_file.content_type
+        instance.file_size = instance.temp_file.size
+        instance.temp_file.delete(save=False)
+
