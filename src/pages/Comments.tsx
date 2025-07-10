@@ -1,7 +1,20 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
-import { Heart, MoreHorizontal, Clock4Icon } from "lucide-react";
-import { Link, useNavigate } from 'react-router-dom'
+import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User } from "lucide-react";
+import { Link} from 'react-router-dom'
+import { Button } from "@/components/ui/button"
+import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem,} from "@/components/ui/dropdown-menu";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Textarea } from '../components/ui/textarea'
 
 function Comments() {
     type Posts = {
@@ -139,8 +152,50 @@ function Comments() {
                             <div className="w-full">
                                 <div className="w-full flex justify-between relative mb-1">
                                     <Link to="/home/profile" className="font-semibold cursor-pointer hover:text-blue-500 hover:underline">{cmt.username} </Link>
-                                    <div className="more-horiz h-max w-max absolute right-1 top-0 hover:dark:bg-neutral-800 hover:bg-neutral-400 hover:dark:text-white  hover:text-black p-2 rounded-full cursor-pointer">
-                                        <MoreHorizontal className="size-4" />
+                                    
+                                    <div className="more-horiz h-max w-max absolute right-1 top-0 p-2 rounded-full cursor-pointer">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger className='cursor-pointer'>
+                                                <Button variant="ghost" size="icon">
+                                                    <MoreHorizontal className="size-4 inline-block align-middle" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className="w-30">
+                                                <DropdownMenuItem asChild>
+                                                    <Link to="/home/profile" className="w-full flex items-center gap-2 cursor-pointer">
+                                                        <User className="size-4 inline-block align-middle" />
+                                                        <span>Ver perfil</span>
+                                                    </Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem asChild >
+                                                    <Dialog>
+                                                        <DialogTrigger asChild>
+                                                            <div className="flex items-center w-full text-red-400 cursor-pointer gap-2 pl-2 py-1 hover:bg-zinc-800  rounded-sm" onClick={e => e.stopPropagation()}>
+                                                                <MessageSquareWarningIcon className="size-4 inline-block align-middle text-red-400"  />
+                                                                    <span>Reportar</span>
+                                                            </div>
+                                                        </DialogTrigger>
+                                                    <DialogContent>
+                                                        <DialogHeader>
+                                                            <DialogTitle>¿Por qué quieres reportar este comentario?</DialogTitle>
+                                                            <DialogDescription>
+                                                                Por favor, describe el motivo de tu reporte.
+                                                                <Textarea className="mt-4" />
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                    <DialogFooter>
+                                                        <DialogClose asChild>
+                                                            <Button variant="outline">Cancelar</Button>
+                                                        </DialogClose>
+                                                    <DialogClose asChild>
+                                                        <Button className="bg-red-500 text-white">Reportar</Button>
+                                                    </DialogClose>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                                </Dialog>
+                                            </DropdownMenuItem>
+                                            </DropdownMenuContent>    
+                                        </DropdownMenu>
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-4">
