@@ -1,7 +1,7 @@
 import os
 from supabase import create_client
 from django.core.exceptions import ValidationError
-from moviepy.editor import VideoFileClip
+from moviepy import VideoFileClip
 from io import BytesIO
 import tempfile
 
