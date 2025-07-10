@@ -1,6 +1,6 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
-import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User } from "lucide-react";
+import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User, Share, MessageCircle } from "lucide-react";
 import { Link} from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem,} from "@/components/ui/dropdown-menu";
@@ -15,14 +15,17 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from '../components/ui/textarea'
+import { Badge } from "@/components/ui/badge"
 
 function Comments() {
     type Posts = {
         id: number;
         username: string;
         avatarUser: string;
+        fileUrl: string;
         body: string;
         like: number;
+        date: string;
         comment: number;
         share: number;
     }
@@ -41,6 +44,7 @@ function Comments() {
     const [comment, setComment] = useState<Comments[]>([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isLiked, setIsLiked] = useState(false)
 
     const loadComments = async () => {
         try {
@@ -101,8 +105,38 @@ function Comments() {
             setLoading(false);
         }
     }
+
+    const loadPost = async () => {
+        try {
+            const response = {
+                data: [
+                    {
+                        id: 0,
+                        username: "Morty Smith",
+                        avatarUser: "https://github.com/shadcn.png",
+                        fileUrl: "https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%2Fteams%2Fcode-craft-ai-x-dev-hackathon%2Fcm9xjjhp80000356vh72r54cz_imageLink_1c5vow03st.jpg&w=640&q=75",
+                        body: "Visitando el nuevo museo de arte de RamCode",
+                        like: 12,
+                        date: "2025-07-08T12:15:00Z",
+                        comment: 13,
+                        share: 2,
+
+                    }
+                ]
+            }
+            setPost(response.data .map((p: any) => ({
+                ...p,})))
+        } catch (err) {
+            setError("Error en cargar la publicación");
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+        }
+
     useEffect(() => {
         loadComments();
+        loadPost();
 
         const interval = setInterval(loadComments, 60000);
 
@@ -134,12 +168,59 @@ function Comments() {
         <>
             <div className="flex w-full h-full">
                 <div className="flex flex-col flex-1">
-                    <div className="flex-1 border-b-1">
-
-                    </div>
-                    <div className="flex-1 ">
-
-                    </div>
+                    {post.map((p) => (
+                        <div className="w-full h-full">
+                            <div className="container-file flex border-b-1 justify-center items-center py-4">
+                        <img 
+                         src={p.fileUrl} 
+                         alt="" 
+                         className="w-[95%] h-[85%] rounded-lg "
+                         />
+                        </div>
+                     <div className="container-info flex flex-col gap-3 mt-2">
+                        <div className="flex gap-3 items-center w-full">
+                            <Avatar className="size-12">
+                            <AvatarImage src={p.avatarUser}/>
+                        </Avatar>
+                        <div className="flex flex-col w-full">
+                            <div className="flex gap-1 items-center">
+                                <Link to="/home/profile" className="font-semibold hover:text-blue-500 hover:underline">{p.username}</Link>
+                                <Badge variant="secondary" className="bg-blue-600 text-white text-xs">✓</Badge>
+                            </div>
+                            <span className="text-sm text-gray-500">{p.username} • {calculeTime(p.date)}</span>
+                        </div>
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <p>{p.body}</p>
+                         </div>
+                         <div className="flex w-full justify-center pt-5">
+                            <div className="flex items-center justify-between gap-6 w-[90%]">
+                            <Button
+                            variant="ghost"
+                            size="sm"
+                            className={`text-zinc-400 hover:text-red-500 cursor-pointer ${isLiked && 'text-red-500'}`}
+                            onClick={() => {
+                                setIsLiked(!isLiked)
+                            }}
+                            >
+                                <Heart className={`h-4 w-4 mr-2 ${isLiked && 'stroke-red-500 fill-red-500'}`} />
+                                {isLiked ? '13' : '12'}
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer">
+                                <MessageCircle className="h-4 w-4 mr-2" />
+                                13
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-green-500 cursor-pointer">
+                                <Share className="h-4 w-4 mr-2" />
+                                {p.share}
+                            </Button>
+                        </div>
+                        </div>
+                        
+                       </div>
+                        </div>
+                    ))}
+                    
                 </div>
                 <div className="container-comment flex flex-col gap-2 2xl:gap-3 flex-1 w-full h-auto border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
                     {comment.map((cmt) => (
@@ -153,7 +234,7 @@ function Comments() {
                                 <div className="w-full flex justify-between relative mb-1">
                                     <Link to="/home/profile" className="font-semibold cursor-pointer hover:text-blue-500 hover:underline">{cmt.username} </Link>
                                     
-                                    <div className="more-horiz h-max w-max absolute right-1 top-0 p-2 rounded-full cursor-pointer">
+                                    <div className="more-horiz h-max w-max absolute right-0 top-[-13px]  p-2 rounded-full cursor-pointer">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger className='cursor-pointer'>
                                                 <Button variant="ghost" size="icon">
