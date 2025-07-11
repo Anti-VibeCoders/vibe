@@ -1,21 +1,15 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
-import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User, Share, MessageCircle } from "lucide-react";
+import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User, Share, MessageCircle, Bookmark, UserLock } from "lucide-react";
 import { Link} from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem,} from "@/components/ui/dropdown-menu";
 import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+    Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog"
 import { Textarea } from '../components/ui/textarea'
 import { Badge } from "@/components/ui/badge"
+import { toast } from 'sonner'
 
 function Comments() {
     type Posts = {
@@ -177,9 +171,11 @@ function Comments() {
                          className="w-[95%] h-[85%] rounded-lg "
                          />
                         </div>
-                     <div className="container-info flex flex-col gap-3 mt-2">
+
+                     <div className="container-info flex flex-col gap-3 mt-2 w-[96%] mx-auto">
                         <div className="flex gap-3 items-center w-full">
-                            <Avatar className="size-12">
+                            <div className="flex w-full gap-1.5">
+                                <Avatar className="size-12">
                             <AvatarImage src={p.avatarUser}/>
                         </Avatar>
                         <div className="flex flex-col w-full">
@@ -188,13 +184,83 @@ function Comments() {
                                 <Badge variant="secondary" className="bg-blue-600 text-white text-xs">✓</Badge>
                             </div>
                             <span className="text-sm text-gray-500">{p.username} • {calculeTime(p.date)}</span>
+                            </div>
+                            <DropdownMenu>
+                            <DropdownMenuTrigger className='cursor-pointer'>
+                                <Button variant="ghost" size="icon" className="text-zinc-400 cursor-pointer hover:text-white">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <DropdownMenuItem className="cursor-pointer text-red-400 hover:!text-red-400" onSelect={e => e.preventDefault()}>
+                                            <MessageSquareWarningIcon className="text-red-400" /> <span className="w-full">Reportar</span>
+                                        </DropdownMenuItem>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>¿Por qué quieres reportar este post?</DialogTitle>
+                                            <DialogDescription>
+                                                Por favor, describe el motivo de tu reporte. Esta acción no puede ser deshecha.
+                                                <Textarea className="mt-4"/>
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter>
+                                            <DialogClose asChild>
+                                                <Button variant="outline" className="cursor-pointer">Cancelar</Button>
+                                            </DialogClose>
+                                            <DialogClose asChild>
+                                                <Button className="cursor-pointer bg-red-500 text-white">Reportar</Button>
+                                            </DialogClose>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <DropdownMenuItem className="cursor-pointer" onSelect={e => e.preventDefault()}>
+                                            <UserLock /> <span className="w-full">Bloquear</span>
+                                        </DropdownMenuItem>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>¿Estás seguro que quieres bloquear a este usuario?</DialogTitle>
+                                            <DialogDescription>
+                                                Después del bloqueo reajustaremos su Feed para que no te muestre publicaciones del usuario.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter>
+                                            <DialogClose asChild>
+                                                <Button variant="outline" className="cursor-pointer">Cancelar</Button>
+                                            </DialogClose>
+                                            <DialogClose asChild>
+                                                <Button className="cursor-pointer">Bloquear</Button>
+                                            </DialogClose>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+
+                                <DropdownMenuItem className="cursor-pointer" onSelect={e => e.preventDefault()} onClick={() =>
+                                    toast("Se ha guardado la publicación", {
+                                        description: new Date().toLocaleString(),
+                                        action: {
+                                            label: "Deshacer",
+                                            onClick: () => console.log("Deshizo")
+                                        }
+                                    })
+                                }>
+                                    <Bookmark /> <span className="w-full">Guardar</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         </div>
                         </div>
                         <div className="flex flex-col w-full">
                             <p>{p.body}</p>
                          </div>
                          <div className="flex w-full justify-center pt-5">
-                            <div className="flex items-center justify-between gap-6 w-[90%]">
+                            <div className="flex items-center justify-between gap-6 w-[100%]">
                             <Button
                             variant="ghost"
                             size="sm"
