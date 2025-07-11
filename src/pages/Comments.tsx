@@ -1,6 +1,6 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
-import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User, Share, MessageCircle, Bookmark, UserLock } from "lucide-react";
+import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User, Share, MessageCircle, } from "lucide-react";
 import { Link} from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem,} from "@/components/ui/dropdown-menu";
@@ -10,6 +10,7 @@ import {
 import { Textarea } from '../components/ui/textarea'
 import { Badge } from "@/components/ui/badge"
 import DropMenuPost from '@/components/ui/DropMenuPost'
+import { motion, AnimatePresence } from 'framer-motion'
 
 function Comments() {
     type Posts = {
@@ -39,6 +40,7 @@ function Comments() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isLiked, setIsLiked] = useState(false)
+    const [showPreview, setShowPreview] = useState<boolean>(false)
 
     const loadComments = async () => {
         try {
@@ -131,6 +133,7 @@ function Comments() {
     useEffect(() => {
         loadComments();
         loadPost();
+        if (!showPreview) return
 
         const interval = setInterval(loadComments, 60000);
 
@@ -169,6 +172,9 @@ function Comments() {
                          src={p.fileUrl} 
                          alt="" 
                          className="w-[95%] h-[85%] rounded-lg "
+                         onClick={() => {
+                                setShowPreview(!showPreview)
+                            }}
                          />
                         </div>
 
@@ -218,6 +224,34 @@ function Comments() {
                        </div>
                         </div>
                     ))}
+
+                    <AnimatePresence>
+                {showPreview && (
+                    <motion.div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 overflow-hidden"
+                        onClick={() => setShowPreview(false)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'ESC') {
+                                setShowPreview(false)
+                            }
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <motion.img src="https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%2Fteams%2Fcode-craft-ai-x-dev-hackathon%2Fcm9xjjhp80000356vh72r54cz_imageLink_1c5vow03st.jpg&w=640&q=75" className="max-h-[90dvh] max-w-[90vw] rounded shadow-lg" onClick={(e) => e.stopPropagation()}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                        />
+                        <motion.button className="absolute top-4 right-4 text-white text-3xl font-bold cursor-pointer"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                        >×</motion.button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
                     
                 </div>
                 <div className="container-comment flex flex-col gap-2 2xl:gap-3 flex-1 w-full h-auto border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
