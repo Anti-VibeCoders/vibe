@@ -1,15 +1,26 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
-import { Heart, MoreHorizontal, Clock4Icon } from "lucide-react";
-import { Link, useNavigate } from 'react-router-dom'
+import { Heart, MoreHorizontal, Clock4Icon, MessageSquareWarningIcon, User, Share, MessageCircle, } from "lucide-react";
+import { Link} from 'react-router-dom'
+import { Button } from "@/components/ui/button"
+import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem,} from "@/components/ui/dropdown-menu";
+import {
+    Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,
+} from "@/components/ui/dialog"
+import { Textarea } from '../components/ui/textarea'
+import { Badge } from "@/components/ui/badge"
+import DropMenuPost from '@/components/ui/DropMenuPost'
+import { motion, AnimatePresence } from 'framer-motion'
 
 function Comments() {
     type Posts = {
         id: number;
         username: string;
         avatarUser: string;
+        fileUrl: string;
         body: string;
         like: number;
+        date: string;
         comment: number;
         share: number;
     }
@@ -28,6 +39,8 @@ function Comments() {
     const [comment, setComment] = useState<Comments[]>([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isLiked, setIsLiked] = useState(false)
+    const [showPreview, setShowPreview] = useState<boolean>(false)
 
     const loadComments = async () => {
         try {
@@ -88,8 +101,39 @@ function Comments() {
             setLoading(false);
         }
     }
+
+    const loadPost = async () => {
+        try {
+            const response = {
+                data: [
+                    {
+                        id: 0,
+                        username: "Morty Smith",
+                        avatarUser: "https://github.com/shadcn.png",
+                        fileUrl: "https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%2Fteams%2Fcode-craft-ai-x-dev-hackathon%2Fcm9xjjhp80000356vh72r54cz_imageLink_1c5vow03st.jpg&w=640&q=75",
+                        body: "Visitando el nuevo museo de arte de RamCode",
+                        like: 12,
+                        date: "2025-07-08T12:15:00Z",
+                        comment: 13,
+                        share: 2,
+
+                    }
+                ]
+            }
+            setPost(response.data .map((p: any) => ({
+                ...p,})))
+        } catch (err) {
+            setError("Error en cargar la publicación");
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+        }
+
     useEffect(() => {
         loadComments();
+        loadPost();
+        if (!showPreview) return
 
         const interval = setInterval(loadComments, 60000);
 
@@ -121,12 +165,94 @@ function Comments() {
         <>
             <div className="flex w-full h-full">
                 <div className="flex flex-col flex-1">
-                    <div className="flex-1 border-b-1">
+                    {post.map((p) => (
+                        <div className="w-full h-full">
+                            <div className="container-file flex border-b-1 justify-center items-center py-4">
+                        <img 
+                         src={p.fileUrl} 
+                         alt="" 
+                         className="w-[95%] h-[85%] rounded-lg "
+                         onClick={() => {
+                                setShowPreview(!showPreview)
+                            }}
+                         />
+                        </div>
 
-                    </div>
-                    <div className="flex-1 ">
+                     <div className="container-info flex flex-col gap-3 mt-2 w-[96%] mx-auto">
+                        <div className="flex gap-3 items-center w-full">
+                            <div className="flex w-full gap-1.5">
+                                <Avatar className="size-12">
+                            <AvatarImage src={p.avatarUser}/>
+                        </Avatar>
+                        <div className="flex flex-col w-full">
+                            <div className="flex gap-1 items-center">
+                                <Link to="/home/profile" className="font-semibold hover:text-blue-500 hover:underline">{p.username}</Link>
+                                <Badge variant="secondary" className="bg-blue-600 text-white text-xs">✓</Badge>
+                            </div>
+                            <span className="text-sm text-gray-500">{p.username} • {calculeTime(p.date)}</span>
+                            </div>
+                            <DropMenuPost/>
+                        </div>
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <p>{p.body}</p>
+                         </div>
+                         <div className="flex w-full justify-center pt-5">
+                            <div className="flex items-center justify-between gap-6 w-[100%]">
+                            <Button
+                            variant="ghost"
+                            size="sm"
+                            className={`text-zinc-400 hover:text-red-500 cursor-pointer ${isLiked && 'text-red-500'}`}
+                            onClick={() => {
+                                setIsLiked(!isLiked)
+                            }}
+                            >
+                                <Heart className={`h-4 w-4 mr-2 ${isLiked && 'stroke-red-500 fill-red-500'}`} />
+                                {isLiked ? '13' : '12'}
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer">
+                                <MessageCircle className="h-4 w-4 mr-2" />
+                                13
+                            </Button>
+                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-green-500 cursor-pointer">
+                                <Share className="h-4 w-4 mr-2" />
+                                {p.share}
+                            </Button>
+                        </div>
+                        </div>
+                        
+                       </div>
+                        </div>
+                    ))}
 
-                    </div>
+                    <AnimatePresence>
+                {showPreview && (
+                    <motion.div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 overflow-hidden"
+                        onClick={() => setShowPreview(false)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'ESC') {
+                                setShowPreview(false)
+                            }
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <motion.img src="https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%2Fteams%2Fcode-craft-ai-x-dev-hackathon%2Fcm9xjjhp80000356vh72r54cz_imageLink_1c5vow03st.jpg&w=640&q=75" className="max-h-[90dvh] max-w-[90vw] rounded shadow-lg" onClick={(e) => e.stopPropagation()}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                        />
+                        <motion.button className="absolute top-4 right-4 text-white text-3xl font-bold cursor-pointer"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                        >×</motion.button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+                    
                 </div>
                 <div className="container-comment flex flex-col gap-2 2xl:gap-3 flex-1 w-full h-auto border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
                     {comment.map((cmt) => (
@@ -139,8 +265,50 @@ function Comments() {
                             <div className="w-full">
                                 <div className="w-full flex justify-between relative mb-1">
                                     <Link to="/home/profile" className="font-semibold cursor-pointer hover:text-blue-500 hover:underline">{cmt.username} </Link>
-                                    <div className="more-horiz h-max w-max absolute right-1 top-0 hover:dark:bg-neutral-800 hover:bg-neutral-400 hover:dark:text-white  hover:text-black p-2 rounded-full cursor-pointer">
-                                        <MoreHorizontal className="size-4" />
+                                    
+                                    <div className="more-horiz h-max w-max absolute right-0 top-[-13px]  p-2 rounded-full cursor-pointer">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger className='cursor-pointer'>
+                                                <Button variant="ghost" size="icon">
+                                                    <MoreHorizontal className="size-4 inline-block align-middle" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className="w-30">
+                                                <DropdownMenuItem asChild>
+                                                    <Link to="/home/profile" className="w-full flex items-center gap-2 cursor-pointer">
+                                                        <User className="size-4 inline-block align-middle" />
+                                                        <span>Ver perfil</span>
+                                                    </Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem asChild >
+                                                    <Dialog>
+                                                        <DialogTrigger asChild>
+                                                            <div className="flex items-center w-full text-red-400 cursor-pointer gap-2 pl-2 py-1 hover:bg-zinc-800  rounded-sm" onClick={e => e.stopPropagation()}>
+                                                                <MessageSquareWarningIcon className="size-4 inline-block align-middle text-red-400"  />
+                                                                    <span>Reportar</span>
+                                                            </div>
+                                                        </DialogTrigger>
+                                                    <DialogContent>
+                                                        <DialogHeader>
+                                                            <DialogTitle>¿Por qué quieres reportar este comentario?</DialogTitle>
+                                                            <DialogDescription>
+                                                                Por favor, describe el motivo de tu reporte.
+                                                                <Textarea className="mt-4" />
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                    <DialogFooter>
+                                                        <DialogClose asChild>
+                                                            <Button variant="outline">Cancelar</Button>
+                                                        </DialogClose>
+                                                    <DialogClose asChild>
+                                                        <Button className="bg-red-500 text-white">Reportar</Button>
+                                                    </DialogClose>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                                </Dialog>
+                                            </DropdownMenuItem>
+                                            </DropdownMenuContent>    
+                                        </DropdownMenu>
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-4">
