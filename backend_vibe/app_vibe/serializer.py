@@ -46,10 +46,6 @@ class LogoutSerializer(serializers.Serializer):
     """Proccess.........."""
     token = serializers.CharField()
 
-
-
-
-
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -68,23 +64,51 @@ class FilesPostSerializer(serializers.ModelSerializer):
         model = FilesPost
         fields = ["id", "file_path", "file_type", "file_size", "upload_date", "user", "post"]
         read_only_fields = ["upload_date"]
-        extra_kwargs = {'temp_file': {'write_only': True}}
+        extra_kwargs = {
+            'file_type': {'read_only': True},
+            'file_size': {'read_only': True},
+            'temp_file': {'write_only': True}
+            }
+        
+    def create(self, validated_data):
+        file = validated_data.pop('temp_file')
+        
+        # Autocalcular campos
+        validated_data.update({
+            'file_type': file.content_type,
+            'file_size': file.size
+        })
+        
+        return super().create(validated_data)
+
 
 class PostSerializer(serializers.ModelSerializer):
     files = FilesPostSerializer(many=True, read_only=True)
     class Meta:
         model = Post
-        fields = ["id", "content", "like", "user", "created_at"]
-        read_only_fields = ["id", "user", "created_at"]
-
-
+        fields = ["id", "content", "like", "user", "created_at", "files"]
 
 class FilesMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilesMessage
         fields = ["id", "file_path", "file_type", "file_size", "upload_date", "user", "message"]
         read_only_fields = ["upload_date"]
-        extra_kwargs = {'temp_file': {'write_only': True}}
+        extra_kwargs = {
+            'file_type': {'read_only': True},
+            'file_size': {'read_only': True},
+            'temp_file': {'write_only': True}
+            }
+    
+    def create(self, validated_data):
+        file = validated_data.pop('temp_file')
+        
+        # Autocalcular campos
+        validated_data.update({
+            'file_type': file.content_type,
+            'file_size': file.size
+        })
+        
+        return super().create(validated_data)
 
 class MessageSerializer(serializers.ModelSerializer):
     files = FilesMessageSerializer(many=True, read_only=True)

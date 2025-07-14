@@ -32,19 +32,19 @@ class SupabaseStorageService:
                 except Exception as e:
                     raise ValidationError("Error al procesar el video")
                 
-    def upload_to_posts(self, file, post_id):
+    def upload_to_posts(self, file, post_id, user_id):
         return self._upload_file(
             file=file,
             bucket=os.getenv("POSTS_BUCKET"),
-            folder="posts",
+            folder=f"user_{user_id}/posts",  # Nueva estructura de carpetas
             prefix=f"post_{post_id}"
         )
-    
-    def upload_to_messages(self, file, message_id):
+
+    def upload_to_messages(self, file, message_id, user_id):
         return self._upload_file(
             file=file,
             bucket=os.getenv("MESSAGES_BUCKET"),
-            folder="messages",
+            folder=f"user_{user_id}/messages",  # Nueva estructura de carpetas
             prefix=f"msg_{message_id}"
         )
     
