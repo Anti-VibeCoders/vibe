@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback } from "./ui/avatar"
 import { useNavigate } from "react-router-dom"
-import Chatbot from "./Chatbot"
 
 function Footer() {
     const navigate = useNavigate()
@@ -25,9 +24,7 @@ function Footer() {
             <div className="footer-right text-gray-500 text-center">
                 <span className="max-sm:text-[14px]">&copy; 2025 Vibe. Todos los derechos reservados</span>
             </div>
-            <div className="chatbot-container absolute right-4 bottom-4">
-                <Chatbot />
-            </div>
+            
         </footer>
         </>
     )

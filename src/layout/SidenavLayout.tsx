@@ -2,7 +2,9 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import SideNav from "@/components/SideNav";
 import Home from "@/pages/Home";
+import { Toaster } from "sonner";
 import { useLocation, Outlet } from "react-router-dom";
+import Chatbot from "@/components/Chatbot";
 
 function SidenavLayout() {
   const location = useLocation();
@@ -12,6 +14,7 @@ function SidenavLayout() {
 
   return (
     <>
+      <Toaster theme="dark" />
       <div className="flex flex-col h-[100dvh]">
         <Header />
         <div className="home_container">
@@ -20,6 +23,9 @@ function SidenavLayout() {
           {home ? <Home /> : <Outlet />}
         </div>
         <Footer />
+      </div>
+      <div className="!absolute !bottom-20">
+        <Chatbot />
       </div>
     </>
   );
