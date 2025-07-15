@@ -55,8 +55,8 @@ class FilesPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     file_path = models.URLField(blank=True)
-    file_type = models.CharField(max_length=50)
-    file_size = models.BigIntegerField()
+    file_type = models.CharField(max_length=50, blank=True, null=True)
+    file_size = models.BigIntegerField(blank=True, null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
     temp_file = models.FileField(upload_to='temp/', blank=True, null=True)
 
@@ -73,8 +73,8 @@ class FilesMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     file_path = models.URLField(blank=True)
-    file_type = models.CharField(max_length=50)
-    file_size = models.BigIntegerField()
+    file_type = models.CharField(max_length=50, blank=True, null=True)
+    file_size = models.BigIntegerField(blank=True, null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
     temp_file = models.FileField(upload_to='temp/', blank=True, null=True)
 
@@ -98,36 +98,36 @@ class Share(models.Model):
 @r(pre_save, sender=FilesPost)
 def handle_post_file(sender, instance, **kwargs):
     if not instance.temp_file:
-        return  # No hay archivo para procesar
+        return
 
     try:
-        # Validar relaciones necesarias
-        if not all([hasattr(instance, 'post'), hasattr(instance, 'user')]):
-            raise ValueError("El archivo debe estar vinculado a un post y usuario")
+        # Asegurar acceso al archivo original
+        file = instance.temp_file
+        if hasattr(file, 'file'):  # Si es FieldFile
+            file = file.file
+            file.seek(0)  # Rebobinar si es necesario
 
         storage = SupabaseStorageService()
         
-        # Subir a Supabase (estructura: user_{id}/posts/{filename})
+        # Debug: Verificar estado del archivo
+        logger.info(f"Procesando archivo: {file.name}, tamaño: {file.size}")
+        
+        # Subir a Supabase
         instance.file_path = storage.upload_to_posts(
-            file=instance.temp_file,
+            file=file,  # Pasar el archivo directamente
             post_id=instance.post.id,
             user_id=instance.user.id
         )
         
-        # Metadatos automáticos
-        instance.file_type = instance.temp_file.content_type
-        instance.file_size = instance.temp_file.size
+        # Establecer metadatos
+        instance.file_type = getattr(file, 'content_type', 'application/octet-stream')
+        instance.file_size = file.size
         
-        # Eliminar temporal (si existe en el sistema de archivos)
-        if hasattr(instance.temp_file, 'path') and default_storage.exists(instance.temp_file.path):
-            default_storage.delete(instance.temp_file.path)
+        logger.info(f"Archivo subido a: {instance.file_path}")
 
     except Exception as e:
-        logger.error(
-            f"Error subiendo archivo para post {getattr(instance, 'post', None)}. "
-            f"Usuario: {getattr(instance, 'user', None)}. Error: {str(e)}"
-        )
-        raise  # Esto cancela el guardado en la base de datos
+        logger.exception("Error en handle_post_file")
+        raise
 
 @r(pre_save, sender=FilesMessage)
 def handle_message_file(sender, instance, **kwargs):

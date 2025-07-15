@@ -3,9 +3,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.decorators import authentication_classes, permission_classes, parser_classes
 from app_vibe.models import Post, FilesPost
-from app_vibe.serializer import PostSerializer, FilesPostSerializer
+from app_vibe.serializer import PostSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+from app_vibe.services.supabase_service import SupabaseStorageService
+from django.core.files import File
+import logging
+from io import BytesIO
+
+logger = logging.getLogger(__name__)
 
 class PostView(APIView):
     def get(self, request):
@@ -14,47 +21,50 @@ class PostView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class PostCreateView(APIView):
+    @parser_classes([MultiPartParser, FormParser])
     @authentication_classes([TokenAuthentication])
     @permission_classes([IsAuthenticated])
     def post(self, request):
         try:
-            # Validar y crear post
-            post_data = {
-                "content": request.data.get("content"),
-                "user": request.user.id
-            }
-            post_serializer = PostSerializer(data=post_data, context={'request': request})
-            post_serializer.is_valid(raise_exception=True)
-            post = post_serializer.save()
+            # 1. Crear el post
+            post = Post.objects.create(
+                content=request.data.get("content"),
+                user=request.user
+            )
             
-            # Procesar archivos
-            files = request.FILES.getlist("files")
             uploaded_files = []
+            storage = SupabaseStorageService()
             
-            for file in files:
-                file_data = {
-                    "post": post.id,
-                    "user": request.user.id,
-                    "temp_file": file
-                }
-                
-                file_serializer = FilesPostSerializer(data=file_data)
-                
-                file_serializer.is_valid(raise_exception=True)
-                
-                
-                file_instance = file_serializer.save()
-                uploaded_files.append(file_instance.file_path)
+            for file in request.FILES.getlist('files'):
+                try:
+                    # 2. Subir archivo a Supabase
+                    file_url = storage.upload_to_posts(
+                        file=file,
+                        post_id=post.id,
+                        user_id=request.user.id
+                    )
+                    
+                    # 3. Crear registro en FilesPost (¡ESTE ES EL PASO QUE FALTABA!)
+                    file_instance = FilesPost.objects.create(
+                        post=post,
+                        user=request.user,
+                        file_path=file_url,
+                        file_type=file.content_type,
+                        file_size=file.size
+                    )
+                    
+                    uploaded_files.append(file_url)
+                    
+                except Exception as e:
+                    logger.error(f"Error procesando {file.name}: {str(e)}")
+                    continue
             
-            # Añade las URLs al response
-            print("response final")
-            response_data = post_serializer.data
-            print("response final con files")
-            response_data['files'] = uploaded_files
-            return Response(response_data, status=status.HTTP_201_CREATED)
+            return Response({
+                **PostSerializer(post).data,
+                'files': uploaded_files
+            }, status=status.HTTP_201_CREATED)
             
         except Exception as e:
             if 'post' in locals():
-                post.delete()  # Rollback si hay error
+                post.delete()
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
