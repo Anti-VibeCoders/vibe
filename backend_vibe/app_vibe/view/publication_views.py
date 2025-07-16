@@ -8,15 +8,23 @@ from app_vibe.models import Post, FilesPost
 from app_vibe.serializer import PostSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from app_vibe.services.supabase_service import SupabaseStorageService
-from django.core.files import File
+from django.db.models import Prefetch
 import logging
-from io import BytesIO
 
 logger = logging.getLogger(__name__)
 
 class PostView(APIView):
     def get(self, request):
-        queryset = Post.objects.prefetch_related("filespost_set").all()
+        # 1. Obtenemos los posts con sus archivos relacionados
+        queryset = Post.objects.prefetch_related(
+            Prefetch(
+                'filespost_set',
+                queryset=FilesPost.objects.select_related('user'),
+                to_attr='archivos'  # Nombre más claro para la relación
+            )
+        ).all()
+        
+        # 2. Serializamos los datos
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
