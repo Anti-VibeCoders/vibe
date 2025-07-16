@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import DropMenuPost from '@/components/ui/DropMenuPost'
 import { motion, AnimatePresence } from 'framer-motion'
 
+
 function Comments() {
     type Posts = {
         id: number;
@@ -254,7 +255,8 @@ function Comments() {
             </AnimatePresence>
                     
                 </div>
-                <div className="container-comment flex flex-col gap-2 2xl:gap-3 flex-1 w-full h-auto border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
+                <div className="flex flex-col flex-1">
+                <div className="container-comment flex flex-col gap-2 2xl:gap-3 w-full h-[80%] border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
                     {comment.map((cmt) => (
                         <div className="flex gap-3 border-1 rounded-lg pl-3 pr-2 py-2 w-[90%]">
                             <div className="flex gap-3">
@@ -340,6 +342,14 @@ function Comments() {
                             </div>
                         </div>
                     ))}
+                </div>
+                <div className="Container-create flex justify-center items-center flex-1 border-l-1">
+                    <input 
+                    type="text"
+                    placeholder="Escribe un comentario"
+                    className="border-1 w-[80%] py-4 px-2 rounded-lg"
+                    />
+                </div>
                 </div>
             </div>
         </>
