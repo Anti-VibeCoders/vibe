@@ -59,6 +59,14 @@ class SupabaseStorageService:
             folder=f"user_{user_id}/posts",
             prefix=f"post_{post_id}"
         )
+        
+    def upload_to_message(self, file, message_id, user_id):
+        return self._upload_file(
+            file=file,
+            bucket=os.getenv("MESSAGES_BUCKET"),
+            folder=f"user_{user_id}/message",
+            prefix=f"message_{message_id}"
+        )
 
     def _upload_file(self, file, bucket, folder, prefix):
         """Metodo privado para subida generica"""

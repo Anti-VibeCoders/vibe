@@ -3,47 +3,83 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import authentication_classes, permission_classes
-from app_vibe.models import Message, FilesMessage
+from rest_framework.decorators import authentication_classes, permission_classes, parser_classes
+from app_vibe.models import Message, FilesMessage, User
 from app_vibe.serializer import MessageSerializer, FilesMessageSerializer
+from app_vibe.services.supabase_service import SupabaseStorageService
+from django.db import transaction
+from django.db.models import Prefetch, Q
+from rest_framework.parsers import MultiPartParser, FormParser
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class MessageView(APIView):
+    @permission_classes([IsAuthenticated])
     def get(self, request):
-        queryset = Message.objects.prefetch_related('filesmessage_set').all()
+        queryset = Message.objects.filter(
+            Q(sender=request.user) | Q(receiver=request.user)
+            ).prefetch_related(
+                Prefetch(
+                "filesmessage_set",
+                queryset=FilesMessage.objects.select_related("user"),
+                to_attr='archivos'
+                )
+        ).all()
+        
         serializer = MessageSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    
 class MessageCreateView(APIView):
+    @parser_classes([MultiPartParser, FormParser])
     @authentication_classes([TokenAuthentication])
     @permission_classes([IsAuthenticated])
-
     def post(self, request):
-        message_data = {
-            'body': request.data.get('body'),
-            'sender': request.user.id,
-            'receiver': request.data.get('receiver'),
-            'status': 'unread'
-        }
-        
-        files = request.FILES.getlist('files')
-        
-        message_serializer = MessageSerializer(data=message_data)
-        if not message_serializer.is_valid():
-            return Response(message_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
-        message = message_serializer.save()
+        try:
+            with transaction.atomic():
+                receiver_id = request.data.get("receiver_id")
+                body = request.data.get("body")
 
-        for file in files:
-            file_data = {
-                'message': message.id,
-                'user': request.user.id,
-                'temp_file': file
-            }
-            file_serializer = FilesMessageSerializer(data=file_data)
-            if file_serializer.is_valid():
-                file_serializer.save()
-            else:
-                message.delete()
-                return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                if not body:
+                    return Response({"error": "El mensaje no puede estar vacío"}, status=400)
 
-        return Response(message_serializer.data, status=status.HTTP_201_CREATED)
+                try:
+                    receiver = User.objects.get(id=receiver_id)
+                except User.DoesNotExist:
+                    return Response({"error": "Usuario receptor no válido"}, status=400)
+
+                message = Message.objects.create(
+                    body=body,
+                    sender=request.user,
+                    receiver=receiver,
+                    status="sent"
+                )
+
+                uploaded_files = []
+                storage = SupabaseStorageService()
+
+                for file in request.FILES.getlist("files"):
+                    file_url = storage.upload_to_message(
+                        file=file,
+                        message_id=message.id,
+                        user_id=request.user.id
+                    )
+                    FilesMessage.objects.create(
+                        message=message,
+                        user=request.user,
+                        file_path=file_url,
+                        file_type=file.content_type,
+                        file_size=file.size
+                    )
+                    uploaded_files.append(file_url)
+
+                return Response(
+                    MessageSerializer(message).data,
+                    status=status.HTTP_201_CREATED
+                )
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+

@@ -61,13 +61,19 @@ class FilesPost(models.Model):
     temp_file = models.FileField(upload_to='temp/', blank=True, null=True)
 
 class Message(models.Model):
+    STATUS_CHOICES = [
+        ("sent", "Sent"),
+        ("delivered", "Delivered"),
+        ("read", "Read"),
+    ]
+    
     body = models.TextField()
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mensajes_enviados')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mensajes_recibidos')
-    create_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="sent")
     read_status = models.BooleanField(default=False)
-    upload_menssage = models.DateTimeField(auto_now_add=True)
+    upload_message = models.DateTimeField(auto_now_add=True)
 
 class FilesMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -135,30 +141,29 @@ def handle_message_file(sender, instance, **kwargs):
         return  # No hay archivo para procesar
 
     try:
-        # Validar relaciones necesarias
-        if not all([hasattr(instance, 'post'), hasattr(instance, 'user')]):
-            raise ValueError("El archivo debe estar vinculado a un post y usuario")
+        # Asegurar acceso al archivo original
+        file = instance.temp_file
+        if hasattr(file, 'file'):  # Si es FieldFile
+            file = file.file
+            file.seek(0)  # Rebobinar si es necesario
 
         storage = SupabaseStorageService()
         
-        # Subir a Supabase (estructura: user_{id}/posts/{filename})
-        instance.file_path = storage.upload_to_posts(
-            file=instance.temp_file,
-            post_id=instance.post.id,
+        # Debug: Verificar estado del archivo
+        logger.info(f"Procesando archivo: {file.name}, tamaño: {file.size}")
+        
+        # Subir a Supabase
+        instance.file_path = storage.upload_to_message(
+            file=file,  # Pasar el archivo directamente
+            message_id=instance.message.id,
             user_id=instance.user.id
         )
         
-        # Metadatos automáticos
-        instance.file_type = instance.temp_file.content_type
-        instance.file_size = instance.temp_file.size
+        # Establecer metadatos
+        instance.file_type = getattr(file, 'content_type', 'application/octet-stream')
+        instance.file_size = file.size
         
-        # Eliminar temporal (si existe en el sistema de archivos)
-        if hasattr(instance.temp_file, 'path') and default_storage.exists(instance.temp_file.path):
-            default_storage.delete(instance.temp_file.path)
+        logger.info(f"Archivo subido a: {instance.file_path}")
 
     except Exception as e:
-        logger.error(
-            f"Error subiendo archivo para post {getattr(instance, 'post', None)}. "
-            f"Usuario: {getattr(instance, 'user', None)}. Error: {str(e)}"
-        )
-        raise  # Esto cancela el guardado en la base de datos
+        logger.exception("Error en handle_post_file")
