@@ -16,14 +16,16 @@ function Emoji({ onEmojiSelect }: EmojiProps) {
   };
 
   return (
-    <div>
+    <div className='relactive inline-block'>
       {showPicker && (
-        <EmojiPicker
+        <div className='absolute top-40 z-10 '>
+          <EmojiPicker
           width={400}
           height={350}
           theme={'auto' as Theme}
           onEmojiClick={onEmojiClick}
         />
+        </div>
       )}
       <Button
         variant="ghost"
