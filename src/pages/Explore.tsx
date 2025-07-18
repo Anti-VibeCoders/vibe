@@ -1,6 +1,9 @@
+import Emoji from "@/components/ui/emoji"
+
 function Explore() {
     return (
         <>
+        <Emoji/>
         </>
     )
 }

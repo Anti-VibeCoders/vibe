@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "emoji-picker-react": "^4.13.2",
     "express": "^5.1.0",
     "framer-motion": "^12.12.1",
     "lucide-react": "^0.511.0",

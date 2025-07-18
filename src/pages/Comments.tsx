@@ -11,6 +11,8 @@ import { Textarea } from '../components/ui/textarea'
 import { Badge } from "@/components/ui/badge"
 import DropMenuPost from '@/components/ui/DropMenuPost'
 import { motion, AnimatePresence } from 'framer-motion'
+import Emoji from "@/components/ui/emoji";
+
 
 function Comments() {
     type Posts = {
@@ -41,6 +43,29 @@ function Comments() {
     const [error, setError] = useState<string | null>(null);
     const [isLiked, setIsLiked] = useState(false)
     const [showPreview, setShowPreview] = useState<boolean>(false)
+    const [inputValue, setInputValue] = useState<string>('');
+    const [charCount, setCharCount] = useState(0)
+    const maxChars = 280
+
+    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const content = e.target.value;
+        if (content.length <= maxChars) {
+            setInputValue(content);
+            setCharCount(content.length);
+        }
+        };
+
+  // Función que recibe el emoji y lo añade al valor del input
+  const handleEmojiSelect = (emoji: string) => {
+  setInputValue((prev) => {
+    const newValue = prev + emoji;
+    if (newValue.length <= maxChars) {
+      setCharCount(newValue.length);
+      return newValue;
+    }
+    return prev; // No añadir el emoji si excede el límite
+  });
+};
 
     const loadComments = async () => {
         try {
@@ -254,7 +279,8 @@ function Comments() {
             </AnimatePresence>
                     
                 </div>
-                <div className="container-comment flex flex-col gap-2 2xl:gap-3 flex-1 w-full h-auto border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
+                <div className="flex flex-col flex-1">
+                <div className="container-comment flex flex-col gap-2 2xl:gap-3 w-full h-[80%] border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
                     {comment.map((cmt) => (
                         <div className="flex gap-3 border-1 rounded-lg pl-3 pr-2 py-2 w-[90%]">
                             <div className="flex gap-3">
@@ -340,6 +366,31 @@ function Comments() {
                             </div>
                         </div>
                     ))}
+                </div>
+                <div className="Container-create flex flex-col justify-center items-center flex-1 border-l-1 border-t-1">
+                    <div className="flex items-center w-full" >
+                        <Emoji onEmojiSelect={handleEmojiSelect}/>
+                    <form action="" method="post" className="flex gap-2 items-center w-full">
+                        
+                    <Textarea 
+                    placeholder="Escribe un comentario"
+                    className="border-1 flex-1 py-2 px-2 rounded-lg resize-none"
+                    value={inputValue}
+                    onChange={handleCommentChange}
+                    />
+                    <input 
+                    type="submit" 
+                    className="px-2 py-2 bg-blue-500 font-semibold rounded-lg text-black"
+                    placeholder=""
+                    
+                    />
+                    </form>
+                    </div>
+                    <span
+                      className={`text-sm ${charCount > maxChars * 0.8 ? "text-orange-500" : "text-muted-foreground"}`}                      >
+                      {charCount}/{maxChars}
+                    </span>
+                </div>
                 </div>
             </div>
         </>
