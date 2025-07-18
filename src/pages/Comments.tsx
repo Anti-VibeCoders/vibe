@@ -11,6 +11,7 @@ import { Textarea } from '../components/ui/textarea'
 import { Badge } from "@/components/ui/badge"
 import DropMenuPost from '@/components/ui/DropMenuPost'
 import { motion, AnimatePresence } from 'framer-motion'
+import Emoji from "@/components/ui/emoji";
 
 
 function Comments() {
@@ -42,6 +43,29 @@ function Comments() {
     const [error, setError] = useState<string | null>(null);
     const [isLiked, setIsLiked] = useState(false)
     const [showPreview, setShowPreview] = useState<boolean>(false)
+    const [inputValue, setInputValue] = useState<string>('');
+    const [charCount, setCharCount] = useState(0)
+    const maxChars = 280
+
+    const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const content = e.target.value;
+        if (content.length <= maxChars) {
+            setInputValue(content);
+            setCharCount(content.length);
+        }
+        };
+
+  // Función que recibe el emoji y lo añade al valor del input
+  const handleEmojiSelect = (emoji: string) => {
+  setInputValue((prev) => {
+    const newValue = prev + emoji;
+    if (newValue.length <= maxChars) {
+      setCharCount(newValue.length);
+      return newValue;
+    }
+    return prev; // No añadir el emoji si excede el límite
+  });
+};
 
     const loadComments = async () => {
         try {
@@ -343,12 +367,29 @@ function Comments() {
                         </div>
                     ))}
                 </div>
-                <div className="Container-create flex justify-center items-center flex-1 border-l-1">
-                    <input 
-                    type="text"
+                <div className="Container-create flex flex-col justify-center items-center flex-1 border-l-1 border-t-1">
+                    <div className="flex items-center w-full" >
+                        <Emoji onEmojiSelect={handleEmojiSelect}/>
+                    <form action="" method="post" className="flex gap-2 items-center w-full">
+                        
+                    <Textarea 
                     placeholder="Escribe un comentario"
-                    className="border-1 w-[80%] py-4 px-2 rounded-lg"
+                    className="border-1 flex-1 py-2 px-2 rounded-lg resize-none"
+                    value={inputValue}
+                    onChange={handleCommentChange}
                     />
+                    <input 
+                    type="submit" 
+                    className="px-2 py-2 bg-blue-500 font-semibold rounded-lg text-black"
+                    placeholder=""
+                    
+                    />
+                    </form>
+                    </div>
+                    <span
+                      className={`text-sm ${charCount > maxChars * 0.8 ? "text-orange-500" : "text-muted-foreground"}`}                      >
+                      {charCount}/{maxChars}
+                    </span>
                 </div>
                 </div>
             </div>
