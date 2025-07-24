@@ -280,7 +280,7 @@ function Comments() {
                     
                 </div>
                 <div className="flex flex-col flex-1">
-                <div className="container-comment flex flex-col gap-2 2xl:gap-3 w-full h-[80%] border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
+                <div className="container-comment flex flex-col gap-2 2xl:gap-3 max-w-200 h-[80%] border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
                     {comment.map((cmt) => (
                         <div className="flex gap-3 border-1 rounded-lg pl-3 pr-2 py-2 w-[90%]">
                             <div className="flex gap-3">
@@ -367,29 +367,33 @@ function Comments() {
                         </div>
                     ))}
                 </div>
-                <div className="Container-create flex flex-col justify-center items-center flex-1 border-l-1 border-t-1">
+                <div className="Container-create flex flex-col justify-center items-center flex-1 border-l-1 border-t-1 w-full max-w-full overflow-hidden">
                     <div className="flex items-center w-full" >
-                        <Emoji onEmojiSelect={handleEmojiSelect}/>
-                    <form action="" method="post" className="flex gap-2 items-center w-full">
+                    <form action="" method="post" className="flex flex-col gap-1 items-center w-full">
                         
                     <Textarea 
                     placeholder="Escribe un comentario"
-                    className="border-1 flex-1 py-2 px-2 rounded-lg resize-none"
+                    className="flex-1 py-2 px-2 border-0 resize-none break-words overflow-hidden w-full max-w-[100%]"
                     value={inputValue}
                     onChange={handleCommentChange}
                     />
-                    <input 
-                    type="submit" 
-                    className="px-2 py-2 bg-blue-500 font-semibold rounded-lg text-black"
-                    placeholder=""
-                    
-                    />
+                    <div className="flex gap-1 items-center w-full px-2 py-0.5">
+                            <span
+                                className={`text-sm ${charCount > maxChars * 0.8 ? "text-orange-500" : "text-muted-foreground"}`}                      >
+                                {charCount}/{maxChars}
+                            </span>
+                            <div onClick={(e) => e.preventDefault()}>
+                            <Emoji onEmojiSelect={handleEmojiSelect} />
+                        </div>
+
+                        <input 
+                            type="submit" 
+                            className="px-2 py-2 bg-blue-500 font-semibold rounded-lg text-black"
+                            placeholder=""
+                        />
+                        </div>
                     </form>
                     </div>
-                    <span
-                      className={`text-sm ${charCount > maxChars * 0.8 ? "text-orange-500" : "text-muted-foreground"}`}                      >
-                      {charCount}/{maxChars}
-                    </span>
                 </div>
                 </div>
             </div>
