@@ -1,19 +1,34 @@
 from rest_framework import serializers
 from .models import (
-    User, AvatarUser, BackgroundUser, Post, Comment, Follows, 
+    User, AvatarUser, BackgroundUser, Post, Comment, Follows,
     FilesPost, Message, FilesMessage, Notification, Share
 )
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "first_name", "last_name", "bio", "email", "website", "location"]
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "bio",
+            "email",
+            "website",
+            "location"
+        ]
 
 
 class AvatarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = AvatarUser
-        fields = ["file_path", "file_type", "file_size", "upload_date"]
+        fields = [
+            "file_path",
+            "file_type",
+            "file_size",
+            "upload_date"
+        ]
 
 
 class BackgroundImageSerializer(serializers.ModelSerializer):
@@ -27,7 +42,13 @@ class RegistroSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["username", "password", "email", "first_name", "last_name"]
+        fields = [
+            "username",
+            "password",
+            "email",
+            "first_name",
+            "last_name"
+        ]
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -46,10 +67,18 @@ class LogoutSerializer(serializers.Serializer):
     """Proccess.........."""
     token = serializers.CharField()
 
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ["id", "content", "like", "user", "post", "created_at"]
+        fields = [
+            "id",
+            "content",
+            "like",
+            "user",
+            "post",
+            "created_at"
+        ]
         read_only_fields = ["id", "user", "created_at"]
 
 
@@ -61,10 +90,18 @@ class FollowsSerializer(serializers.ModelSerializer):
 
 class FilesPostSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
-    
+
     class Meta:
         model = FilesPost
-        fields = ["id", "file_path", "file_type", "file_size", "upload_date", "user", "post"]
+        fields = [
+            "id",
+            "file_path",
+            "file_type",
+            "file_size",
+            "upload_date",
+            "user",
+            "post"
+        ]
         read_only_fields = ["upload_date"]
         extra_kwargs = {
             'temp_file': {'write_only': True}
@@ -72,35 +109,82 @@ class FilesPostSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    files = FilesPostSerializer(many=True, read_only=True, source='filespost_set')
+    files = FilesPostSerializer(
+        many=True,
+        read_only=True,
+        source='filespost_set'
+    )
     user = serializers.StringRelatedField()
-    
+
     class Meta:
         model = Post
-        fields = ["id", "content", "like", "user", "created_at", "files"]
+        fields = [
+            "id",
+            "content",
+            "like",
+            "user",
+            "created_at",
+            "files",
+        ]
+
 
 class FilesMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilesMessage
-        fields = ["id", "file_path", "file_type", "file_size", "upload_date", "user", "message", "temp_file"]
+        fields = [
+            "id",
+            "file_path",
+            "file_type",
+            "file_size",
+            "upload_date",
+            "user",
+            "message",
+            "temp_file"
+        ]
         read_only_fields = ["upload_date"]
         extra_kwargs = {
             'temp_file': {'write_only': True}
             }
 
+
 class MessageSerializer(serializers.ModelSerializer):
-    files = FilesMessageSerializer(many=True, read_only=True, source='filesmessage_set')
-    
+    files = FilesMessageSerializer(
+        many=True,
+        read_only=True,
+        source='filesmessage_set'
+    )
+
     class Meta:
         model = Message
-        fields = ["id", "body", "sender", "receiver", "created_at", "status", "read_status", "upload_message", "files"]
+        fields = [
+            "id",
+            "body",
+            "sender",
+            "receiver",
+            "created_at",
+            "status",
+            "read_status",
+            "upload_message",
+            "files"
+        ]
         read_only_fields = ["sender", "created_at", "upload_message"]
+
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = ["id", "body", "type", "post", "message", "user", "read_status", "created_at"]
+        fields = [
+            "id",
+            "body",
+            "type",
+            "post",
+            "message",
+            "user",
+            "read_status",
+            "created_at"
+            ]
         read_only_fields = ["created_at"]
+
 
 class ShareSerializer(serializers.ModelSerializer):
     class Meta:
