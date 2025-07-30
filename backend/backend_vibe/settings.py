@@ -85,11 +85,11 @@ WSGI_APPLICATION = "backend_vibe.wsgi.application"
 DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.postgresql',
-                'NAME': os.getenv("dbname"),
-                'USER': os.getenv("user"),  
-                'PASSWORD': os.getenv("password"),  
-                'HOST': os.getenv("host"),  
-                'PORT': os.getenv("port"),
+                'NAME': "postgres",
+                'USER': "postgres.vdjweajeeebramitcnej",  
+                'PASSWORD': "SW_rsl_jspyjava_513@#",  
+                'HOST': "aws-0-us-west-1.pooler.supabase.com",  
+                'PORT': 6543,
                 'OPTIONS': {
                     'sslmode': 'require', 
                 },
