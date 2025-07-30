@@ -1,4 +1,5 @@
 import App from './App'
+<<<<<<< HEAD
 import Error from '@/pages/Error'
 import Register from '@/pages/Register'
 import Restore from '@/pages/Restore'
@@ -30,6 +31,22 @@ import FollowingPost from './pages/FollowingPost'
 =======
 import Comments from './pages/Comments'
 >>>>>>> c2b8c38 (Creacion del componente Comments, donde se vera los comentarios de la publicaciones.)
+=======
+import Error from '@/common/pages/Error'
+import Register from '@/pages/features/auth/pages/Register'
+import Restore from '@/pages/features/auth/pages/Restore'
+import Messages from '@/pages/features/chat/pages/Messages'
+import Profile from '@/pages/features/profile/pages/Profile'
+import SidenavLayout from '@/common/layout/SidenavLayout'
+import Notifications from '@/pages/features/social/components/notifications/Notifications'
+import NewPost from './pages/features/social/components/posts/NewPost'
+import Config from './pages/features/auth/pages/Config'
+import Following from './pages/features/social/pages/Following'
+import Saved from './pages/features/profile/pages/Saved'
+import Explore from './pages/features/social/pages/Explore'
+import FollowingPost from './pages/FollowingPost'
+import Comments from './common/shared/Comments'
+>>>>>>> c185db4 (refactor: improve folder structure and organization)
 
 >>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
 const routes = [
