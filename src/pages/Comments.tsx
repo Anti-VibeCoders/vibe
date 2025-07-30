@@ -188,7 +188,7 @@ function Comments() {
 
     return (
         <>
-            <div className="flex w-full h-full">
+            <div className="sm:flex w-full h-full overflow-y-auto">
                 <div className="flex flex-col flex-1">
                     {post.map((p) => (
                         <div className="w-full h-full">
@@ -222,7 +222,7 @@ function Comments() {
                         <div className="flex flex-col w-full">
                             <p>{p.body}</p>
                          </div>
-                         <div className="flex w-full justify-center pt-5">
+                         <div className="flex w-full justify-center ">
                             <div className="flex items-center justify-between gap-6 w-[100%]">
                             <Button
                             variant="ghost"
@@ -280,7 +280,7 @@ function Comments() {
                     
                 </div>
                 <div className="flex flex-col flex-1">
-                <div className="container-comment flex flex-col gap-2 2xl:gap-3 max-w-200 h-[80%] border-l-1 items-center overflow-y-scroll overflow-hidden py-4">
+                <div className="container-comment z-20 flex flex-col gap-2 2xl:gap-3 max-w-200 h-[80%] border-l-1 border-t-1 sm:border-t-0 items-center overflow-y-auto overflow-hidden py-4">
                     {comment.map((cmt) => (
                         <div className="flex gap-3 border-1 rounded-lg pl-3 pr-2 py-2 w-[90%]">
                             <div className="flex gap-3">
@@ -292,7 +292,7 @@ function Comments() {
                                 <div className="w-full flex justify-between relative mb-1">
                                     <Link to="/home/profile" className="font-semibold cursor-pointer hover:text-blue-500 hover:underline">{cmt.username} </Link>
                                     
-                                    <div className="more-horiz h-max w-max absolute right-0 top-[-13px]  p-2 rounded-full cursor-pointer">
+                                    <div className="more-horiz h-max w-max absolute right-0 top-[-13px] p-2 rounded-full cursor-pointer">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger className='cursor-pointer'>
                                                 <Button variant="ghost" size="icon">
@@ -338,7 +338,7 @@ function Comments() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-4">
-                                    <p className="text-sm">{cmt.body}</p>
+                                    <p className="text-xs sm:text-sm">{cmt.body}</p>
 
                                     <div className="flex gap-15 !text-gray-500">
                                         <div className={`cursor-pointer flex gap-2 items-center text-sm ${cmt.activated ? "fill-red-500 text-red-500" : "text-gray-500"}`} onClick={() => {
@@ -367,7 +367,7 @@ function Comments() {
                         </div>
                     ))}
                 </div>
-                <div className="Container-create flex flex-col justify-center items-center flex-1 border-l-1 border-t-1 w-full max-w-full overflow-hidden">
+                <div className="Container-create z-100 flex flex-col justify-center items-center  border-l-1 border-t-1 w-full max-w-full h-auto overflow-hidden">
                     <div className="flex items-center w-full" >
                     <form action="" method="post" className="flex flex-col gap-1 items-center w-full">
                         
@@ -377,7 +377,7 @@ function Comments() {
                     value={inputValue}
                     onChange={handleCommentChange}
                     />
-                    <div className="flex gap-1 items-center w-full px-2 py-0.5">
+                    <div className="flex gap-1 items-center w-full px-2 ">
                             <span
                                 className={`text-sm ${charCount > maxChars * 0.8 ? "text-orange-500" : "text-muted-foreground"}`}                      >
                                 {charCount}/{maxChars}
@@ -388,7 +388,7 @@ function Comments() {
 
                         <input 
                             type="submit" 
-                            className="px-2 py-2 bg-blue-500 font-semibold rounded-lg text-black"
+                            className="px-2 py-1.5 mb-1 bg-blue-500 font-semibold rounded-lg text-black"
                             placeholder=""
                         />
                         </div>
