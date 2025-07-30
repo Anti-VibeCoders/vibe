@@ -3,7 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import authentication_classes, permission_classes, parser_classes
+from rest_framework.decorators import (
+    authentication_classes,
+    permission_classes,
+    parser_classes
+)
 from app_vibe.models import Post, FilesPost
 from app_vibe.serializer import PostSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -12,6 +16,7 @@ from django.db.models import Prefetch
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class PostView(APIView):
     def get(self, request):
@@ -23,10 +28,11 @@ class PostView(APIView):
                 to_attr='archivos'  # Nombre más claro para la relación
             )
         ).all()
-        
+
         # 2. Serializamos los datos
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class PostCreateView(APIView):
     @parser_classes([MultiPartParser, FormParser])
@@ -39,10 +45,10 @@ class PostCreateView(APIView):
                 content=request.data.get("content"),
                 user=request.user
             )
-            
+
             uploaded_files = []
             storage = SupabaseStorageService()
-            
+
             for file in request.FILES.getlist('files'):
                 try:
                     # 2. Subir archivo a Supabase
@@ -51,8 +57,8 @@ class PostCreateView(APIView):
                         post_id=post.id,
                         user_id=request.user.id
                     )
-                    
-                    # 3. Crear registro en FilesPost (¡ESTE ES EL PASO QUE FALTABA!)
+
+    # 3. Crear registro en FilesPost (¡ESTE ES EL PASO QUE FALTABA!)
                     file_instance = FilesPost.objects.create(
                         post=post,
                         user=request.user,
@@ -60,19 +66,22 @@ class PostCreateView(APIView):
                         file_type=file.content_type,
                         file_size=file.size
                     )
-                    
+
                     uploaded_files.append(file_url)
-                    
+
                 except Exception as e:
                     logger.error(f"Error procesando {file.name}: {str(e)}")
                     continue
-            
+
             return Response({
                 **PostSerializer(post).data,
                 'files': uploaded_files
             }, status=status.HTTP_201_CREATED)
-            
+
         except Exception as e:
             if 'post' in locals():
                 post.delete()
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
