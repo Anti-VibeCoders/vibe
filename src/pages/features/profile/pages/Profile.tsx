@@ -2,53 +2,22 @@ import { useState } from "react"
 import {
     Heart,
     MessageCircle,
-    Share,
-    MoreHorizontal,
     MapPin,
     Calendar,
     LinkIcon,
     UserPlus,
     Camera,
+    User,
 } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/common/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from '@/common/components/ui/avatar'
-import { Card, CardContent } from '@/common/components/ui/card'
 import { Button } from "@/common/components/ui/button"
 import { Separator } from "@/common/components/ui/separator"
 import { Badge } from "@/common/components/ui/badge"
 import { Link, useParams } from "react-router-dom"
 import { getUserById } from "../data/users"
-
-const mockPosts = [
-    {
-        id: 1,
-        content: "Trabajando en Vibe, la mejor red social que existe 😱",
-        timestamp: "Hace 2 horas",
-        likes: 24,
-        comments: 5,
-        shares: 2,
-        image: "https://wallpapercat.com/w/full/0/9/c/5815750-3840x2160-desktop-hd-funny-background-photo.jpg",
-    },
-    {
-        id: 2,
-        content:
-            "Probando la nueva red social Vibe!",
-        timestamp: "Hace 1 día",
-        likes: 45,
-        comments: 12,
-        shares: 8,
-    },
-    {
-        id: 3,
-        content:
-            "Visitando la nueva exposición en el museo de arte de RamCode. El diseño y la tecnología van de la mano 🎨",
-        timestamp: "Hace 2 días",
-        likes: 67,
-        comments: 18,
-        shares: 15,
-        image: "https://lablab.ai/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Flablab-static-eu%2Fimages%2Fteams%2Fcode-craft-ai-x-dev-hackathon%2Fcm9xjjhp80000356vh72r54cz_imageLink_1c5vow03st.jpg&w=640&q=75",
-    },
-]
+import { postsByUserExample, getPostsById } from "../data/profile"
+import Post from "../../social/components/posts/Post"
 
 function Profile() {
     const [isFollowing, setIsFollowing] = useState(false)
@@ -56,6 +25,7 @@ function Profile() {
     const { id } = useParams()
 
     const user = getUserById(id!)
+    const posts = getPostsById(id!)
 
     return (
         <>
@@ -131,8 +101,8 @@ function Profile() {
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <LinkIcon className="h-4 w-4" />
-                                        <a href={user?.website} className="text-blue-500 hover:text-blue-400">
-                                            usuario.dev
+                                        <a href={user?.website} target="_blank" className="text-blue-500 hover:text-blue-400">
+                                            Sitio Web
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-1">
@@ -173,66 +143,16 @@ function Profile() {
                             </TabsList>
 
                             <TabsContent value="posts" className="mt-6">
-                                <div className="space-y-6">
-                                    {mockPosts.map((post) => (
-                                        <Card key={post.id} className="dark:bg-zinc-900 dark:border-zinc-800 h-max">
-                                            <CardContent className="p-6">
-                                                <div className="flex items-start justify-between mb-4">
-                                                    <div className="flex items-center gap-3">
-                                                        <Avatar className="h-10 w-10">
-                                                            <AvatarImage src={user?.avatar || "/placeholder.svg"} />
-                                                            <AvatarFallback className="bg-zinc-700">UV</AvatarFallback>
-                                                        </Avatar>
-                                                        <div>
-                                                            <div className="flex items-center gap-2">
-                                                                <p className="font-medium">{user?.name}</p>
-                                                                {user?.verified && (
-                                                                    <Badge variant="secondary" className="bg-blue-600 text-white text-xs">
-                                                                        ✓
-                                                                    </Badge>
-                                                                )}
-                                                            </div>
-                                                            <p className="text-sm text-zinc-400">
-                                                                {user?.username} • {post.timestamp}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-white">
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-
-                                                <p className="mb-4 dark:text-zinc-100">{post.content}</p>
-
-                                                {post.image && (
-                                                    <div className="mb-4 rounded-lg overflow-hidden">
-                                                        <img
-                                                            src={post.image || "/placeholder.svg"}
-                                                            alt="Post content"
-                                                            className="w-full h-auto max-h-96 object-cover"
-                                                        />
-                                                    </div>
-                                                )}
-
-                                                <div className="flex items-center justify-between pt-4 border-t dark:border-zinc-800">
-                                                    <div className="flex items-center gap-6">
-                                                        <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-red-500 cursor-pointer">
-                                                            <Heart className="h-4 w-4 mr-2" />
-                                                            {post.likes}
-                                                        </Button>
-                                                        <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer">
-                                                            <MessageCircle className="h-4 w-4 mr-2" />
-                                                            {post.comments}
-                                                        </Button>
-                                                        <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-green-500 cursor-pointer">
-                                                            <Share className="h-4 w-4 mr-2" />
-                                                            {post.shares}
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    ))}
+                                <div className="space-y-6 flex flex-col items-center">
+                                    {posts ? posts.post.map(post => (
+                                        <Post key={post.id} post={post} />
+                                    )) : (
+                                        <>
+                                            <User className="h-12 w-12 text-zinc-600 mx-auto mb-4" />
+                                            <h3 className="text-lg font-medium mb-2">Este usuario todavía no tiene publicaciones</h3>
+                                            <p className="text-zinc-400">Cuando suba algo aparecerá aquí</p>
+                                        </>
+                                    )}
                                 </div>
                             </TabsContent>
 

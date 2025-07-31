@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "../../../../common/components/ui/avatar"
-import PlaceHolder from '@/../public/placeholders/placeholder-icon.svg'
+import { Avatar, AvatarFallback, AvatarImage } from "@/common/components/ui/avatar"
+import PlaceHolder from '@public/placeholders/placeholder-icon.svg'
 import { useNavigate } from "react-router-dom"
 
 function Chat({ name, lastMessage, online, chatId }: { name: string, lastMessage: string, online: boolean, chatId: number }) {
@@ -8,7 +8,7 @@ function Chat({ name, lastMessage, online, chatId }: { name: string, lastMessage
     return (
         <>
             <div className="chat-container w-full py-2.5 hover:bg-neutral-700/20 cursor-pointer flex px-6" onClick={() => {
-                navigate(`/messages/${chatId}`)
+                navigate(`/home/messages/${chatId}`)
             }}>
                 <div className="chat-header">
                     <div className="chat-header-left flex gap-3 items-center">

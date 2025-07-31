@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/common/components/ui/avatar"
 
-function Message({ message, pfp, name, isMine } : { message: string, pfp: any, name: string, isMine: boolean }) {
+function Message({ message, pfp, name, isMine } : { message: string | undefined, pfp: string, name: string | undefined, isMine: boolean }) {
     return (
         <>
         <div className={`message-container flex gap-2 mb-4 ${ isMine && 'flex-row-reverse justify-start text-right' }`}>
