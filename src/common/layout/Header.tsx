@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/common/components/ui/avatar";
 import { useNavigate, Link } from "react-router-dom";
 import { Moon, Sun, Bell, MessageSquare, Search } from "lucide-react";
   import {
@@ -8,7 +8,7 @@ import { Moon, Sun, Bell, MessageSquare, Search } from "lucide-react";
     DropdownMenuTrigger,
     DropdownMenuItem,
     DropdownMenuSeparator,
-  } from "./ui/dropdown-menu";
+  } from "@/common/components/ui/dropdown-menu";
 
 import { useState, useEffect, useRef } from "react";
 import Notifications from "@/pages/features/social/components/notifications/Notifications";

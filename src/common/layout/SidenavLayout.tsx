@@ -1,6 +1,6 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import SideNav from "@/common/shared/SideNav";
+import Footer from "./Footer";
+import Header from "./Header";
+import SideNav from "./SideNav";
 import Home from "@/pages/features/social/pages/Home";
 import { Toaster } from "sonner";
 import { useLocation, Outlet } from "react-router-dom";
