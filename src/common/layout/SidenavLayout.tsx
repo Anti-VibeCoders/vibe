@@ -9,7 +9,7 @@ import Chatbot from "@/common/components/Chatbot";
 function SidenavLayout() {
   const location = useLocation();
   const home = location.pathname === "/home";
-  const messages = location.pathname === "/home/messages";
+  const messages = location.pathname.includes('/home/messages');
   const configuration = location.pathname === '/home/configuration';
 
   return (
@@ -24,9 +24,11 @@ function SidenavLayout() {
         </div>
         <Footer />
       </div>
-      <div className="!absolute !bottom-20">
-        <Chatbot />
-      </div>
+      {!messages && (
+        <div className="!absolute !bottom-20">
+          <Chatbot />
+        </div>
+      )}
     </>
   );
 }

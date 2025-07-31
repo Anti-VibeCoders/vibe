@@ -15,7 +15,7 @@ export const sidenavLinks = [
         text: 'Notificaciones'
     },
     {
-        link: 'messages',
+        link: 'messages/1',
         icon: 'MessageSquare',
         text: 'Mensajes'
     },
