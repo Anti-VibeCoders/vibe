@@ -6,13 +6,12 @@ import Messages from '@/pages/features/chat/pages/Messages'
 import Profile from '@/pages/features/profile/pages/Profile'
 import SidenavLayout from '@/common/layout/SidenavLayout'
 import Notifications from '@/pages/features/social/components/notifications/Notifications'
-import NewPost from './pages/features/social/components/posts/NewPost'
-import Config from './pages/features/auth/pages/Config'
-import Following from './pages/features/social/pages/Following'
-import Saved from './pages/features/profile/pages/Saved'
-import Explore from './pages/features/social/pages/Explore'
-import FollowingPost from './pages/FollowingPost'
-import Comments from './common/shared/Comments'
+import NewPost from '@/pages/features/social/components/posts/NewPost'
+import Config from '@/pages/features/auth/pages/Config'
+import Following from '@/pages/features/social/pages/Following'
+import Saved from '@/pages/features/profile/pages/Saved'
+import Explore from '@/pages/features/social/pages/Explore'
+import Comments from '@/pages/features/comments/pages/Comments'
 
 const routes = [
     {
@@ -36,7 +35,7 @@ const routes = [
                 ]
             },
             {
-                path: 'profile',
+                path: 'profile/:id',
                 element: <Profile />,
             },
             {
@@ -62,10 +61,6 @@ const routes = [
             {
                 path: 'explore',
                 element: <Explore />
-            },
-            {
-                path: 'following-posts',
-                element: <FollowingPost />
             },
             {
                 path: 'comment/:id',
