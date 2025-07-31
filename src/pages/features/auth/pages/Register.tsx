@@ -6,19 +6,13 @@ import { z } from 'zod'
 import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
 import { Checkbox } from "@/common/components/ui/checkbox"
-
-const formSchema = z.object({
-    username: z.string().min(1),
-    email: z.string().email(),
-    password: z.string().min(8),
-    repeat_password: z.string()
-})
+import { signupSchema } from "../data/register"
 
 function Register() {
     const navigate = useNavigate()
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof signupSchema>>({
+        resolver: zodResolver(signupSchema),
         defaultValues: {
             username: "",
             email: "",
@@ -42,8 +36,7 @@ function Register() {
                     </div>
                     <div className="login-container w-full flex justify-center items-center mt-4">
                         <Form {...form}>
-                            <form className="flex flex-col gap-4">
-                                
+                            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
                             <FormField
                                     control={form.control}
                                     name="username"
@@ -67,8 +60,7 @@ function Register() {
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
-                                    )}
-                                >
+                                    )}>
                                 </FormField>
                                 <FormField
                                     control={form.control}
@@ -80,8 +72,7 @@ function Register() {
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
-                                    )}
-                                >
+                                    )} >
                                 </FormField>
                                 <FormField
                                     control={form.control}
@@ -93,12 +84,11 @@ function Register() {
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
-                                    )}
-                                >
+                                    )} >
                                 </FormField>
                                 <div className="te flex gap-2 items-center ml-0.5">
-                                <Checkbox id="terms" className="cursor-pointer"></Checkbox>
-                                <label htmlFor="terms">Acepto los <Link to="/terms" className="text-blue-400 hover:underline">términos y condiciones</Link></label>
+                                    <Checkbox id="terms" className="cursor-pointer"></Checkbox>
+                                    <label htmlFor="terms">Acepto los <Link to="/terms" className="text-blue-400 hover:underline">términos y condiciones</Link></label>
                                 </div>
                                 <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
                                     navigate('/')
