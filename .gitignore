@@ -24,6 +24,7 @@ dist-ssr
 *.sln
 *.sw?
 __pycache__
+__pycache__/*
 db.sqlite3
 *.jfif
 *.png
