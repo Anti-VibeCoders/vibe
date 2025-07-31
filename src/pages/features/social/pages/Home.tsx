@@ -1,23 +1,20 @@
-
-
-import Post from "@/common/components/Post";
+import Post from "../components/posts/Post";
+import { examplePosts } from "../data/posts";
 
 function Home() {
   return (
     <>
-
-      <div className="post__container">
-        <div className="post__items">
+      <div className="post_container">
+        <div className="post_items">
           <div className="posts w-2xl mx-auto flex flex-col items-center gap-10 max-md:w-full">
-            {[1, 2, 3, 4].map((i) => {
-              return <Post key={i} />;
+            {examplePosts.map((post, ) => {
+              return <Post key={post.id} post={post} />;
             })}
           </div>
         </div>
       </div>
     </>
   );
-
 }
 
 export default Home;
