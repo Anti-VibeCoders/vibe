@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import EmojiPicker, { EmojiClickData, Theme } from 'emoji-picker-react';
+import EmojiPicker, { type EmojiClickData, Theme } from 'emoji-picker-react';
 import { Laugh } from 'lucide-react';
 import { Button } from '@/common/components/ui/button';
 
@@ -16,25 +16,25 @@ function Emoji({ onEmojiSelect }: EmojiProps) {
   };
 
   return (
-    <div className='relactive inline-block'>
+      <>
       {showPicker && (
-        <div className='absolute top-40 z-10 '>
           <EmojiPicker
           width={400}
           height={350}
           theme={'auto' as Theme}
           onEmojiClick={onEmojiClick}
+          className='absolute'
         />
-        </div>
       )}
       <Button
         variant="ghost"
         onClick={() => setShowPicker(!showPicker)}
         size="icon"
+        className="cursor-pointer"
       >
         <Laugh className="size-6" />
       </Button>
-    </div>
+      </>
   );
 }
 

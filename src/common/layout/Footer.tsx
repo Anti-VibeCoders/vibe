@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "./ui/avatar"
+import { Avatar, AvatarFallback } from "@/common/components/ui/avatar"
 import { useNavigate } from "react-router-dom"
 
 function Footer() {

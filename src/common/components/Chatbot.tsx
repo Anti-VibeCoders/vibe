@@ -1,5 +1,5 @@
 import ChatBot from 'react-chatbotify'
-import Icon from '../../public/favicon/android-chrome-192x192.png'
+import Icon from '@public/favicon/android-chrome-192x192.png'
 
 function Chatbot() {
     const allowedKeywords = [
@@ -60,7 +60,7 @@ function Chatbot() {
                 mode: "NEVER"
             },
             chatButton: {
-                icon: Icon
+                icon: Icon,
             },
             header: {
                 title: 'Vibe Bot',
@@ -68,7 +68,7 @@ function Chatbot() {
             },
         }}
         styles={{
-            chatButtonStyle: { scale: 0.9, bottom: '32px', right: '30px' },
+            chatButtonStyle: { scale: 0.7, bottom: '32px', right: '30px' },
         }}
         />
     )

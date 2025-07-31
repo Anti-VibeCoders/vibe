@@ -16,23 +16,8 @@ import { Card, CardContent } from '@/common/components/ui/card'
 import { Button } from "@/common/components/ui/button"
 import { Separator } from "@/common/components/ui/separator"
 import { Badge } from "@/common/components/ui/badge"
-import { Link } from "react-router-dom"
-
-const userProfile = {
-    id: 1,
-    name: "Usuario Vibe",
-    username: "@Usuario Vibe",
-    bio: "Nuevo usuario de vibe",
-    location: "Venezuela",
-    website: "https://said-coverletter.vercel.app",
-    joinDate: "Mayo 2025",
-    avatar: "https://github.com/shadcn.png",
-    coverImage: "https://4kwallpapers.com/images/wallpapers/macos-big-sur-apple-layers-fluidic-colorful-dark-wwdc-2020-3840x2160-1432.jpg",
-    followers: 1234,
-    following: 567,
-    posts: 89,
-    verified: true,
-}
+import { Link, useParams } from "react-router-dom"
+import { getUserById } from "../data/users"
 
 const mockPosts = [
     {
@@ -68,6 +53,9 @@ const mockPosts = [
 function Profile() {
     const [isFollowing, setIsFollowing] = useState(false)
     const [activeTab, setActiveTab] = useState("posts")
+    const { id } = useParams()
+
+    const user = getUserById(id!)
 
     return (
         <>
@@ -77,7 +65,7 @@ function Profile() {
                         <div className="relative mb-6">
                             <div className="h-48 w-full rounded-xl bg-gradient-to-r from-zinc-900 to-zinc-800 overflow-hidden">
                                 <img
-                                    src={userProfile.coverImage || "/placeholder.svg"}
+                                    src={user?.coverImage || "/placeholder.svg"}
                                     alt="Cover"
                                     className="h-full w-full object-cover"
                                 />
@@ -96,7 +84,7 @@ function Profile() {
                                 <div className="flex flex-col sm:flex-row sm:items-end gap-4">
                                     <div className="relative -mt-16 sm:-mt-12">
                                         <Avatar className="h-24 w-24 border-4 dark:border-black">
-                                            <AvatarImage src={userProfile.avatar || "/placeholder.svg"} />
+                                            <AvatarImage src={user?.avatar || "/placeholder.svg"} className="object-cover" />
                                             <AvatarFallback className="bg-zinc-700 text-xl">UV</AvatarFallback>
                                         </Avatar>
                                         <Button
@@ -109,14 +97,14 @@ function Profile() {
                                     </div>
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
-                                            <h1 className="text-2xl font-bold">{userProfile.name}</h1>
-                                            {userProfile.verified && (
+                                            <h1 className="text-2xl font-bold">{user?.name}</h1>
+                                            {user?.verified && (
                                                 <Badge variant="secondary" className="bg-blue-600 text-white">
                                                     ✓
                                                 </Badge>
                                             )}
                                         </div>
-                                        <p className="text-zinc-400">{userProfile.username}</p>
+                                        <p className="text-zinc-400">{user?.username}</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
@@ -135,34 +123,34 @@ function Profile() {
                             </div>
 
                             <div className="mt-4 space-y-3">
-                                <p className="dark:text-zinc-300">{userProfile.bio}</p>
+                                <p className="dark:text-zinc-300">{user?.bio}</p>
                                 <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400">
                                     <div className="flex items-center gap-1">
                                         <MapPin className="h-4 w-4" />
-                                        {userProfile.location}
+                                        {user?.location}
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <LinkIcon className="h-4 w-4" />
-                                        <a href={userProfile.website} className="text-blue-500 hover:text-blue-400">
+                                        <a href={user?.website} className="text-blue-500 hover:text-blue-400">
                                             usuario.dev
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <Calendar className="h-4 w-4" />
-                                        Se unió en {userProfile.joinDate}
+                                        Se unió en {user?.joinDate}
                                     </div>
                                 </div>
                                 <div className="flex gap-6 text-sm">
                                     <div>
-                                        <span className="font-bold dark:text-white">{userProfile.following.toLocaleString()}</span>
+                                        <span className="font-bold dark:text-white">{user?.following.toLocaleString()}</span>
                                         <Link to="/home/following/1" className="text-zinc-400 ml-1 cursor-pointer hover:text-blue-500 hover:underline">Siguiendo</Link>
                                     </div>
                                     <div>
-                                        <span className="font-bold dark:text-white">{userProfile.followers.toLocaleString()}</span>
+                                        <span className="font-bold dark:text-white">{user?.followers.toLocaleString()}</span>
                                         <span className="text-zinc-400 ml-1">Seguidores</span>
                                     </div>
                                     <div>
-                                        <span className="font-bold dark:text-white">{userProfile.posts}</span>
+                                        <span className="font-bold dark:text-white">{user?.posts}</span>
                                         <span className="text-zinc-400 ml-1">Publicaciones</span>
                                     </div>
                                 </div>
@@ -192,20 +180,20 @@ function Profile() {
                                                 <div className="flex items-start justify-between mb-4">
                                                     <div className="flex items-center gap-3">
                                                         <Avatar className="h-10 w-10">
-                                                            <AvatarImage src={userProfile.avatar || "/placeholder.svg"} />
+                                                            <AvatarImage src={user?.avatar || "/placeholder.svg"} />
                                                             <AvatarFallback className="bg-zinc-700">UV</AvatarFallback>
                                                         </Avatar>
                                                         <div>
                                                             <div className="flex items-center gap-2">
-                                                                <p className="font-medium">{userProfile.name}</p>
-                                                                {userProfile.verified && (
+                                                                <p className="font-medium">{user?.name}</p>
+                                                                {user?.verified && (
                                                                     <Badge variant="secondary" className="bg-blue-600 text-white text-xs">
                                                                         ✓
                                                                     </Badge>
                                                                 )}
                                                             </div>
                                                             <p className="text-sm text-zinc-400">
-                                                                {userProfile.username} • {post.timestamp}
+                                                                {user?.username} • {post.timestamp}
                                                             </p>
                                                         </div>
                                                     </div>
