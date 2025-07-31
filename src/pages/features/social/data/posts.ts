@@ -24,8 +24,8 @@ export const examplePosts: Post[] = [
         user: 'Lobosanplay',
         avatarImage: 'https://syntax-world-workspace.vercel.app/team/lobo.webp',
         date: "2025-05-20T12:15:00Z",
-        image: 'https://i.ytimg.com/vi/t6ntM3mNbWU/maxresdefault.jpg',
-        description: 'Me quiero matar, soy gay.',
+        image: './placeholder.webp',
+        description: 'Viva la programación',
         isVerified: false,
     },
     {
@@ -34,7 +34,7 @@ export const examplePosts: Post[] = [
         avatarImage: 'https://syntax-world-workspace.vercel.app/team/jota.webp',
         date: "2024-05-20T05:15:00Z",
         image: 'https://netit.bg/wp-content/uploads/2019/04/bannerC.png',
-        description: 'Los pythoncoders son gays @Lobosanplay. Viva C#',
+        description: 'Viva C#',
         isVerified: false,
     },
 ]
