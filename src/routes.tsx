@@ -68,8 +68,9 @@ const routes = [
         path: '/home',
         element: <SidenavLayout />,
         errorElement: <Error />,
-        children: [
+        children: [    
             {
+<<<<<<< HEAD
                 path: 'messages',
                 element: <Messages />,
                 children: [
@@ -78,6 +79,10 @@ const routes = [
                         element: <Chat />
                     }
                 ]
+=======
+                path: 'messages/:id',
+                element: <Messages />
+>>>>>>> e955c26 (refactor: change messages route)
             },
             {
                 path: 'profile/:id',
