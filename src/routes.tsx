@@ -23,16 +23,10 @@ const routes = [
         path: '/home',
         element: <SidenavLayout />,
         errorElement: <Error />,
-        children: [
+        children: [    
             {
-                path: 'messages',
-                element: <Messages />,
-                children: [
-                    {
-                        path: 'messages/:id',
-                        element: <Messages />
-                    }
-                ]
+                path: 'messages/:id',
+                element: <Messages />
             },
             {
                 path: 'profile/:id',
