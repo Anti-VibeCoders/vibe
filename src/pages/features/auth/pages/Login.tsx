@@ -5,17 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from 'zod'
 import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
-
-const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8)
-})
+import { loginSchema } from "../data/login"
 
 function Login() {
     const navigate = useNavigate()
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
         }
@@ -36,7 +32,7 @@ function Login() {
                     </div>
                     <div className="login-container w-full flex justify-center items-center mt-4">
                         <Form {...form}>
-                            <form className="flex flex-col gap-4">
+                            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
                                 <FormField
                                     control={form.control}
                                     name="email"
@@ -63,7 +59,6 @@ function Login() {
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
-
                                     )}
                                 >
                                 </FormField>

@@ -5,16 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from 'zod'
 import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
-
-const formSchema = z.object({
-    email: z.string().email(),
-})
+import { restoreSchema } from "../data/restore"
 
 function Restore() {
     const navigate = useNavigate()
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof restoreSchema>>({
+        resolver: zodResolver(restoreSchema),
         defaultValues: {
             email: "",
         }
@@ -35,7 +32,7 @@ function Restore() {
                     </div>
                     <div className="login-container w-full flex justify-center items-center mt-4">
                         <Form {...form}>
-                            <form className="flex flex-col gap-4">
+                            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
                                 <FormField
                                     control={form.control}
                                     name="email"
@@ -46,8 +43,7 @@ function Restore() {
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
-                                    )}
-                                >
+                                    )}>
                                 </FormField>
                                 <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
                                     navigate('/')
