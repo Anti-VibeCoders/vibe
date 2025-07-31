@@ -3,9 +3,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import authentication_classes, permission_classes, parser_classes
+from rest_framework.decorators import (
+    authentication_classes,
+    permission_classes,
+    parser_classes
+)
 from app_vibe.models import Message, FilesMessage, User
-from app_vibe.serializer import MessageSerializer, FilesMessageSerializer
+from app_vibe.serializer import MessageSerializer
 from app_vibe.services.supabase_service import SupabaseStorageService
 from django.db import transaction
 from django.db.models import Prefetch, Q
@@ -23,15 +27,16 @@ class MessageView(APIView):
             Q(sender=request.user) | Q(receiver=request.user)
             ).prefetch_related(
                 Prefetch(
-                "filesmessage_set",
-                queryset=FilesMessage.objects.select_related("user"),
-                to_attr='archivos'
+                   "filesmessage_set",
+                   queryset=FilesMessage.objects.select_related("user"),
+                   to_attr='archivos'
                 )
         ).all()
-        
+
         serializer = MessageSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+
 class MessageCreateView(APIView):
     @parser_classes([MultiPartParser, FormParser])
     @authentication_classes([TokenAuthentication])
@@ -43,12 +48,18 @@ class MessageCreateView(APIView):
                 body = request.data.get("body")
 
                 if not body:
-                    return Response({"error": "El mensaje no puede estar vacío"}, status=400)
+                    return Response(
+                        {"error": "El mensaje no puede estar vacío"},
+                        status=400
+                    )
 
                 try:
                     receiver = User.objects.get(id=receiver_id)
                 except User.DoesNotExist:
-                    return Response({"error": "Usuario receptor no válido"}, status=400)
+                    return Response(
+                        {"error": "Usuario receptor no válido"},
+                        status=400
+                    )
 
                 message = Message.objects.create(
                     body=body,
@@ -82,4 +93,3 @@ class MessageCreateView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=400)
-
