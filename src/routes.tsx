@@ -39,6 +39,7 @@ import Messages from '@/pages/features/chat/pages/Messages'
 import Profile from '@/pages/features/profile/pages/Profile'
 import SidenavLayout from '@/common/layout/SidenavLayout'
 import Notifications from '@/pages/features/social/components/notifications/Notifications'
+<<<<<<< HEAD
 import NewPost from './pages/features/social/components/posts/NewPost'
 import Config from './pages/features/auth/pages/Config'
 import Following from './pages/features/social/pages/Following'
@@ -47,6 +48,14 @@ import Explore from './pages/features/social/pages/Explore'
 import FollowingPost from './pages/FollowingPost'
 import Comments from './common/shared/Comments'
 >>>>>>> c185db4 (refactor: improve folder structure and organization)
+=======
+import NewPost from '@/pages/features/social/components/posts/NewPost'
+import Config from '@/pages/features/auth/pages/Config'
+import Following from '@/pages/features/social/pages/Following'
+import Saved from '@/pages/features/profile/pages/Saved'
+import Explore from '@/pages/features/social/pages/Explore'
+import Comments from '@/pages/features/comments/pages/Comments'
+>>>>>>> 6fadaf4 (feat: add params to routes like profile to get data from user)
 
 >>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
 const routes = [
@@ -71,7 +80,7 @@ const routes = [
                 ]
             },
             {
-                path: 'profile',
+                path: 'profile/:id',
                 element: <Profile />,
             },
             {
@@ -118,6 +127,7 @@ const routes = [
                 element: <Explore />
             },
             {
+<<<<<<< HEAD
                 path: 'following-posts',
                 element: <FollowingPost />
 <<<<<<< HEAD
@@ -126,6 +136,8 @@ const routes = [
 =======
             },
             {
+=======
+>>>>>>> 6fadaf4 (feat: add params to routes like profile to get data from user)
                 path: 'comment/:id',
                 element: <Comments/>
             },
