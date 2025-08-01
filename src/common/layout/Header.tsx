@@ -1,23 +1,14 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/common/components/ui/avatar";
-import { useNavigate, Link } from "react-router-dom";
+import { Avatar, AvatarFallback } from "@/common/components/ui/avatar";
+import { Link } from "react-router-dom";
 import { Moon, Sun, Bell, MessageSquare, Search } from "lucide-react";
-  import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-  } from "@/common/components/ui/dropdown-menu";
-
 import { useState, useEffect, useRef } from "react";
 import Notifications from "@/pages/features/social/components/notifications/Notifications";
+import UserDropdown from "../components/UserDropdown";
+
 function Header() {
   const [darkMode, setDarkMode] = useState(true);
   const [showNotif, setShowNotif] = useState(false);
   const notifRef = useRef<HTMLAnchorElement>(null);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const html = document.documentElement;
@@ -45,23 +36,17 @@ function Header() {
   return (
     <>
       <header className="header__container">
-        <div
-          className="header__logo"
-          onClick={() => {
-            navigate("/home");
-
-          }}
-        >
-          <Avatar>
-            <AvatarFallback className="bg-black font-semibold text-white text-xl">
-              V
-            </AvatarFallback>
-          </Avatar>
-          <h1 className="text-3xl font-bold">Vibe</h1>
-        </div>
-
+        <Link to="/home">
+          <div className="header__logo">
+            <Avatar>
+              <AvatarFallback className="bg-black font-semibold text-white text-xl">
+                V
+              </AvatarFallback>
+            </Avatar>
+            <h1 className="text-3xl font-bold">Vibe</h1>
+          </div>
+        </Link>
         <div className="header__search">
-
           <div className="search-input w-full h-full relative">
             <Search className="absolute left-2 top-2 size-5 dark:stroke-gray-600 placeholder:dark:text-gray-600 placeholder:text-gray-800 bg-none" />
             <input
@@ -73,9 +58,7 @@ function Header() {
             />
           </div>
         </div>
-
         <div className="header__nav">
-
           {darkMode ? (
             <Sun
               className="cursor-pointer size-5"
@@ -95,8 +78,7 @@ function Header() {
           <a
             ref={notifRef}
             onClick={() => setShowNotif(!showNotif)}
-            className="relative"
-          >
+            className="relative">
             <Bell className="cursor-pointer size-5" />
             {showNotif && (
               <div
@@ -110,6 +92,7 @@ function Header() {
               </div>
             )}
           </a>
+<<<<<<< HEAD
 
           <Bell className="cursor-pointer size-5" />
           <MessageSquare className="cursor-pointer size-5" />
@@ -139,6 +122,10 @@ function Header() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+=======
+          <Link to="messages"><MessageSquare className="cursor-pointer size-5" /></Link>
+          <UserDropdown />
+>>>>>>> 9433e18 (feat: improve code separating concerns)
         </div>
       </header>
     </>
