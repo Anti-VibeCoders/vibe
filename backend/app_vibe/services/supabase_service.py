@@ -8,6 +8,8 @@ import logging
 import uuid
 
 logger = logging.getLogger(__name__)
+
+
 class SupabaseStorageService:
     def __init__(self):
         self.client = create_client(
@@ -68,6 +70,83 @@ class SupabaseStorageService:
             prefix=f"message_{message_id}"
         )
 
+    def _upload_file(self, file, bucket, folder, prefix):
+        """Metodo privado para subida generica"""
+        try:
+            # 1. Obtener propiedades del archivo
+            file_name = getattr(file, 'name', 'file')
+            file_ext = os.path.splitext(file_name)[1]
+            content_type = self._get_content_type(file)
+            
+            # 2. Leer el contenido como bytes
+            if hasattr(file, 'read'):
+                file.seek(0)  # Rebobinar si es necesario
+                file_content = file.read()
+            else:
+                file_content = b"".join([chunk for chunk in file.chunks()])
+            
+            # 3. Crear nombre único
+            unique_name = f"{prefix}_{uuid.uuid4().hex}{file_ext}"
+            file_path = f"{folder}/{unique_name}"
+            
+            # 4. Subir a Supabase (versión que acepta bytes)
+            res = self.client.storage.from_(bucket).upload(
+                path=file_path,
+                file=file_content,  # Pasar los bytes directamente
+                file_options={"content-type": content_type}
+            )
+            
+            if hasattr(res, 'error') and res.error:
+                raise Exception(f"Error al subir: {res.error}")
+                
+            return self._generate_public_url(bucket, file_path)
+            
+        except Exception as e:
+            logger.error(f"Error en _upload_file: {str(e)}")
+            raise
+
+    def _generate_public_url(self, bucket, path):
+        return f"{os.getenv('SUPABASE_URL')}/storage/v1/object/public/{bucket}/{path}"
+
+
+class SupabaseUploadUserFill:
+    def __init__(self):
+        self.client = create_client(
+            os.getenv("SUPABASE_URL"),
+            os.getenv("SUPABASE_SERVICE_KEY")
+        )
+    
+    def validate_file(self, file):
+        """Valida tamaño y tipo de archivo en memoria"""
+        max_size = int(os.getenv("MAX_FILE_SIZE_MB")) * 1024 * 1024
+        
+        # Obtener content_type
+        content_type = self._get_content_type(file)
+        
+        if file.size > max_size:
+            raise ValidationError(f"El archivo excede el límite de {os.getenv('MAX_FILE_SIZE_MB')}MB")
+        
+        if content_type.startswith("video/"):
+            raise ValidationError(f"El arvhivo subido no debe ser un video {content_type}")
+            
+    def _get_content_type(self, file):
+        """Obtiene el content_type de diferentes tipos de objetos file"""
+        if hasattr(file, 'content_type'):
+            return file.content_type
+        if hasattr(file, 'file') and hasattr(file.file, 'content_type'):
+            return file.file.content_type
+        
+        import mimetypes
+        return mimetypes.guess_type(file.name)[0] or 'application/octet-stream'
+
+    def upload_avatar_user(self, file, user_id):
+        return self._upload_file(
+            file=file,
+            bucket=os.getenv("avatar-user"),
+            folder=f"user_{user_id}/message",
+            prefix=f"avatar_{user_id}"
+        )
+    
     def _upload_file(self, file, bucket, folder, prefix):
         """Metodo privado para subida generica"""
         try:
