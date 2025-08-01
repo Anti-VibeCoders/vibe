@@ -16,7 +16,7 @@ import { Separator } from "@/common/components/ui/separator"
 import { Badge } from "@/common/components/ui/badge"
 import { Link, useParams } from "react-router-dom"
 import { getUserById } from "../data/users"
-import { postsByUserExample, getPostsById } from "../data/profile"
+import { getPostsById } from "../data/profile"
 import Post from "../../social/components/posts/Post"
 
 function Profile() {

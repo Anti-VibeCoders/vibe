@@ -9,19 +9,21 @@ import DropMenuPost from '@/common/components/ui/DropMenuPost'
 import { calculeTime } from '@/common/utils/time'
 import { useImagePreview } from '@/hooks/useImagePreview'
 import type { Post } from '@/common/types/post'
-
-const defaultPostValues: Partial<Post> = {
-    user: "Usuario Vibe",
-    avatarImage: "https://github.com/shadcn.png",
-    image: "/placeholder.webp",
-    isVerified: false
-}
+import { useShare } from '@/hooks/useShare'
+import { defaultPostValues } from '../../data/posts'
 
 function Post({ post } : { post: Post }) {
     const [isLiked, setIsLiked] = useState(false)
     const navigate = useNavigate()
     const { showImage } = useImagePreview()
     const postData = { ...defaultPostValues, ...post }
+    const share = useShare()
+
+    const handleShare = () => {
+        share({
+            url: window.location.href
+        })
+    }
 
     return (
         <>
@@ -76,7 +78,7 @@ function Post({ post } : { post: Post }) {
                                 <MessageCircle className="h-4 w-4 mr-2" />
                                 13
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-green-500 cursor-pointer">
+                            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-green-500 cursor-pointer" onClick={() => handleShare()}>
                                 <Share className="h-4 w-4 mr-2" />
                                 2
                             </Button>
