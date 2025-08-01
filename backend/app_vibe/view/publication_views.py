@@ -58,7 +58,7 @@ class PostCreateView(APIView):
                         user_id=request.user.id
                     )
 
-    # 3. Crear registro en FilesPost (¡ESTE ES EL PASO QUE FALTABA!)
+                    # 3. Crear registro en FilesPost
                     file_instance = FilesPost.objects.create(
                         post=post,
                         user=request.user,
