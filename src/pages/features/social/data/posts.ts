@@ -39,6 +39,13 @@ export const examplePosts: Post[] = [
     },
 ]
 
+export const defaultPostValues: Partial<Post> = {
+    user: "Usuario Vibe",
+    avatarImage: "https://github.com/shadcn.png",
+    image: "/placeholder.webp",
+    isVerified: false
+}
+
 export const findById = (id: number | string) => {
     if (typeof id === 'string') {
         return examplePosts.find(post => post.id === parseInt(id))
