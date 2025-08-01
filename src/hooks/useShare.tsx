@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 
 interface SharedData {
-    title: string,
-    text: string,
+    title?: string,
+    text?: string,
     url: string,
 }
 
