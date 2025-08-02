@@ -12,12 +12,12 @@ function CreateComment(){
         <form className="flex flex-col gap-1 items-center w-full" onSubmit={(e) => e.preventDefault()}>
 
             <div className="comment-textarea w-full flex justify-between p-2 items-center gap-2">
-                <div onClick={(e) => e.preventDefault()} className="absolute bottom-20">
+                <div onClick={(e) => e.preventDefault()} className="">
                     <Emoji onEmojiSelect={(e) => handleEmojiSelect(setInputValue, setCharCount, e)} />
                 </div>
                   <Textarea
                     placeholder="Escribe un comentario"
-                    className="flex-1 py-2 px-2 border-0 focus-visible:ring-0 resize-none overflow-y-auto pl-12 w-max max-w-[465px]"
+                    className="flex-1 py-2 px-2 border-0 focus-visible:ring-0 resize-none overflow-y-auto w-max max-w-[440px]"
                     value={inputValue}
                     onChange={(e) => handleCommentChange(e, setInputValue, setCharCount)}
                   />
