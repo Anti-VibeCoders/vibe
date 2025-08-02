@@ -128,7 +128,29 @@ class SupabaseUploadUserFill:
         
         if content_type.startswith("video/"):
             raise ValidationError(f"El arvhivo subido no debe ser un video {content_type}")
+
+    def delete_file(self, file_url):
+        try:
+            # Extraer bucket y path de la URL
+            parts = file_url.split("/object/public/")
             
+            if len(parts) != 2:
+                raise ValueError("Invalid file URL format")
+            
+            bucket_path = parts[1].split('/')
+            bucket = bucket_path[0]
+            file_path = "/".join(bucket_path[1:])
+            
+            # Eliminar el archivo
+            res = self.client.storage.from_(bucket).remove([file_path])
+            
+            if hasattr(res, "error") and res.error:
+                raise Exception(f"Supabase deletion error: {res.error}")
+        except Exception as e:
+            logger.error(f"Error deleting file {file_url}: {str(e)}")
+            raise
+
+
     def _get_content_type(self, file):
         """Obtiene el content_type de diferentes tipos de objetos file"""
         if hasattr(file, 'content_type'):

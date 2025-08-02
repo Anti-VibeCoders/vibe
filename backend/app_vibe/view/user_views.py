@@ -68,14 +68,29 @@ class UserAvatar(APIView):
         try:
             
             file = request.FILES['file']
-            
+            # validar el archivo resivido
             storage.validate_file(file)
             
+            # 1. Eliminar avatar anterior si existe
+            previus_avatars = AvatarUser.objects.filter(user=request.user)   
+            
+            # Eliminar de supabase storege primero
+            for avatar in previus_avatars:
+                try:
+                    storage.delete_file(avatar.file_path)
+                except Exception as e:
+                    logger.error(f"Error deleting old avatar from storage: {str(e)}")
+            
+            # Eliminar registros de la base de datos
+            previus_avatars.delete()
+            
+            # 2. Subir nuevo avatar
             file_url = storage.upload_avatar_user(
                 file=file,
                 user_id=request.user.id
             )
             
+            # 3. Crear nuevo registro
             file_instance = AvatarUser.objects.create(
                 user=request.user,
                 file_path=file_url,
