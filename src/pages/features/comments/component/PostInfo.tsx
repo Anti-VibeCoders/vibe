@@ -25,7 +25,7 @@ function PostInfo() {
 
     return (
         <>
-            <div className="container-info flex flex-col gap-3 mt-2 w-[96%] mx-auto">
+            <div className="container-info flex flex-col gap-3 mt-2 w-[96%] mx-auto max-sm:px-6 max-sm:w-full">
                 <div className="flex gap-3 items-center w-full">
                     <div className="flex w-full gap-1.5">
                         <Avatar className="size-12">

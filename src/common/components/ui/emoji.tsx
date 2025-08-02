@@ -18,13 +18,15 @@ function Emoji({ onEmojiSelect }: EmojiProps) {
   return (
       <>
       {showPicker && (
-          <EmojiPicker
+          <div className='absolute bottom-40'>
+            <EmojiPicker
           width={400}
           height={350}
           theme={'auto' as Theme}
           onEmojiClick={onEmojiClick}
-          className='absolute'
+          
         />
+          </div>
       )}
       <Button
         variant="ghost"
