@@ -2,6 +2,7 @@ from app_vibe.serializer import UserSerializer, AvatarImageSerializer
 from app_vibe.models import User, AvatarUser
 from app_vibe.services.supabase_service import SupabaseUploadUserFill
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -55,29 +56,46 @@ class UserAvatar(APIView):
     @authentication_classes([TokenAuthentication])
     @permission_classes([IsAuthenticated])
     def post(self, request):
-        uploaded_files = []
+        if "file"  not in request.FILES:
+            return Response(
+                {"error": "no file provider"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
         storage = SupabaseUploadUserFill()
+        uploaded_files = []
         
         try:
+            
+            file = request.FILES['file']
+            
+            storage.validate_file(file)
+            
             file_url = storage.upload_avatar_user(
-                file=request.FILE["file"],
+                file=file,
                 user_id=request.user.id
             )
             
             file_instance = AvatarUser.objects.create(
                 user=request.user,
                 file_path=file_url,
-                file_type=request.FILE["file"].content_type,
-                file_size=request.FILE["file"].size
+                file_type=file.content_type,
+                file_size=file.size
             )
             uploaded_files.append(file_url)
-            
-        except Exception as e:
-            logger.error(f"Error procesando {request.FILE["file"].name}: {str(e)}")
-        
-        return Response({
-                **AvatarImageSerializer(request.user.id).data,
-                'file': uploaded_files
+            latest_avatar = AvatarUser.objects.filter(user=request.user).order_by('-upload_date').first()
+
+            return Response({
+                "user": UserSerializer(request.user).data,
+                "avatar": AvatarImageSerializer(latest_avatar).data if latest_avatar else None,
+                "uploaded_file": file_url
             }, status=status.HTTP_201_CREATED)
-                    
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
+        except Exception as e:
+            logger.error(f"Error uploading avatar: {str(e)}")
+            return Response(
+                {'error': 'Internal server error'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

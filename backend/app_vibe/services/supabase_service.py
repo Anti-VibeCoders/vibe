@@ -142,8 +142,8 @@ class SupabaseUploadUserFill:
     def upload_avatar_user(self, file, user_id):
         return self._upload_file(
             file=file,
-            bucket=os.getenv("avatar-user"),
-            folder=f"user_{user_id}/message",
+            bucket=os.getenv("AVATAR_USER"),
+            folder=f"user_{user_id}/avatar",
             prefix=f"avatar_{user_id}"
         )
     

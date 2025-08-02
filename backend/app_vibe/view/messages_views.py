@@ -72,6 +72,7 @@ class MessageCreateView(APIView):
                 storage = SupabaseStorageService()
 
                 for file in request.FILES.getlist("files"):
+                    storage.validate_file(file)
                     file_url = storage.upload_to_message(
                         file=file,
                         message_id=message.id,

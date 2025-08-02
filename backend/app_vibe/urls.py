@@ -38,7 +38,12 @@ urlpatterns = [
         user_views.UserConfig.as_view(),
         name="user-config"
         ),
-
+    path(
+        "user/avatar/config/",
+        user_views.UserAvatar.as_view(),
+        name="user-avatar"
+        ),
+    
     # publicactions
     path(
         'Publications/',

@@ -6,6 +6,8 @@ from .models import (
 
 
 class UserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
         fields = [
@@ -16,8 +18,16 @@ class UserSerializer(serializers.ModelSerializer):
             "bio",
             "email",
             "website",
-            "location"
+            "location",
+            "avatar"
         ]
+
+    def get_avatar(self, obj):
+        # Obtenemos el avatar más reciente del usuario
+        avatar = AvatarUser.objects.filter(user=obj).order_by('-upload_date').first()
+        if avatar:
+            return AvatarImageSerializer(avatar).data
+        return None
 
 
 class AvatarImageSerializer(serializers.ModelSerializer):
@@ -103,9 +113,6 @@ class FilesPostSerializer(serializers.ModelSerializer):
             "post"
         ]
         read_only_fields = ["upload_date"]
-        extra_kwargs = {
-            'temp_file': {'write_only': True}
-            }
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -139,12 +146,8 @@ class FilesMessageSerializer(serializers.ModelSerializer):
             "upload_date",
             "user",
             "message",
-            "temp_file"
         ]
         read_only_fields = ["upload_date"]
-        extra_kwargs = {
-            'temp_file': {'write_only': True}
-            }
 
 
 class MessageSerializer(serializers.ModelSerializer):
