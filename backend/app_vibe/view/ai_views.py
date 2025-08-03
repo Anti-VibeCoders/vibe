@@ -13,7 +13,7 @@ class GeminiEndPoint(APIView):
     def get(self, resquest, *args, **kwargs):
         try:
             # Obténemos la API key desde variables de entorno
-            api_key = os.getenv("API-KEY")
+            api_key = os.getenv("GEMINI_KEY")
             if not api_key:
                 return Response(
                     {"Error": "API key not configured"},
