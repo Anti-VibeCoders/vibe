@@ -46,14 +46,14 @@ function Post({ post } : { post: Post }) {
                                         )}
                                     </div>
                                     <p className="text-sm text-zinc-400">
-                                        {post.user} • Hace {calculeTime(post.date)}
+                                        {post.user} • Hace {calculeTime(post.created_at)}
                                     </p>
                                 </div>
                             </div>
                         </Link>
                         <DropMenuPost />
                     </div>
-                    <p className="mb-4 dark:text-zinc-100">{post.description}</p>
+                    <p className="mb-4 dark:text-zinc-100">{post.content}</p>
                     <div className="mb-4 rounded-lg overflow-hidden">
                         <img
                             src={post.image}
