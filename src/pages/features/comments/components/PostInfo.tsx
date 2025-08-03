@@ -10,7 +10,6 @@ import { useParams } from "react-router-dom";
 import { calculeTime } from "@/common/utils/time";
 import { useShare } from "@/hooks/useShare";
 
-
 function PostInfo() {
     const { id } = useParams()
     const realPost = findById(id!)
@@ -38,13 +37,13 @@ function PostInfo() {
                                     <Badge variant="secondary" className="bg-blue-600 text-white text-xs">✓</Badge>
                                 )}
                             </div>
-                            <span className="text-sm text-gray-500">{realPost?.user} • {calculeTime(realPost?.date)}</span>
+                            <span className="text-sm text-gray-500">{realPost?.user} • {calculeTime(realPost?.created_at)}</span>
                         </div>
                         <DropMenuPost />
                     </div>
                 </div>
                 <div className="flex flex-col w-full">
-                    <p>{realPost?.description}</p>
+                    <p>{realPost?.content}</p>
                 </div>
                 <div className="flex w-full justify-center ">
                     <div className="flex items-center justify-between gap-6 w-[100%]">

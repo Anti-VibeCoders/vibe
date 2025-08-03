@@ -46,12 +46,12 @@ urlpatterns = [
     
     # publicactions
     path(
-        'Publications/',
+        'publications/',
         publication_views.PostView.as_view(),
         name='Publication'
         ),
     path(
-        "Publications/create/",
+        "publications/create/",
         publication_views.PostCreateView.as_view(),
         name="Publication-create"
         ),
@@ -70,12 +70,12 @@ urlpatterns = [
 
     # Coments
     path(
-        "Comments/",
+        "comments/",
         coments_views.CommentView.as_view(),
         name="Comment"
          ),
     path(
-        "Comments/create/",
+        "comments/create/",
         coments_views.CommentCreateView.as_view(),
         name="Comment-create"
         ),

@@ -2,8 +2,8 @@ export type Post = {
     id: number,
     user: string,
     avatarImage: string,
-    date: string,
+    created_at: string,
     image?: string,
-    description: string,
+    content: string,
     isVerified?: boolean
 }
