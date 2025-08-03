@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { loadComments } from "../data/comments";
 import type { Comments } from "../types";
-import CardComment from "../component/CardComment";
-import PostInfo from "../component/PostInfo";
-import ImagePost from "../component/ImagePost";
-import CreateComment from "../component/CreateComment";
+import CardComment from "../components/CardComment";
+import PostInfo from "../components/PostInfo";
+import ImagePost from "../components/ImagePost";
+import CreateComment from "../components/CreateComment";
 
 function Comments() {
     const [comment, setComment] = useState<Comments[]>([])
