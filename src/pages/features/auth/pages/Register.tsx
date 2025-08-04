@@ -6,14 +6,23 @@ import { z } from 'zod'
 import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
 import { Checkbox } from "@/common/components/ui/checkbox"
-import { signupSchema } from "../data/register"
+import { signupSchema, userRegister } from "../data/register"
+import { useState } from "react"
 
 function Register() {
     const navigate = useNavigate()
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [repeatedPassword, setRepeatedPassword] = useState('')
 
     const form = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
         defaultValues: {
+            first_name: "",
+            last_name: "",
             username: "",
             email: "",
             password: "",
@@ -34,21 +43,46 @@ function Register() {
                     <div className="des-login">
                         <p className="text-center text-neutral-400">Ingresa tus datos para unirte a Vibe</p>
                     </div>
-                    <div className="login-container w-full flex justify-center items-center mt-4">
+                    <div className="login-container w-6xl flex justify-center items-center mt-4">
                         <Form {...form}>
-                            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-                            <FormField
+                            <form className="flex flex-col gap-4 w-md" onSubmit={(e) => e.preventDefault()}>
+                                <div className="name-lastname-fields flex items-center justify-between w-full">
+                                    <FormField
+                                        control={form.control}
+                                        name="first_name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input placeholder="Nombre" {...field} className="w-full h-12 max-sm:w-xs" value={firstName} onChange={e => setFirstName(e.target.value)} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                    </FormField>
+                                    <FormField
+                                        control={form.control}
+                                        name="last_name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input placeholder="Apellido" {...field} className="w-full h-12 max-sm:w-xs" value={lastName} onChange={e => setLastName(e.target.value)} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}>
+                                    </FormField>
+                                </div>
+                                <FormField
                                     control={form.control}
                                     name="username"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
-                                                <Input placeholder="Nombre de usuario" {...field} className="w-md h-12 max-sm:w-xs" />
+                                                <Input placeholder="Nombre de usuario" {...field} className="w-full h-12 max-sm:w-xs" value={username} onChange={e => setUsername(e.target.value)} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
-                                    )}
-                                >
+                                    )}>
                                 </FormField>
                                 <FormField
                                     control={form.control}
@@ -56,7 +90,7 @@ function Register() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
-                                                <Input placeholder="Correo electrónico" {...field} className="w-md h-12 max-sm:w-xs" />
+                                                <Input placeholder="Correo electrónico" {...field} className="w-full h-12 max-sm:w-xs" value={email} onChange={e => setEmail(e.target.value)} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -68,7 +102,7 @@ function Register() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
-                                                <Input type="password" placeholder="Contraseña" {...field} className="h-12 max-sm:w-xs" />
+                                                <Input type="password" placeholder="Contraseña" {...field} className="h-12 max-sm:w-xs" value={password} onChange={e => setPassword(e.target.value)} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -80,7 +114,7 @@ function Register() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormControl>
-                                                <Input type="password" placeholder="Confirmar Contraseña" {...field} className="h-12 max-sm:w-xs" />
+                                                <Input type="password" placeholder="Confirmar Contraseña" {...field} className="h-12 max-sm:w-xs" value={repeatedPassword} onChange={e => setRepeatedPassword(e.target.value)} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -91,7 +125,16 @@ function Register() {
                                     <label htmlFor="terms">Acepto los <Link to="/terms" className="text-blue-400 hover:underline">términos y condiciones</Link></label>
                                 </div>
                                 <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
-                                    navigate('/')
+                                    if (password.length < 6) {
+                                        alert("La contrasea debe tener mínimo 6 carácteres")
+                                        return
+                                    }
+                                    
+                                    if (password !== repeatedPassword || (firstName.length === 0 && lastName.length === 0) || (firstName.length === 0 || lastName.length === 0)) {
+                                        alert("Por favor, verifique los campos.")
+                                        return
+                                    }
+                                    userRegister(username, password, email, firstName, lastName)
                                 }}>Crear Cuenta</Button>
                                 <p className="text-center">¿Ya tienes cuenta? <Link to="/" className="text-blue-400 hover:underline">Inicia sesión</Link></p>
                             </form>
