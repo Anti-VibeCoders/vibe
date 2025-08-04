@@ -5,5 +5,6 @@ export type Post = {
     created_at: string,
     image?: string,
     content: string,
-    isVerified?: boolean
+    isVerified?: boolean,
+    like?: number
 }
