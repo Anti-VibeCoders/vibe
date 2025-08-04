@@ -4,19 +4,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Bookmark, ImageIcon } from "lucide-react";
 import { useState } from 'react'
 import { Button } from "@/common/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { createPost, handlePostChange, maxChars } from "../../data/posts";
 
 function NewPost() {
     const [postContent, setPostContent] = useState("")
     const [charCount, setCharCount] = useState(0)
-    const maxChars = 280
-
-    const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const content = e.target.value
-        if (content.length <= maxChars) {
-            setPostContent(content)
-            setCharCount(content.length)
-        }
-    }
+    const navigate = useNavigate()
 
     return (
         <>
@@ -34,15 +28,13 @@ function NewPost() {
                                     <AvatarImage src="https://github.com/shadcn.png" className="rounded-full" />
                                     <AvatarFallback>UV</AvatarFallback>
                                 </Avatar>
-
                                 <div className="flex-1 space-y-4">
                                     <Textarea
                                         placeholder="¿Qué está pasando?"
                                         value={postContent}
-                                        onChange={handlePostChange}
+                                        onChange={(e) => handlePostChange(e, setPostContent, setCharCount)}
                                         className="min-h-[120px] w-full resize-none border-none p-0 text-lg placeholder:text-muted-foreground focus-visible:ring-0 break-all max-sm:h-54"
                                     />
-
                                     <div className="flex items-center justify-between absolute w-[90%] bottom-0 left-1/2 -translate-x-1/2 max-sm:flex-col max-sm:items-center max-sm:gap-4">
                                         <div className="flex items-center space-x-4">
                                             <Button variant="ghost" size="sm" className="cursor-pointer">
@@ -61,7 +53,7 @@ function NewPost() {
                                             >
                                                 {charCount}/{maxChars}
                                             </span>
-                                            <Button disabled={!postContent.trim() || charCount > maxChars} className="rounded-full px-6 cursor-pointer">
+                                            <Button disabled={!postContent.trim() || charCount > maxChars} className="rounded-full px-6 cursor-pointer" onClick={() => createPost(postContent, setPostContent, navigate)}>
                                                 Publicar
                                             </Button>
                                         </div>

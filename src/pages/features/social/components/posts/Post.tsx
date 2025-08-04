@@ -55,12 +55,14 @@ function Post({ post } : { post: Post }) {
                     </div>
                     <p className="mb-4 dark:text-zinc-100">{post.content}</p>
                     <div className="mb-4 rounded-lg overflow-hidden">
-                        <img
-                            src={post.image}
-                            alt="Post content"
-                            className="w-full h-auto max-h-96 object-cover cursor-pointer"
-                            onClick={() => showImage(postData)}
+                        {post.image && (
+                            <img
+                                src={post.image}
+                                alt="Post content"
+                                className="w-full h-auto max-h-96 object-cover cursor-pointer"
+                                onClick={() => showImage(postData)}
                             />
+                        )}
                     </div>
                     <div className="flex items-center justify-between pt-4 border-t dark:border-zinc-800">
                         <div className="flex items-center gap-6">
@@ -72,7 +74,7 @@ function Post({ post } : { post: Post }) {
                                     setIsLiked(!isLiked)
                                 }}>
                                 <Heart className={`h-4 w-4 mr-2 ${isLiked && 'stroke-red-500 fill-red-500'}`} />
-                                {isLiked ? '13' : '12'}
+                                {post.like}
                             </Button>
                             <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-blue-500 cursor-pointer" onClick={() => navigate(`/home/comment/${post.id}`)}>
                                 <MessageCircle className="h-4 w-4 mr-2" />
