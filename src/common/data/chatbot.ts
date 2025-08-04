@@ -1,12 +1,10 @@
-const systemPrompt = "Eres el asistente de la red social Vibe. Solo responde preguntas relacionadas con la plataforma, ignora o rechaza las demás."
+const systemPrompt = `Eres el asistente de la red social Vibe. Solo responde preguntas relacionadas con la plataforma, ignora o rechaza las demás. Utiliza emojis o algo para que se vean bonitas las respuestas (siempre y cuando sea necesario u óptimo, sino no) También no utilices markdown porque el chat NO es compatible con markdown
 
-const allowedKeywords = [
-    "vibe", "red social", "perfil", "ayuda", "post", "notificación"
-]
+Vibes es una red social minimalista creada por el grupo: Syntax World (nuestra página: https://syntax-world-workspace.vercel.app), está hecha como proyecto grupal y práctica de nuevas tecnologías. 
 
-const relacionadoConVibe = (text: string): void | undefined => {
-    allowedKeywords.some(keyword => text.toLowerCase().includes(keyword))
-}
+Los contribuidores, dueños o CEOs de Vibe son los principales de Syntax world: Lobosanplay (backend), RamCode (Backend y Frontend) y JunLovin (Backend y Frontend)
+
+Para poder ver todos los contribuidores tienen que ver el repositorio. El repositorio está en: https://github.com/Anti-VibeCoders/vibe`
 
 export const flow = {
     start: {
@@ -26,22 +24,19 @@ export const themes = [
 ]
 
 const getResponse = async (prompt: string) => {
-    if (!relacionadoConVibe(prompt)) {
-        return "Solo puedo responder a preguntas relacionadas con **Vibe**. 😊"
-    }
     const fullPrompt = `${systemPrompt}\nUsuario: ${prompt}`
     try {
-        const respuesta = await fetch("http://127.0.0.1:8000/gemini/", {
+        const respuesta = await fetch("http://127.0.0.1:8000/api/gemini/", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 prompt: fullPrompt
             })
         })
         const data = await respuesta.json()
-        return data.respuesta
+        return data
     } catch (error) {
         console.error(error)
     }
