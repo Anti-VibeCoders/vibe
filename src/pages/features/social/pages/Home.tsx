@@ -15,32 +15,29 @@ import { examplePosts } from "../data/posts";
 import { useEffect, useState } from "react";
 import Post from "../components/posts/Post";
 import type { Post } from "@/common/types/post";
+<<<<<<< HEAD
 // import { postsFetch } from "../data/posts";
 >>>>>>> 9940c0d (feat: connect posts API to home)
+=======
+import LoadingPage from "@/common/components/LoadingPage";
+import { postsFetch } from "../data/Home";
+import { useNavigate } from "react-router-dom";
+>>>>>>> b51abe8 (refactor: improve code separating concerns)
 
 function Home() {
-  const [posts, setPosts] = useState<any>(null)
-  // let posts: any[] = []
-  // postsFetch().then((data) => {
-  //   posts = data
-  // })
-
-  const postsFetch = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/publications/", { method: 'GET' })
-      if (response.ok) {
-        const data = await response.json()
-        console.log(data)
-        setPosts(data)
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    postsFetch()
+    if (!localStorage.getItem('token')) {
+      navigate('/')
+    }
+    postsFetch(setLoading, setPosts)
   }, [])
+
+  if (loading) return <LoadingPage loading={loading} />
+
 
   return (
     <>
