@@ -64,17 +64,14 @@ function Header() {
               className="cursor-pointer size-5"
               onClick={() => {
                 setDarkMode(!darkMode);
-              }}
-            />
+              }} />
           ) : (
             <Moon
               className="cursor-pointer size-5"
               onClick={() => {
                 setDarkMode(!darkMode);
-              }}
-            />
+              }} />
           )}
-
           <a
             ref={notifRef}
             onClick={() => setShowNotif(!showNotif)}
@@ -85,9 +82,9 @@ function Header() {
                 className="notif-Compact__Container"
                 onClick={(e) => e.stopPropagation()}
               >
-                <h1 className="text-xl font-semibold text-neutral-200">
+                <h2 className="text-xl font-semibold text-neutral-200">
                   Notificaciones
-                </h1>
+                </h2>
                 <Notifications className="compact" />
               </div>
             )}

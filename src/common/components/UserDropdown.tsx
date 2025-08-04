@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/common/components/ui/avatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,8 +8,11 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
 } from "@/common/components/ui/dropdown-menu";
+import { userSignOut } from "../data/navigation";
 
 function UserDropdown() {
+    const navigate = useNavigate()
+
     return (
         <>
             <DropdownMenu>
@@ -33,9 +36,9 @@ function UserDropdown() {
                     <Link to="/"><DropdownMenuItem className="cursor-pointer">
                         Equipo
                     </DropdownMenuItem></Link>
-                    <Link to="/"><DropdownMenuItem className="cursor-pointer">
+                    <span onClick={() => userSignOut(navigate)}><DropdownMenuItem className="cursor-pointer">
                         Cerrar sesión
-                    </DropdownMenuItem></Link>
+                    </DropdownMenuItem></span>
                 </DropdownMenuContent>
             </DropdownMenu>
         </>
