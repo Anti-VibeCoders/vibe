@@ -10,8 +10,16 @@ load_dotenv()
 
 
 class GeminiEndPoint(APIView):
-    def get(self, resquest, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
+            # ? Obtenemos el prompt del request
+            prompt = request.data.get('prompt')
+            if not prompt:
+                return Response(
+                    {"error": "Prompt is required"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             # Obténemos la API key desde variables de entorno
             api_key = os.getenv("GEMINI_KEY")
             if not api_key:
@@ -21,23 +29,21 @@ class GeminiEndPoint(APIView):
                 )
 
             # Inicializamos el cliente de GenAI
-            client = genai.Client(api_key=api_key)
+            genai.configure(api_key=api_key)
+
+            model = genai.GenerativeModel('gemini-1.5-flash')
 
             # Llama al modelo para generar contenido
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents="general",
-                config=types.GenerateContentConfig(
+            response = model.generate_content(
+                prompt,
+                generation_config=types.GenerationConfig(
                     max_output_tokens=500,
                     temperature=0.1
                 )
             )
 
-            # Extrae el contenido generado
-            result = response.json()
-
             # Devuelve la respuesta en formato JSON
-            return Response(result, status=status.HTTP_200_OK)
+            return Response(response.text, status=status.HTTP_200_OK)
 
         except Exception as e:
             # Manejo de errores inesperados
