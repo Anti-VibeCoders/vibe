@@ -7,7 +7,10 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from supabase import create_client
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 
 class RegistroViewSet(APIView):

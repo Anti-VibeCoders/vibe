@@ -1,4 +1,5 @@
 import type { Post } from "@/common/types/post"
+import type { NavigateFunction } from "react-router-dom"
 
 export const examplePosts: Post[] = [
     {
@@ -54,4 +55,43 @@ export const findById = (id: number | string) => {
     return examplePosts.find(post => post.id === id)
 }
 
-// . Llamada a la API para Posts
+// ---------- NEW POSTS ----------
+
+export const maxChars = 280
+
+export const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>, setPostContent: React.Dispatch<React.SetStateAction<string>>,setCharCount: React.Dispatch<React.SetStateAction<number>>) => {
+    const content = e.target.value
+    if (content.length <= maxChars) {
+        setPostContent(content)
+        setCharCount(content.length)
+    }
+}
+
+// . Crear nuevo POST 
+
+export const createPost = async (postContent: string, setPostContent: React.Dispatch<React.SetStateAction<string>>, navigate: NavigateFunction) => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/publications/create/", {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    id: 3,
+                    content: postContent,
+                })
+            })
+            const data = await response.json()
+            if (response.ok) {
+                console.log(data)
+                setPostContent('')
+                navigate('/home')
+            } else {
+                console.error("Error en el servidor: ", data)
+                console.log("Status: ", response.status)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }

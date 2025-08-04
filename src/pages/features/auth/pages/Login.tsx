@@ -6,9 +6,13 @@ import { z } from 'zod'
 import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
 import { loginSchema } from "../data/login"
+import { useState, useEffect } from "react"
+import { userLogIn } from "../data/login"
 
 function Login() {
     const navigate = useNavigate()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -16,6 +20,14 @@ function Login() {
             email: "",
         }
     })
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            setTimeout(() => {
+                navigate('/home')
+            }, 2000)
+        }
+    }, [])
 
     return (
         <>
@@ -36,10 +48,10 @@ function Login() {
                                 <FormField
                                     control={form.control}
                                     name="email"
-                                    render={({ field }) => (
+                                    render={() => (
                                         <FormItem>
                                             <FormControl>
-                                                <Input placeholder="Correo electrónico" {...field} className="w-md h-12 dark:bg-neutral-500 max-sm:w-xs" />
+                                                <Input placeholder="Correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} className="w-md h-12 dark:bg-neutral-500 max-sm:w-xs" />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -49,10 +61,10 @@ function Login() {
                                 <FormField
                                     control={form.control}
                                     name="password"
-                                    render={({ field }) => (
+                                    render={() => (
                                         <FormItem>
                                             <FormControl>
-                                                <Input type="password" placeholder="Contraseña" {...field} className="h-12 dark:bg-neutral-500 max-sm:w-xs" />
+                                                <Input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} className="h-12 dark:bg-neutral-500 max-sm:w-xs" />
                                             </FormControl>
                                             <FormDescription className="text-right text-blue-400">
                                                 <Link to="/restore">¿Olvidaste tu contraseña?</Link>
@@ -63,7 +75,11 @@ function Login() {
                                 >
                                 </FormField>
                                 <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
-                                    navigate('/home')
+                                    if (email.length === 0 || password.length === 0) {
+                                        alert("Por favor, competa los campos.")
+                                        return
+                                    }
+                                    userLogIn(email, password, navigate)
                                 }}>Iniciar Sesión</Button>
                                 <p className="text-center">¿No tienes cuenta? <Link to="/register" className="text-blue-500"> Regístrate</Link></p>
                             </form>

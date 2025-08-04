@@ -1,3 +1,5 @@
+import type { NavigateFunction } from "react-router-dom"
+
 export const sidenavLinks = [
     {
         link: '/home',
@@ -30,3 +32,8 @@ export const sidenavLinks = [
         text: 'Configuración'
     },
 ]
+
+export const userSignOut = (navigate: NavigateFunction) => {
+    navigate('/')
+    localStorage.removeItem('token')
+}
