@@ -34,7 +34,7 @@ function Post({ post } : { post: Post }) {
                             <div className="flex items-center gap-3 cursor-pointer">
                                 <Avatar className="h-10 w-10">
                                     <AvatarImage src={post.avatarImage} className="object-cover" />
-                                    <AvatarFallback className="bg-zinc-700">UV</AvatarFallback>
+                                    <AvatarFallback className="dark:bg-zinc-700">UV</AvatarFallback>
                                 </Avatar>
                                 <div>
                                     <div className="flex items-center gap-2">
