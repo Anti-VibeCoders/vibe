@@ -27,7 +27,7 @@ function UserDropdown() {
                 <DropdownMenuContent className="dark:bg-neutral-950 dark:text-white mr-4 border dark:border-gray-600">
                     <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link to="profile"><DropdownMenuItem className="cursor-pointer">
+                    <Link to="profile/1"><DropdownMenuItem className="cursor-pointer">
                         Perfil
                     </DropdownMenuItem></Link>
                     <Link to="/"><DropdownMenuItem className="cursor-pointer">

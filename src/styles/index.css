@@ -220,7 +220,7 @@ body,
    Popup Notificaciones Compactas
    ===================== */
 .notif-Compact__Container {
-  @apply absolute left-[-1em] top-[2em] translate-x-[-60%] mt-2 shadow-lg z-50 bg-neutral-950 rounded-2xl outline-1 p-4;
+  @apply absolute left-[-1em] top-[2em] translate-x-[-60%] mt-2 shadow-lg z-50 dark:bg-black dark:text-white rounded-2xl outline-1 p-4 dark:border-gray-950 backdrop-blur-2xl;
 }
 .compact {
   @apply max-h-96 w-110 p-0 rounded-2xl p-3;
