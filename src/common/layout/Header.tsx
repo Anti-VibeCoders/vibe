@@ -82,7 +82,7 @@ function Header() {
                 className="notif-Compact__Container"
                 onClick={(e) => e.stopPropagation()}
               >
-                <h2 className="text-xl font-semibold text-neutral-200">
+                <h2 className="text-xl font-semibold dark:text-neutral-200">
                   Notificaciones
                 </h2>
                 <Notifications className="compact" />
