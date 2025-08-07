@@ -1,17 +1,31 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/common/components/ui/avatar"
 import { EllipsisVertical, Search, Paperclip, Image, Mic, Send } from "lucide-react"
 import Chat from '@/pages/features/chat/components/Chat'
 import PlaceHolder from '@/../public/placeholders/placeholder-icon.svg'
 import Message from '@/pages/features/chat/components/Message'
-import { chats, getChatById } from '../data/messages'
+import { getChatById, individualChat, onSendMessage, searchChat } from '../data/messages'
 import { useParams } from 'react-router-dom'
+import type { IndividualChatType } from '../types/individualChat'
 
 function Messages() {
+    const [chatHistory, setChatHistory] = useState<IndividualChatType[]>(individualChat)
     const [message, setMessage] = useState<string>('')
+    const [searchChatInput, setSearchChatInput] = useState<string>('')
     const { id } = useParams()
-
     const chat = getChatById(id!)
+    const messageContainerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (messageContainerRef.current) {
+            messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight
+        }
+    }, [chatHistory])
+
+    useEffect(() => {
+        searchChat(searchChatInput)
+    }, [searchChatInput])
+    
     return (
         <>
             <div className="messages-cont w-full overflow-y-scroll h-full flex">
@@ -23,13 +37,13 @@ function Messages() {
                         </div>
                         <div className="input-friends h-12 w-full border dark:border-neutral-800 rounded-md relative">
                             <Search className="absolute top-3 left-2.5 text-neutral-600  size-5" />
-                            <input type="text" placeholder="Buscar conversaciones..." className="w-full h-full pl-10 outline-0" />
+                            <input type="text" placeholder="Buscar conversaciones..." className="w-full h-full pl-10 outline-0" value={searchChatInput} onChange={(e) => setSearchChatInput(e.target.value)} />
                         </div>
                     </div>
                     <div className="messages-chats">
-                        {chats.map((user) => {
+                        {searchChat(searchChatInput).map((user) => {
                             return (
-                                <Chat name={user.name} lastMessage={user.lastMessage} online={user.online} chatId={user.id} />
+                                <Chat key={user.id} name={user.name} lastMessage={user.lastMessage} online={user.online} chatId={user.id} />
                             )
                         })}
                     </div>
@@ -54,8 +68,9 @@ function Messages() {
                             <EllipsisVertical className="" />
                         </div>
                     </div>
-                    <div className="messages-container flex-1 p-4">
+                    <div ref={messageContainerRef} className="messages-container flex-1 p-4 overflow-y-auto">
                         <Message name={chat?.name} pfp='/placeholder.webp' message={chat?.lastMessage} isMine={false} />
+                        {chatHistory.map(message => <Message isMine={true} message={message.content} name='Me' key={message.id} pfp='/placeholder.webp' />)}
                     </div>
                     <div className="messages-input w-full gap-2 border-t h-15 items-center px-4 dark:border-t-neutral-900 flex">
                         <div className="btn-container p-2 h-max w-max text-neutral-600 hover:bg-neutral-800 hover:text-neutral-200 rounded-sm cursor-pointer transition-colors duration-200">
@@ -68,11 +83,9 @@ function Messages() {
                             <Mic className="size-5" />
                         </div>
                         <div className="input-container w-full border dark:border-neutral-800 rounded-sm h-3/4">
-                            <input type="text" className="w-full h-full outline-0 px-4" placeholder="Escribe un mensaje..." value={message} onChange={(e) => {
-                                setMessage(e.target.value)
-                            }} />
+                            <input type="text" className="w-full h-full outline-0 px-4" placeholder="Escribe un mensaje..." value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => e.key === "Enter" && onSendMessage(message, chatHistory, setChatHistory, setMessage)} />
                         </div>
-                        <div className="btn-container p-2 transition-colors duration-200 bg-blue-600 rounded-sm h-max w-max cursor-pointer hover:bg-blue-500 active:bg-blue-600 text-white">
+                        <div className="btn-container p-2 transition-colors duration-200 bg-blue-600 rounded-sm h-max w-max cursor-pointer hover:bg-blue-500 active:bg-blue-600 text-white" onClick={() => onSendMessage(message, chatHistory, setChatHistory, setMessage)}>
                             <Send className="size-5" />
                         </div>
                     </div>
