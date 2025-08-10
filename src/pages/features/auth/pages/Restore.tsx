@@ -6,9 +6,11 @@ import { z } from 'zod'
 import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
 import { restoreSchema } from "../data/restore"
+import { useState } from 'react'
 
 function Restore() {
     const navigate = useNavigate()
+    const [email, setEmail] = useState<string>('')
 
     const form = useForm<z.infer<typeof restoreSchema>>({
         resolver: zodResolver(restoreSchema),
@@ -36,10 +38,10 @@ function Restore() {
                                 <FormField
                                     control={form.control}
                                     name="email"
-                                    render={({ field }) => (
+                                    render={() => (
                                         <FormItem>
                                             <FormControl>
-                                                <Input placeholder="Correo electrónico" {...field} className="w-md h-12 dark:bg-neutral-500 max-sm:w-xs" />
+                                                <Input placeholder="Correo electrónico"  value={email} onChange={e => setEmail(e.target.value)} className="w-md h-12 dark:bg-neutral-500 max-sm:w-xs" />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
