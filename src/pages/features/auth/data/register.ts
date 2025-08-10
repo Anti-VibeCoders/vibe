@@ -9,7 +9,7 @@ export const signupSchema = z.object({
     repeat_password: z.string()
 })
 
-export const userRegister = async (username: string, password: string, email: string, firstName: string, lastName:string) => {
+export const userRegister = async (username: string, password: string, email: string, firstName: string, lastName:string, showToastMessage: any) => {
     try {
         const response = await fetch("http://127.0.0.1:8000/api/auth/register/", {
             method: 'POST',
@@ -28,8 +28,9 @@ export const userRegister = async (username: string, password: string, email: st
         if (response.ok) {
             console.log(data)
             localStorage.setItem('token', JSON.stringify(data.token))
-            alert("Se ha enviado un correo de verificación")
+            showToastMessage("Se ha enviado un correo de verificación", "success")
         } else {
+            showToastMessage("Ha ocurrido un error iniciando sesión", "error")
             console.error("Error en el servidor: ", data)
             console.log(response.status)
         }
