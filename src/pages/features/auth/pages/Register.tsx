@@ -8,6 +8,7 @@ import { Button } from "@/common/components/ui/button"
 import { Checkbox } from "@/common/components/ui/checkbox"
 import { signupSchema, userRegister } from "../data/register"
 import { useState } from "react"
+import { useToast } from "@/hooks/useToast"
 
 function Register() {
     const navigate = useNavigate()
@@ -17,6 +18,7 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [repeatedPassword, setRepeatedPassword] = useState('')
+    const { showToastMessage } = useToast()
 
     const form = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
@@ -126,15 +128,15 @@ function Register() {
                                 </div>
                                 <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
                                     if (password.length < 6) {
-                                        alert("La contrasea debe tener mínimo 6 carácteres")
+                                        showToastMessage("La contraseña debe tener mínimo 6 carácteres", "error")
                                         return
                                     }
                                     
                                     if (password !== repeatedPassword || (firstName.length === 0 && lastName.length === 0) || (firstName.length === 0 || lastName.length === 0)) {
-                                        alert("Por favor, verifique los campos.")
+                                        showToastMessage("Por favor, verifique los campos.", "error")
                                         return
                                     }
-                                    userRegister(username, password, email, firstName, lastName)
+                                    userRegister(username, password, email, firstName, lastName, showToastMessage)
                                 }}>Crear Cuenta</Button>
                                 <p className="text-center">¿Ya tienes cuenta? <Link to="/" className="text-blue-400 hover:underline">Inicia sesión</Link></p>
                             </form>
