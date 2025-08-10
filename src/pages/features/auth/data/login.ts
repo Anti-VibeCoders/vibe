@@ -6,7 +6,7 @@ export const loginSchema = z.object({
     password: z.string().min(8)
 })
 
-export const userLogIn = async (email: string, password: string, navigate: NavigateFunction) => {
+export const userLogIn = async (email: string, password: string, navigate: NavigateFunction, showToastMessage: any) => {
     try {
         const response = await fetch("http://127.0.0.1:8000/api/auth/login/", {
             method: 'POST',
@@ -24,10 +24,11 @@ export const userLogIn = async (email: string, password: string, navigate: Navig
             localStorage.setItem('token', data.token)
             navigate('/home')
         } else {
-            console.error("Error en el servidor: ", data)
+            showToastMessage("Ha ocurrido un error", "error")
             console.log(response.status)
         }
     } catch (error) {
+        showToastMessage("Ha ocurrido un error", "error")
         console.error(error)
     }
 }
