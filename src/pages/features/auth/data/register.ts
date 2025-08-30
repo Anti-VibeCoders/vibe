@@ -1,13 +1,3 @@
-import { z } from "zod"
-
-export const signupSchema = z.object({
-    first_name: z.string().min(1),
-    last_name: z.string().min(1),
-    username: z.string().min(1),
-    email: z.string().email(),
-    password: z.string().min(8),
-    repeat_password: z.string()
-})
 
 export const userRegister = async (username: string, password: string, email: string, firstName: string, lastName:string, showToastMessage: any) => {
     try {
