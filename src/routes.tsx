@@ -6,9 +6,14 @@ import Messages from '@/pages/Messages'
 import Profile from '@/pages/Profile'
 import SidenavLayout from '@/layout/SidenavLayout'
 import Notifications from '@/pages/Notifications'
+<<<<<<< HEAD
 import NewPost from './pages/NewPost'
 import Friends from './pages/Friends'
 import Chat from '@/pages/Chat';
+=======
+import Following from '@/pages/Following'
+
+>>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
 const routes = [
     {
         path: '/',
@@ -39,12 +44,17 @@ const routes = [
                 element: <Notifications />
             },
             {
+<<<<<<< HEAD
                 path: "newpost",
                 element: <NewPost/>
             },
             {
                 path: "friends",
                 element: <Friends/>
+=======
+                path: 'following',
+                element: <Following />
+>>>>>>> be6c850 (Creacion de la pagina Following y estilo base de los contenedores de los usuarios)
             }
         ]
     },
