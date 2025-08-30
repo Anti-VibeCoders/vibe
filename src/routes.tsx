@@ -12,6 +12,7 @@ import Following from '@/pages/features/social/pages/Following'
 import Saved from '@/pages/features/profile/pages/Saved'
 import Explore from '@/pages/features/social/pages/Explore'
 import Comments from '@/pages/features/comments/pages/Comments'
+import ProtectedRoutes from './utils/ProtectedRoutes'
 
 const routes = [
     {
@@ -21,44 +22,84 @@ const routes = [
     },
     {
         path: '/home',
-        element: <SidenavLayout />,
+        element: (
+        <ProtectedRoutes>
+            <SidenavLayout />
+        </ProtectedRoutes>
+        ),
         errorElement: <Error />,
         children: [    
             {
                 path: 'messages/:id',
-                element: <Messages />
+                element: (
+                    <ProtectedRoutes>
+                        <Messages />
+                    </ProtectedRoutes>
+                )
             },
             {
                 path: 'profile/:id',
-                element: <Profile />,
+                element: (
+                    <ProtectedRoutes>
+                        <Profile />
+                    </ProtectedRoutes>
+                ),
             },
             {
                 path: 'notifications',
-                element: <Notifications />
+                element: (
+                    <ProtectedRoutes>
+                        <Notifications />
+                    </ProtectedRoutes>
+                )
             },
             {
                 path: 'following/:id',
-                element: <Following/>
+                element: (
+                    <ProtectedRoutes>
+                        <Following/>
+                    </ProtectedRoutes>
+                )
             },
             {
                 path: 'new-post',
-                element: <NewPost/>,
+                element: (
+                    <ProtectedRoutes>
+                        <NewPost/>
+                    </ProtectedRoutes>
+                ),
             },
             {
                 path: 'configuration',
-                element: <Config />
+                element: (
+                    <ProtectedRoutes>
+                        <Config />
+                    </ProtectedRoutes>
+                )
             },
             {
                 path: 'saved',
-                element: <Saved />
+                element: (
+                    <ProtectedRoutes>
+                        <Saved />
+                    </ProtectedRoutes>
+                )
             },
             {
                 path: 'explore',
-                element: <Explore />
+                element: (
+                    <ProtectedRoutes>
+                        <Explore />
+                    </ProtectedRoutes>
+                )
             },
             {
                 path: 'comment/:id',
-                element: <Comments/>
+                element: (
+                    <ProtectedRoutes>
+                        <Comments/>
+                    </ProtectedRoutes>
+                )
             },
         ]
     },
