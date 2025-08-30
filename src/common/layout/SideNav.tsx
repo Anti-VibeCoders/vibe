@@ -11,9 +11,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { sidenavLinks } from "../data/navigation";
 import SideNavOption from "../components/SideNavOption";
+import { useAuth } from "@/hooks/useAuth";
 
 function SideNav() {
     const navigate = useNavigate()
+    const { user } = useAuth()
 
     const iconsMap = {
         Home: <Home />,
@@ -24,6 +26,39 @@ function SideNav() {
         User: <User />,
         Bolt: <Bolt />
     }
+
+    const sidenavLinks = [
+    {
+        link: '/home',
+        icon: 'Home',
+        text: 'Inicio'
+    },
+    {
+        link: 'explore',
+        icon: 'Compass',
+        text: 'Explorar'
+    },
+    {
+        link: 'notifications',
+        icon: 'Bell',
+        text: 'Notificaciones'
+    },
+    {
+        link: 'messages/1',
+        icon: 'MessageSquare',
+        text: 'Mensajes'
+    },
+    {
+        link: `profile/${user?.id}`,
+        icon: 'User',
+        text: 'Perfil'
+    },
+    {
+        link: 'configuration',
+        icon: 'Bolt',
+        text: 'Configuración'
+    },
+]
 
     return (
         <>
@@ -38,8 +73,8 @@ function SideNav() {
                                 </AvatarFallback>
                             </Avatar>
                             <div className="user-info flex flex-col justify-between">
-                                <span className="text-xl font-bold">Usuario Vibe</span>
-                                <span className="text-neutral-500">@usuario</span>
+                                <span className="text-xl font-bold">{`${user?.first_name} ${user?.last_name}`}</span>
+                                <span className="text-neutral-500">@{user?.username}</span>
                             </div>
                         </div>
                     </div>
