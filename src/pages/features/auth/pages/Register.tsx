@@ -1,13 +1,8 @@
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/common/components/ui/form"
 import { Link, useNavigate } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from 'zod'
-import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
 import { Checkbox } from "@/common/components/ui/checkbox"
-import { signupSchema, userRegister } from "../data/register"
-import { useState } from "react"
+import { userRegister } from "../data/register"
+import { useEffect, useState } from "react"
 import { useToast } from "@/hooks/useToast"
 
 function Register() {
@@ -18,111 +13,74 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [repeatedPassword, setRepeatedPassword] = useState('')
+    const [active, setActive] = useState(false)
     const { showToastMessage } = useToast()
 
-    const form = useForm<z.infer<typeof signupSchema>>({
-        resolver: zodResolver(signupSchema),
-        defaultValues: {
-            first_name: "",
-            last_name: "",
-            username: "",
-            email: "",
-            password: "",
-            repeat_password: ""
-        }
+    useEffect(() =>{
+        password !== repeatedPassword && repeatedPassword !== ""? setActive(true) : setActive(false)
     })
+
 
     return (
         <>
-            <div className="min-h-[100dvh] w-full">
-                <div className="header flex px-8 h-15 items-center cursor-pointer max-sm:justify-center" onClick={() => {
+            <div className="min-h-[100dvh] w-full overflow-auto">
+                <div className="header hidden sm:flex px-8 h-15 items-center cursor-pointer " onClick={() => {
                     navigate('/login')
                 }}>
                     <h1 className="text-3xl font-bold">Vibe</h1>
                 </div>
-                <div className="form-container w-full my-auto h-[90dvh] flex flex-col gap-4 justify-center items-center">
+                <div className="form-container w-full my-auto mt-20 sm:mt-0 h-[90dvh] flex flex-col gap-4 justify-center items-center">
                     <h2 className="text-4xl font-bold text-center">Crear cuenta</h2>
                     <div className="des-login">
                         <p className="text-center text-neutral-400">Ingresa tus datos para unirte a Vibe</p>
                     </div>
                     <div className="login-container w-6xl flex justify-center items-center mt-4">
-                        <Form {...form}>
-                            <form className="flex flex-col gap-4 w-md" onSubmit={(e) => e.preventDefault()}>
-                                <div className="name-lastname-fields flex items-center justify-between w-full">
-                                    <FormField
-                                        control={form.control}
-                                        name="first_name"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Input placeholder="Nombre" {...field} className="w-full h-12 max-sm:w-xs" value={firstName} onChange={e => setFirstName(e.target.value)} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}>
-                                    </FormField>
-                                    <FormField
-                                        control={form.control}
-                                        name="last_name"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <Input placeholder="Apellido" {...field} className="w-full h-12 max-sm:w-xs" value={lastName} onChange={e => setLastName(e.target.value)} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}>
-                                    </FormField>
+                            <form className="flex flex-col gap-4 w-md items-center sm:items-start" onSubmit={(e) => e.preventDefault()}>
+                                <div className="name-lastname-fields flex flex-col gap-4 sm:flex-row items-center justify-between w-full">
+                                     <input
+                                       name="firstName" 
+                                       placeholder="Nombre"
+                                       className="regiterInput w-full h-12 max-sm:w-xs"
+                                       value={firstName}
+                                       onChange={e => setFirstName(e.target.value)} />
+                                     <input 
+                                       name="lastName"
+                                       placeholder="Apellido"
+                                       className="regiterInput w-full h-12 max-sm:w-xs"
+                                       value={lastName}
+                                       onChange={e => setLastName(e.target.value)} />
                                 </div>
-                                <FormField
-                                    control={form.control}
-                                    name="username"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input placeholder="Nombre de usuario" {...field} className="w-full h-12 max-sm:w-xs" value={username} onChange={e => setUsername(e.target.value)} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                </FormField>
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input placeholder="Correo electrónico" {...field} className="w-full h-12 max-sm:w-xs" value={email} onChange={e => setEmail(e.target.value)} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}>
-                                </FormField>
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input type="password" placeholder="Contraseña" {...field} className="h-12 max-sm:w-xs" value={password} onChange={e => setPassword(e.target.value)} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )} >
-                                </FormField>
-                                <FormField
-                                    control={form.control}
-                                    name="repeat_password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input type="password" placeholder="Confirmar Contraseña" {...field} className="h-12 max-sm:w-xs" value={repeatedPassword} onChange={e => setRepeatedPassword(e.target.value)} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )} >
-                                </FormField>
-                                <div className="te flex gap-2 items-center ml-0.5">
+                                <input
+                                  name="username"
+                                  placeholder="Nombre de usuario"
+                                  className="regiterInput w-full h-12 max-sm:w-xs"
+                                  value={username}
+                                  onChange={e => setUsername(e.target.value)} />
+                                <input
+                                  name="email"
+                                  placeholder="Correo electrónico"
+                                  className="regiterInput w-full h-12 max-sm:w-xs"
+                                  value={email}
+                                  onChange={e => setEmail(e.target.value)} />
+                                <input
+                                  name="password"
+                                  type="password"
+                                  placeholder="Contraseña"
+                                  className="regiterInput h-12 max-sm:w-xs w-full"
+                                  value={password}
+                                  onChange={e => setPassword(e.target.value)} />
+                                <input
+                                  name="repeat_password"
+                                  type="password"
+                                  placeholder="Confirmar Contraseña"
+                                  className="regiterInput h-12 max-sm:w-xs w-full"
+                                  value={repeatedPassword}
+                                  onChange={e => setRepeatedPassword(e.target.value)} />
+                                
+                                {active && (
+                                    <span className="text-red-600">La contraseña no es igual a la original</span>
+                                )}
+                                <div className="te flex gap-2 items-center ml-0.5 justify-start">
                                     <Checkbox id="terms" className="cursor-pointer"></Checkbox>
                                     <label htmlFor="terms">Acepto los <Link to="/terms" className="text-blue-400 hover:underline">términos y condiciones</Link></label>
                                 </div>
@@ -138,9 +96,8 @@ function Register() {
                                     }
                                     userRegister(username, password, email, firstName, lastName, showToastMessage)
                                 }}>Crear Cuenta</Button>
-                                <p className="text-center">¿Ya tienes cuenta? <Link to="/" className="text-blue-400 hover:underline">Inicia sesión</Link></p>
+                                <p className="!text-center">¿Ya tienes cuenta? <Link to="/" className="text-blue-400 hover:underline">Inicia sesión</Link></p>
                             </form>
-                        </Form>
                     </div>
                 </div>
             </div>

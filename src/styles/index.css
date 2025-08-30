@@ -237,6 +237,11 @@ body,
 .compact .notification-type {
   @apply text-xs px-1 py-0.5;
 }
+
+.regiterInput{
+    @apply border-1 rounded-lg px-2;
+}
+
 .compact .notifications_cardTime {
   @apply text-xs right-2 bottom-2;
 }
@@ -263,3 +268,4 @@ body,
 ::-webkit-scrollbar-track {
   background-color: #000;
 }
+
