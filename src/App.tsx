@@ -1,5 +1,5 @@
 
-import Login from './pages/Login'
+import Login from './pages/features/auth/pages/Login'
 
 function App() {
   let userId = localStorage.getItem('userId')

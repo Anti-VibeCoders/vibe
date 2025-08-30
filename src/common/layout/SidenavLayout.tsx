@@ -1,0 +1,36 @@
+import Footer from "./Footer";
+import Header from "./Header";
+import SideNav from "./SideNav";
+import Home from "@/pages/features/social/pages/Home";
+import { Toaster } from "sonner";
+import { useLocation, Outlet } from "react-router-dom";
+import Chatbot from "@/common/components/Chatbot";
+
+function SidenavLayout() {
+  const location = useLocation();
+  const home = location.pathname === "/home";
+  const messages = location.pathname.includes('/home/messages');
+  const configuration = location.pathname === '/home/configuration';
+
+  return (
+    <>
+      <Toaster theme="dark" />
+      <div className="flex flex-col h-[100dvh]">
+        <Header />
+        <div className="home_container">
+          {!messages && !configuration && <SideNav />}
+
+          {home ? <Home /> : <Outlet />}
+        </div>
+        <Footer />
+      </div>
+      {!messages && (
+        <div className="!absolute !bottom-20">
+          <Chatbot />
+        </div>
+      )}
+    </>
+  );
+}
+
+export default SidenavLayout;
