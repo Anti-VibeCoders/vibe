@@ -100,6 +100,8 @@ class LoginViewSet(APIView):
             "user": {
                 "id": user.id,
                 "auth_id": user.auth_id,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
                 "username": user.username,
                 "email": user.email
             },
