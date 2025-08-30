@@ -16,8 +16,8 @@ function Register() {
     const [active, setActive] = useState(false)
     const { showToastMessage } = useToast()
 
-    useEffect(() =>{
-        password !== repeatedPassword && repeatedPassword !== ""? setActive(true) : setActive(false)
+    useEffect(() => {
+        password !== repeatedPassword && repeatedPassword !== "" ? setActive(true) : setActive(false)
     })
 
 
@@ -35,69 +35,69 @@ function Register() {
                         <p className="text-center text-neutral-400">Ingresa tus datos para unirte a Vibe</p>
                     </div>
                     <div className="login-container w-6xl flex justify-center items-center mt-4">
-                            <form className="flex flex-col gap-4 w-md items-center sm:items-start" onSubmit={(e) => e.preventDefault()}>
-                                <div className="name-lastname-fields flex flex-col gap-4 sm:flex-row items-center justify-between w-full">
-                                     <input
-                                       name="firstName" 
-                                       placeholder="Nombre"
-                                       className="regiterInput w-full h-12 max-sm:w-xs"
-                                       value={firstName}
-                                       onChange={e => setFirstName(e.target.value)} />
-                                     <input 
-                                       name="lastName"
-                                       placeholder="Apellido"
-                                       className="regiterInput w-full h-12 max-sm:w-xs"
-                                       value={lastName}
-                                       onChange={e => setLastName(e.target.value)} />
-                                </div>
+                        <form className="flex flex-col gap-4 w-md items-center sm:items-start" onSubmit={(e) => e.preventDefault()}>
+                            <div className="name-lastname-fields flex flex-col gap-4 sm:flex-row items-center justify-between w-full">
                                 <input
-                                  name="username"
-                                  placeholder="Nombre de usuario"
-                                  className="regiterInput w-full h-12 max-sm:w-xs"
-                                  value={username}
-                                  onChange={e => setUsername(e.target.value)} />
+                                    name="firstName"
+                                    placeholder="Nombre"
+                                    className="regiterInput w-full h-12 max-sm:w-xs"
+                                    value={firstName}
+                                    onChange={e => setFirstName(e.target.value)} />
                                 <input
-                                  name="email"
-                                  placeholder="Correo electrónico"
-                                  className="regiterInput w-full h-12 max-sm:w-xs"
-                                  value={email}
-                                  onChange={e => setEmail(e.target.value)} />
-                                <input
-                                  name="password"
-                                  type="password"
-                                  placeholder="Contraseña"
-                                  className="regiterInput h-12 max-sm:w-xs w-full"
-                                  value={password}
-                                  onChange={e => setPassword(e.target.value)} />
-                                <input
-                                  name="repeat_password"
-                                  type="password"
-                                  placeholder="Confirmar Contraseña"
-                                  className="regiterInput h-12 max-sm:w-xs w-full"
-                                  value={repeatedPassword}
-                                  onChange={e => setRepeatedPassword(e.target.value)} />
-                                
-                                {active && (
-                                    <span className="text-red-600">La contraseña no es igual a la original</span>
-                                )}
-                                <div className="te flex gap-2 items-center ml-0.5 justify-start">
-                                    <Checkbox id="terms" className="cursor-pointer"></Checkbox>
-                                    <label htmlFor="terms">Acepto los <Link to="/terms" className="text-blue-400 hover:underline">términos y condiciones</Link></label>
-                                </div>
-                                <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
-                                    if (password.length < 6) {
-                                        showToastMessage("La contraseña debe tener mínimo 6 carácteres", "error")
-                                        return
-                                    }
-                                    
-                                    if (password !== repeatedPassword || (firstName.length === 0 && lastName.length === 0) || (firstName.length === 0 || lastName.length === 0)) {
-                                        showToastMessage("Por favor, verifique los campos.", "error")
-                                        return
-                                    }
-                                    userRegister(username, password, email, firstName, lastName, showToastMessage)
-                                }}>Crear Cuenta</Button>
-                                <p className="!text-center">¿Ya tienes cuenta? <Link to="/" className="text-blue-400 hover:underline">Inicia sesión</Link></p>
-                            </form>
+                                    name="lastName"
+                                    placeholder="Apellido"
+                                    className="regiterInput w-full h-12 max-sm:w-xs"
+                                    value={lastName}
+                                    onChange={e => setLastName(e.target.value)} />
+                            </div>
+                            <input
+                                name="username"
+                                placeholder="Nombre de usuario"
+                                className="regiterInput w-full h-12 max-sm:w-xs"
+                                value={username}
+                                onChange={e => setUsername(e.target.value)} />
+                            <input
+                                name="email"
+                                placeholder="Correo electrónico"
+                                className="regiterInput w-full h-12 max-sm:w-xs"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)} />
+                            <input
+                                name="password"
+                                type="password"
+                                placeholder="Contraseña"
+                                className="regiterInput h-12 max-sm:w-xs w-full"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)} />
+                            <input
+                                name="repeat_password"
+                                type="password"
+                                placeholder="Confirmar Contraseña"
+                                className="regiterInput h-12 max-sm:w-xs w-full"
+                                value={repeatedPassword}
+                                onChange={e => setRepeatedPassword(e.target.value)} />
+
+                            {active && (
+                                <span className="text-red-600">La contraseña no es igual a la original</span>
+                            )}
+                            <div className="te flex gap-2 items-center ml-0.5 justify-start">
+                                <Checkbox id="terms" className="cursor-pointer"></Checkbox>
+                                <label htmlFor="terms">Acepto los <Link to="/terms" className="text-blue-400 hover:underline">términos y condiciones</Link></label>
+                            </div>
+                            <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
+                                if (password.length < 6) {
+                                    showToastMessage("La contraseña debe tener mínimo 6 carácteres", "error")
+                                    return
+                                }
+
+                                if (password !== repeatedPassword || (firstName.length === 0 && lastName.length === 0) || (firstName.length === 0 || lastName.length === 0)) {
+                                    showToastMessage("Por favor, verifique los campos.", "error")
+                                    return
+                                }
+                                userRegister(username, password, email, firstName, lastName, showToastMessage)
+                            }}>Crear Cuenta</Button>
+                            <p className="!text-center">¿Ya tienes cuenta? <Link to="/" className="text-blue-400 hover:underline">Inicia sesión</Link></p>
+                        </form>
                     </div>
                 </div>
             </div>
