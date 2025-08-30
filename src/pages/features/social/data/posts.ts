@@ -75,7 +75,7 @@ export const createPost = async (postContent: string, setPostContent: React.Disp
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${JSON.parse(localStorage.getItem('token')!)}`
                 },
                 body: JSON.stringify({
                     id: 3,
