@@ -6,8 +6,8 @@ import { z } from 'zod'
 import { Input } from "@/common/components/ui/input"
 import { Button } from "@/common/components/ui/button"
 import { loginSchema } from "../data/login"
-import { useState, useEffect } from "react"
-import { userLogIn } from "../data/login"
+import { useState } from "react"
+import { useAuth } from "@/hooks/useAuth"
 import { useToast } from "@/hooks/useToast"
 
 function Login() {
@@ -15,6 +15,7 @@ function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { showToastMessage } = useToast()
+    const { login } = useAuth()
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -22,14 +23,6 @@ function Login() {
             email: "",
         }
     })
-
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            setTimeout(() => {
-                navigate('/home')
-            }, 2000)
-        }
-    }, [])
 
     return (
         <>
@@ -76,13 +69,7 @@ function Login() {
                                     )}
                                 >
                                 </FormField>
-                                <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => {
-                                    if (email.length === 0 || password.length === 0) {
-                                        showToastMessage("Completa todos los campos", "error")
-                                        return
-                                    }
-                                    userLogIn(email, password, navigate, showToastMessage)
-                                }}>Iniciar Sesión</Button>
+                                <Button className="w-md bg-blue-500 text-white font-semibold cursor-pointer hover:bg-blue-500 active:bg-blue-600 h-10 max-sm:w-xs" onClick={() => login(email, password, navigate, showToastMessage)}>Iniciar Sesión</Button>
                                 <p className="text-center">¿No tienes cuenta? <Link to="/register" className="text-blue-500"> Regístrate</Link></p>
                             </form>
                         </Form>
