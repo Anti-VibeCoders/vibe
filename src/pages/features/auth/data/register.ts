@@ -17,7 +17,6 @@ export const userRegister = async (username: string, password: string, email: st
         const data = await response.json()
         if (response.ok) {
             console.log(data)
-            localStorage.setItem('token', JSON.stringify(data.token))
             showToastMessage("Se ha enviado un correo de verificación", "success")
         } else {
             showToastMessage("Ha ocurrido un error iniciando sesión", "error")

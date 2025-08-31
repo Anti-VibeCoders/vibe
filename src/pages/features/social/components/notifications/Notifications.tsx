@@ -56,7 +56,7 @@ function Notifications({ className = "" }: NotificationsProps) {
                         tipo: "seguidor",
                         fecha: "2023-11-19T09:45:00Z",
                         avatarUrl:
-                            "https://media.discordapp.net/attachments/1363908342912782427/1379252687266381916/1746283853991.png?ex=683f90a9&is=683e3f29&hm=8296c52598ad4e9de46ff71287d5656b2cc32406b10dbd1f55cba8e5cf5f0317&=&format=webp&quality=lossless",
+                            "https://randomuser.me/api/portraits/women/44.jpg",
                     },
                 ],
             };

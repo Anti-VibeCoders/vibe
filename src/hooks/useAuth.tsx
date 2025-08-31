@@ -15,7 +15,7 @@ export interface AuthContextType {
     error: string | null,
     token: string | null,
     login: (email: string, password: string, navigate: NavigateFunction, showToastMessage: any) => Promise<void>,
-    logout: () => void,
+    logout: (navigate: NavigateFunction) => void,
     isAuthenticated: boolean,
 }
 
@@ -74,10 +74,11 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         }
     }
 
-    const logout = () => {
+    const logout = (navigate: NavigateFunction) => {
         setError(null)
         setUser(null)
         setToken(null)
+        navigate('/')
     }
 
     return (

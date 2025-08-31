@@ -89,40 +89,8 @@ function Header() {
               </div>
             )}
           </a>
-<<<<<<< HEAD
-
-          <Bell className="cursor-pointer size-5" />
-          <MessageSquare className="cursor-pointer size-5" />
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar className="cursor-pointer">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback className="bg-blue-600 font-semibold text-black text-xl">
-                  A
-                </AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="dark:bg-neutral-950 dark:text-white mr-4 border dark:border-gray-600">
-              <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/">Perfil</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/">Pagos</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/">Equipo</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/login">Cerrar sesión</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-=======
           <Link to="messages"><MessageSquare className="cursor-pointer size-5" /></Link>
           <UserDropdown />
->>>>>>> 9433e18 (feat: improve code separating concerns)
         </div>
       </header>
     </>
