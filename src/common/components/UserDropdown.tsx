@@ -8,10 +8,11 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
 } from "@/common/components/ui/dropdown-menu";
-import { userSignOut } from "../data/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 function UserDropdown() {
     const navigate = useNavigate()
+    const { logout } = useAuth()
 
     return (
         <>
@@ -36,7 +37,7 @@ function UserDropdown() {
                     <Link to="/"><DropdownMenuItem className="cursor-pointer">
                         Equipo
                     </DropdownMenuItem></Link>
-                    <span onClick={() => userSignOut(navigate)}><DropdownMenuItem className="cursor-pointer">
+                    <span onClick={() => logout(navigate)}><DropdownMenuItem className="cursor-pointer">
                         Cerrar sesión
                     </DropdownMenuItem></span>
                 </DropdownMenuContent>

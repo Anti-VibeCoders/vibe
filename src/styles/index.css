@@ -214,8 +214,6 @@ body,
 
 .notifications_cardTime {
   @apply absolute bottom-3 right-15 text-neutral-400;
-<<<<<<< HEAD
-=======
 }
 
 /* =====================
@@ -269,10 +267,4 @@ body,
 
 ::-webkit-scrollbar-track {
   background-color: #000;
-<<<<<<< HEAD
->>>>>>> 3809200 (fix: keep staged changes with the new changes in)
 }
-=======
-}
-
->>>>>>> 24a3ad3 (Se rehizo el formulario de git, arreglado el diseño y ahora registro es responsivo)
