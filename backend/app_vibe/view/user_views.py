@@ -90,7 +90,7 @@ class UserConfig(APIView):
                 except Exception as e:
                     logger.error(f"Error deleting old avatar from storage: {str(e)}")
             
-            # Ekiminar registros de la base de datos
+            # Eliminar registros de la base de datos
             previous_avatars.delete()
             
             # 2. Subir nuevo avatar
@@ -107,13 +107,9 @@ class UserConfig(APIView):
                 file_size=file.size
             )
             
-            # Obtener el avatar mas reciente
-            latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
-            
             return Response({
                 "message": "Avatar actualizado exitosamente",
                 "user": UserSerializer(user).data,
-                "avatar": AvatarImageSerializer(latest_avatar).data if latest_avatar else None
             }, status=status.HTTP_200_OK)
             
         except ValidationError as e:
@@ -136,7 +132,10 @@ class UserConfig(APIView):
             # Incluir infromacion del avatar en la respuesta
             latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
             response_data = serializer.data
-            response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None           
+            response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
+            
+            return Response(response_data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class UserAvatar(APIView):
     @parser_classes([MultiPartParser, FormParser])

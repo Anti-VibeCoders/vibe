@@ -113,7 +113,7 @@ class SupabaseUploadUserFill:
     def __init__(self):
         self.client = create_client(
             os.getenv("SUPABASE_URL"),
-            os.getenv("SUPABASE_KEY")
+            os.getenv("SUPABASE_SERVICE_KEY")
         )
     
     def validate_file(self, file):
