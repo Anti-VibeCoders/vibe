@@ -126,6 +126,17 @@ class UserConfig(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             
+    def _handle_user_update(self, request, user):
+        """Maneja la actualizacion de datos del usuario"""
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            
+            # Incluir infromacion del avatar en la respuesta
+            latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
+            response_data = serializer.data
+            response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None           
         
 class UserAvatar(APIView):
     @parser_classes([MultiPartParser, FormParser])
