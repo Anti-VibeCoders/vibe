@@ -52,7 +52,81 @@ class UserConfig(APIView):
         response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
 
         return Response(response_data)
-
+    
+    def patch(self, request, user_id):
+        # Verificar que el usuario solo pueda modificar su propia información
+        if request.user.id != user_id:    
+            return Response(
+                {"error": "No tienes permisos para acceder a esta información"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        user = get_object_or_404(User, pk=user_id)
+        
+        # Manejar subida de avatar si viene un archivo
+        if "avatar" in request.FILES:
+            return self._handle_avatar_upload(request, user)
+        
+        # Manejar actualizacion de datos normales del usuario
+        return self._handle_user_update(request, user)
+    
+    def _handle_avatar_upload(self, request, user):
+        """Maneja la subida del avatar"""
+        storage = SupabaseUploadUserFill()
+        
+        try:
+            file = request.FILES["avatar"]
+            
+            # Validar el archivo recibido
+            storage.validate_file(file)
+            
+            # 1. eliminar avatar anterior si existe
+            previous_avatars = AvatarUser.objects.filter(user=user)
+            
+            # Eliminar de supabase storage primero
+            for avatar in previous_avatars:
+                try:
+                    storage.delete_file(avatar.file_path)
+                except Exception as e:
+                    logger.error(f"Error deleting old avatar from storage: {str(e)}")
+            
+            # Ekiminar registros de la base de datos
+            previous_avatars.delete()
+            
+            # 2. Subir nuevo avatar
+            file_url = storage.upload_avatar_user(
+                file=file,
+                user_id=user.id
+            )
+            
+            # 3. Crear nuevo registro
+            AvatarUser.objects.create(
+                user=user,
+                file_path=file_url,
+                file_type=file.content_type,
+                file_size=file.size
+            )
+            
+            # Obtener el avatar mas reciente
+            latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
+            
+            return Response({
+                "message": "Avatar actualizado exitosamente",
+                "user": UserSerializer(user).data,
+                "avatar": AvatarImageSerializer(latest_avatar).data if latest_avatar else None
+            }, status=status.HTTP_200_OK)
+            
+        except ValidationError as e:
+            return Response({f"error: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        except Exception as e:
+            logger.error(f"Error uploading avatar: {str(e)}")
+            return Response(
+                {"error": "Error interno del servidor"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            
+        
 class UserAvatar(APIView):
     @parser_classes([MultiPartParser, FormParser])
     @authentication_classes([TokenAuthentication])
