@@ -11,7 +11,7 @@ from rest_framework.decorators import (
     permission_classes,
     parser_classes
 )
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 import logging
@@ -32,24 +32,26 @@ class UserDetail(APIView):
 
 # Este es para mostrar cuando un user ve su propia info y quiere cambiarla
 class UserConfig(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     def get(self, request, user_id):
-        # Conceguimos al user con su id
-        user = get_object_or_404(User, pk=user_id)
+        # Verificar que el usuario solo pueda acceder a su propia información
+        if request.user.id != user_id:
+            return Response(
+                {"error": "No tienes permisos para acceder a esta información"},
+                status=status.HTTP_403_FORBIDDEN
+            )
 
-        # Buscamos y mostramos la info del user
+        user = get_object_or_404(User, pk=user_id)
         serializer = UserSerializer(user)
-        return Response(serializer.data)
+        
+        # Incluir información del avatar en la respuesta
+        latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data = serializer.data
+        response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
 
-    @authentication_classes([TokenAuthentication])
-    @permission_classes([IsAuthenticated])
-    def patch(self, request, user_id):
-        user = get_object_or_404(User, pk=user_id)
-        serializer = UserSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        return Response(response_data)
 
 class UserAvatar(APIView):
     @parser_classes([MultiPartParser, FormParser])
