@@ -44,18 +44,7 @@ class UserConfig(APIView):
             )
 
         user = get_object_or_404(User, pk=user_id)
-        serializer = UserSerializer(user)
-        
-        # Incluir información del avatar en la respuesta
-        latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
-        response_data = serializer.data
-        response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
-        
-        # Incluir informacion del background en la respuesta
-        latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first()
-        response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
-
-        return Response(response_data)
+        return self._get_user_response(user)
     
     def patch(self, request, user_id):
         # Verificar que el usuario solo pueda modificar su propia información
@@ -70,144 +59,137 @@ class UserConfig(APIView):
         # Manejar tanto datos como avatar simultáneamente
         return self._handle_combined_update(request, user)
     
+    def _get_user_response(self, user):
+        """Genera la respuesta completa del usuario"""
+        serializer = UserSerializer(user)
+        response_data = serializer.data
+        
+        # Incluir información del avatar
+        latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
+        
+        # Incluir información del background
+        latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
+
+        return Response(response_data)
+    
     def _handle_combined_update(self, request, user):
-        """Maneja la actualización combinada de datos y avatar"""
+        """Maneja la actualización combinada de datos y archivos"""
         
-        # 1. Procesar avatar si viene en la solicitud
-        if "avatar" in request.FILES:
-            avatar_result = self._process_avatar_upload(request.FILES["avatar"], user)
-            if isinstance(avatar_result, Response):
-                return avatar_result  # Retornar error si hay problema con el avatar
+        # Procesar archivos (avatar y background)
+        file_errors = self._process_uploaded_files(request, user)
+        if file_errors:
+            return file_errors
         
-        # Procesar background si vienen en la solicitud
-        if "background" in request.FILES:
-            background_result = self._process_background_upload(request.FILES["background"], user)
-            if isinstance(background_result, Response):
-                return avatar_result # Retornar error si hay problema con el avatar
+        # Procesar datos del usuario
+        return self._process_user_data(request, user)
+    
+    def _process_uploaded_files(self, request, user):
+        """Procesa todos los archivos subidos y retorna errores si los hay"""
+        file_handlers = {
+            "avatar": {
+                'model': AvatarUser,
+                'upload_method': 'upload_avatar_user',
+                'serializer': AvatarImageSerializer
+            },
+            "background": {
+                'model': BackgroundUser,
+                'upload_method': 'upload_background_user',
+                'serializer': BackgroundImageSerializer
+            }
+        }
         
-        # 2. Procesar datos del usuario
+        storage = SupabaseUploadUserFill()
+        
+        for file_field, handler in file_handlers.items():
+            if file_field in request.FILES:
+                result = self._process_file_upload(
+                    storage=storage,
+                    file=request.FILES[file_field],
+                    user=user,
+                    model_class=handler["model"],
+                    upload_method=getattr(storage, handler["upload_method"]),
+                    serializer_class=handler['serializer']
+                )
+                if isinstance(result, Response):
+                    return result  # Retornar error si hay problema
+        return None  # Todo salió bien
+    
+    def _process_file_upload(self, storage, file, user, model_class, upload_method, serializer_class):
+        """Procesa genéricamente la subida de cualquier archivo"""
+        try:
+            # Validar archivo
+            storage.validate_file(file)
+            
+            # 1. eliminar archivos anteriores
+            previous_files = model_class.objects.filter(user=user)
+            
+            # Eliminar de supabase storage primero
+            for file_instance in previous_files:
+                try:
+                    storage.delete_file(file_instance.file_path)
+                except Exception as e:
+                    logger.error(f"Error deleting old file from storage: {str(e)}")
+
+            # Eliminar registros de la base de datos
+            previous_files.delete()
+            
+            # 2. subir nuevo archivo
+            file_url = upload_method(file=file, user_id=user.id)
+            
+            # 3. Crear nuevo registro
+            file_instance = model_class.objects.create(
+                user=user,
+                file_path=file_url,
+                file_type=file.content_type,
+                file_size=file.size
+            )
+            
+            return serializer_class(file_instance).data
+            
+        except ValidationError as e:
+            return Response({"error": f"Error validando archivo: {str(e)}"}, 
+                          status=status.HTTP_400_BAD_REQUEST)
+        
+        except Exception as e:
+            logger.error(f"Error uploading file: {str(e)}")
+            return Response(
+                {"error": "Error interno del servidor al subir archivo"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    def _process_user_data(self, request, user):
+        """Procesa la actualización de datos del usuario"""
         # Crear una copia mutable de request.data
         data = request.data.copy()
         
-        # Remover el campo 'avatar' si existe para evitar conflictos con el serializer
-        if 'avatar' in data:
-            del data['avatar']
-        
-        if 'background' in data:
-            del data['background']
+        # Remover campos de archivos para evitar conflictos con el serializer
+        for file_field in ['avatar', 'background']:
+            if file_field in data:
+                del data[file_field]
         
         serializer = UserSerializer(user, data=data, partial=True)
         
         if serializer.is_valid():
             serializer.save()
-            
-            # Preparar respuesta
-            response_data = serializer.data
-            
-            # Incluir información del avatar actualizado
-            latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
-            response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
-            
-            # Incluir informacion del background actualizado
-            latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first
-            response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
-            
             return Response({
-                "user": response_data
+                "user": self._get_user_response_data(user)
             }, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def _process_avatar_upload(self, file, user):
-        """Procesa la subida del avatar y retorna los datos o Response de error"""
-        storage = SupabaseUploadUserFill()
+
+    def _get_user_response_data(self, user):
+        """Obtiene los datos del usuario para la respuesta"""
+        serializer = UserSerializer(user)
+        response_data = serializer.data
         
-        try:
-            # Validar el archivo recibido
-            storage.validate_file(file)
-            
-            # 1. Eliminar avatar anterior si existe
-            previous_avatars = AvatarUser.objects.filter(user=user)
-            
-            # Eliminar de supabase storage primero
-            for avatar in previous_avatars:
-                try:
-                    storage.delete_file(avatar.file_path)
-                except Exception as e:
-                    logger.error(f"Error deleting old avatar from storage: {str(e)}")
-            
-            # Eliminar registros de la base de datos
-            previous_avatars.delete()
-            
-            # 2. Subir nuevo avatar
-            file_url = storage.upload_avatar_user(
-                file=file,
-                user_id=user.id
-            )
-            
-            # 3. Crear nuevo registro
-            avatar_instance = AvatarUser.objects.create(
-                user=user,
-                file_path=file_url,
-                file_type=file.content_type,
-                file_size=file.size
-            )
-            
-            return AvatarImageSerializer(avatar_instance).data
-            
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        # Incluir información del avatar
+        latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
         
-        except Exception as e:
-            logger.error(f"Error uploading avatar: {str(e)}")
-            return Response(
-                {"error": "Error interno del servidor al subir avatar"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-            
-    def _process_background_upload(self, file, user):
-        """Procesa la subida del background y retorna los datos o Response de error"""
-        storage = SupabaseUploadUserFill()
+        # Incluir información del background
+        latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
         
-        try:
-            # Validar el archivo recibido
-            storage.validate_file(file)
-            
-            # 1. Eliminar avatar anterior si existe
-            previous_background = BackgroundUser.objects.filter(user=user)
-            
-            # Eliminar de supabase storage primero
-            for background in previous_background:
-                try:
-                    storage.delete_file(background.file_path)
-                except Exception as e:
-                    logger.error(f"Error deleting old avatar from storage: {str(e)}")
-            
-            # Eliminar registros de la base de datos
-            previous_background.delete()
-            
-            # 2. Subir nuevo avatar
-            file_url = storage.upload_background_user(
-                file=file,
-                user_id=user.id
-            )
-            
-            # 3. Crear nuevo registro
-            avatar_instance = BackgroundUser.objects.create(
-                user=user,
-                file_path=file_url,
-                file_type=file.content_type,
-                file_size=file.size
-            )
-            
-            return BackgroundImageSerializer(avatar_instance).data
-            
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
-        except Exception as e:
-            logger.error(f"Error uploading Background: {str(e)}")
-            return Response(
-                {"error": "Error interno del servidor al subir el Background"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        return response_data
