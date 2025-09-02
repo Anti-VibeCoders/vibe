@@ -50,6 +50,10 @@ class UserConfig(APIView):
         latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
         response_data = serializer.data
         response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
+        
+        # Incluir informacion del background en la respuesta
+        latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
 
         return Response(response_data)
     
@@ -103,6 +107,10 @@ class UserConfig(APIView):
             # Incluir información del avatar actualizado
             latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
             response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
+            
+            # Incluir informacion del background actualizado
+            latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first
+            response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
             
             return Response({
                 "user": response_data
