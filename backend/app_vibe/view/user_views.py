@@ -89,6 +89,9 @@ class UserConfig(APIView):
         if 'avatar' in data:
             del data['avatar']
         
+        if 'background' in data:
+            del data['background']
+        
         serializer = UserSerializer(user, data=data, partial=True)
         
         if serializer.is_valid():
