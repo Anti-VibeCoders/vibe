@@ -173,8 +173,8 @@ class SupabaseUploadUserFill:
         return self._upload_file(
             file=file,
             bucket=os.getenv("BACKGROUND_BUCKET"),
-            folder=f"user_{user_id}/avatar",
-            prefix=f"avatar_{user_id}"
+            folder=f"user_{user_id}/background",
+            prefix=f"background_{user_id}"
         )
     
     def _upload_file(self, file, bucket, folder, prefix):
