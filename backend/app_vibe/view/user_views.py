@@ -1,4 +1,4 @@
-from app_vibe.serializer import UserSerializer, AvatarImageSerializer
+from app_vibe.serializer import UserSerializer, AvatarImageSerializer, BackgroundUser, BackgroundImageSerializer
 from app_vibe.models import User, AvatarUser
 from app_vibe.services.supabase_service import SupabaseUploadUserFill
 from django.shortcuts import get_object_or_404
@@ -75,6 +75,12 @@ class UserConfig(APIView):
             if isinstance(avatar_result, Response):
                 return avatar_result  # Retornar error si hay problema con el avatar
         
+        # Procesar background si vienen en la solicitud
+        if "background" in request.FILES:
+            background_result = self._process_background_upload(request.FILES["background"], user)
+            if isinstance(background_result, Response):
+                return avatar_result # Retornar error si hay problema con el avatar
+        
         # 2. Procesar datos del usuario
         # Crear una copia mutable de request.data
         data = request.data.copy()
@@ -145,5 +151,52 @@ class UserConfig(APIView):
             logger.error(f"Error uploading avatar: {str(e)}")
             return Response(
                 {"error": "Error interno del servidor al subir avatar"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            
+    def _process_background_upload(self, file, user):
+        """Procesa la subida del background y retorna los datos o Response de error"""
+        storage = SupabaseUploadUserFill()
+        
+        try:
+            # Validar el archivo recibido
+            storage.validate_file(file)
+            
+            # 1. Eliminar avatar anterior si existe
+            previous_background = BackgroundUser.objects.filter(user=user)
+            
+            # Eliminar de supabase storage primero
+            for background in previous_background:
+                try:
+                    storage.delete_file(background.file_path)
+                except Exception as e:
+                    logger.error(f"Error deleting old avatar from storage: {str(e)}")
+            
+            # Eliminar registros de la base de datos
+            previous_background.delete()
+            
+            # 2. Subir nuevo avatar
+            file_url = storage.upload_background_user(
+                file=file,
+                user_id=user.id
+            )
+            
+            # 3. Crear nuevo registro
+            avatar_instance = BackgroundUser.objects.create(
+                user=user,
+                file_path=file_url,
+                file_type=file.content_type,
+                file_size=file.size
+            )
+            
+            return BackgroundImageSerializer(avatar_instance).data
+            
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+        except Exception as e:
+            logger.error(f"Error uploading Background: {str(e)}")
+            return Response(
+                {"error": "Error interno del servidor al subir el Background"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
