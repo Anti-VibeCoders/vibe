@@ -28,6 +28,14 @@ class UserSerializer(serializers.ModelSerializer):
         if avatar:
             return AvatarImageSerializer(avatar).data
         return None
+    
+    def get_background(self, obj):
+        # Obtenemos el background más reciente del usuario
+        avatar = BackgroundUser.objects.filter(user=obj).order_by('-upload_date').first()
+        if avatar:
+            return BackgroundImageSerializer(avatar).data
+        return None
+
 
 
 class AvatarImageSerializer(serializers.ModelSerializer):
