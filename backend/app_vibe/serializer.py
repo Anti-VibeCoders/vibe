@@ -7,6 +7,7 @@ from .models import (
 
 class UserSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
+    background = serializers.SerializerMethodField()
     
     class Meta:
         model = User
@@ -19,7 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "website",
             "location",
-            "avatar"
+            "avatar",
+            "background"
         ]
 
     def get_avatar(self, obj):
@@ -28,6 +30,14 @@ class UserSerializer(serializers.ModelSerializer):
         if avatar:
             return AvatarImageSerializer(avatar).data
         return None
+    
+    def get_background(self, obj):
+        # Obtenemos el background más reciente del usuario
+        background = BackgroundUser.objects.filter(user=obj).order_by('-upload_date').first()
+        if background:
+            return BackgroundImageSerializer(background).data
+        return None
+
 
 
 class AvatarImageSerializer(serializers.ModelSerializer):
