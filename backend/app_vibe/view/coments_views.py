@@ -9,11 +9,21 @@ from rest_framework.decorators import (
 )
 from app_vibe.serializer import CommentSerializer
 from app_vibe.models import Comment
+from ..models import Post
+from django.shortcuts import get_object_or_404
 
 
 class CommentView(APIView):
     def get(self, request):
         queryset = Comment.objects.all()
+        serializer = CommentSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CommentPostView(APIView):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        queryset = Comment.objects.filter(post=post).order_by('-created_at')
         serializer = CommentSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

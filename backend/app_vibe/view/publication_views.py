@@ -35,6 +35,22 @@ class PostView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class PostUserView(APIView):
+    def get(self, request, post_id):
+        # 1. Obtenemos los posts con sus archivos relacionados
+        queryset = Post.objects.prefetch_related(
+            Prefetch(
+                'filespost_set',
+                queryset=FilesPost.objects.select_related('user'),
+                to_attr='archivos'  # Nombre más claro para la relación
+            )
+        ).filter(id=post_id)
+
+        # 2. Serializamos los datos
+        serializer = PostSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class PostCreateView(APIView):
     @parser_classes([MultiPartParser, FormParser])
     @authentication_classes([TokenAuthentication])
