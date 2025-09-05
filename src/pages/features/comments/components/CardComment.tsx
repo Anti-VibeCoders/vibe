@@ -118,7 +118,7 @@ function CardComment(){
          </div>
 
          <div className="flex flex-col gap-4">
-           <p className="text-xs sm:text-sm">{cmt.body}</p>
+           <p className="text-xs sm:text-sm">{cmt.content}</p>
            <div className="flex gap-15 text-gray-500">
              <div
                className={`cursor-pointer flex gap-2 items-center text-sm ${
@@ -145,7 +145,7 @@ function CardComment(){
 
              <div className="flex gap-2 items-center text-sm">
                <Clock4Icon className="size-4" />
-               {calculeTime(cmt.date)}
+               {calculeTime(cmt.created_at)}
              </div>
            </div>
          </div>

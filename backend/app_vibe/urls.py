@@ -57,6 +57,13 @@ urlpatterns = [
         publication_views.PostView.as_view(),
         name='Publication'
         ),
+
+    path(
+        'publicationsUser/<int:post_id>/',
+        publication_views.PostUserView.as_view(),
+        name='Publication-user'
+        ),
+
     path(
         # Creacion de los post
         # POST
@@ -81,7 +88,7 @@ urlpatterns = [
         name='message-create'
         ),
 
-    # Coments
+    # Comments
     path(
         # Obtencion de los comments
         # GET
@@ -89,6 +96,13 @@ urlpatterns = [
         coments_views.CommentView.as_view(),
         name="Comment"
          ),
+
+    path(
+        "comments/<int:post_id>/",
+        coments_views.CommentPostView.as_view(),
+        name="Comment-post"
+         ),
+
     path(
         # Creacion de los comments
         # GET

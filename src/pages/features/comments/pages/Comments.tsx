@@ -31,7 +31,7 @@ function Comments() {
                         <PostInfo/>
                 </div>
                 <div className="flex justify-evenly items-center max-2xl:justify-center flex-col self-center h-full w-xl max-lg:w-sm max-sm:w-full">
-                    <div className="container-comment z-20 flex  flex-col gap-2 2xl:gap-3 max-w-xl max-h-100 2xl:max-h-400 sm:border-l-1 border-t-1 sm:border-t-0 items-center overflow-y-auto overflow-hidden py-4">
+                    <div className="container-comment z-20 flex w-full flex-col gap-2 2xl:gap-3 max-w-xl max-h-100 2xl:max-h-400 sm:border-l-1 border-t-1 sm:border-t-0 items-center overflow-y-auto overflow-hidden py-4">
                         <CardComment/>
                     </div>
                     
