@@ -19,62 +19,42 @@ export const handleEmojiSelect = (setInputValue: any, setCharCount: any, emoji?:
     });
 };
 
-export const loadComments = async (setLoading: any, setComment: any, setError: any) => {
-    setLoading(true)
+export const loadComments = async (setLoading: any, setComment: any) => {
+    
     try {
-        const response = {
-            data: [
-                {
-                    id: 0,
-                    username: "Juanito Perez",
-                    avatarUser: "https://randomuser.me/api/portraits/men/32.jpg",
-                    body: "Donde se encuentra ese museo",
-                    like: 23,
-                    date: "2024-11-20T12:15:00Z",
-                },
-                {
-                    id: 1,
-                    username: "Anita perez",
-                    avatarUser: "https://randomuser.me/api/portraits/women/44.jpg",
-                    body: "Kirby es super Cuuuuuuuute!! 😍😍😍",
-                    like: 56,
-                    date: "2025-05-20T12:15:00Z",
-                },
-                {
-                    id: 2,
-                    username: "Said Ruíz",
-                    avatarUser: "https://randomuser.me/api/portraits/men/53.jpg",
-                    body: "De hecho el nombre kirby fue elegido por Shigeru Miyamoto por su sonoridad y porque se asemejaba a la personalidad del personaje. Curiosamente, el nombre también está vinculado a una disputa legal entre Nintendo y el abogado John Kirby.",
-                    like: 34,
-                    date: "2025-07-08T12:15:00Z",
-                },
-                {
-                    id: 3,
-                    username: "Santiago espárrago",
-                    avatarUser: "https://randomuser.me/api/portraits/lego/2.jpg",
-                    body: "Nah esa cosa es re horrible, ademas me quiero dar un tiro >:C",
-                    like: 13,
-                    date: "2024-09-20T12:15:00Z",
-                },
-                {
-                    id: 4,
-                    username: "Said Ruíz",
-                    avatarUser: "https://randomuser.me/api/portraits/men/53.jpg",
-                    body: "El verdadero kirby modo zelda",
-                    like: 46,
-                    date: "2025-03-18T12:15:00Z",
-                },
-            ]
+        const response = await fetch("http://127.0.0.1:8000/api/comments/")
+        if (response.ok) {
+            const data = await response.json()
+            setComment(data)
         }
-        setComment(
-            response.data.map((cmt) => ({
-                ...cmt,
-                activated: false
-            })))
-    } catch (err) {
-        setError("Error en los comentarios");
-        console.error(err);
+    } catch (error) {
+        console.error(error)
     } finally {
-        setLoading(false);
+        setLoading(false)
     }
 }
+
+export const createComment = async (commentContent: string, setCommentContent: React.Dispatch<React.SetStateAction<string>>) => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/comments/create/", {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${JSON.parse(localStorage.getItem('token')!)}`
+                },
+                body: JSON.stringify({
+                    content: commentContent,
+                })
+            })
+            const data = await response.json()
+            if (response.ok) {
+                console.log(data)
+                setCommentContent('')
+            } else {
+                console.error("Error en el servidor: ", data)
+                console.log("Status: ", response.status)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
