@@ -1,4 +1,9 @@
-from app_vibe.serializer import UserSerializer, AvatarImageSerializer, BackgroundUser, BackgroundImageSerializer
+from app_vibe.serializer import (
+    UserSerializer, 
+    AvatarImageSerializer, 
+    BannerUser, 
+    BannerImageSerializer
+)
 from app_vibe.models import User, AvatarUser
 from app_vibe.services.supabase_service import SupabaseUploadUserFill
 from django.shortcuts import get_object_or_404
@@ -17,6 +22,7 @@ from rest_framework.authentication import TokenAuthentication
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 # Este es para mostrar cuando un user ve la info de otro user
 class UserDetail(APIView):
@@ -68,16 +74,16 @@ class UserConfig(APIView):
         latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
         response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
         
-        # Incluir información del background
-        latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first()
-        response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
+        # Incluir información del Banner
+        latest_Banner = BannerUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data["Banner"] = BannerImageSerializer(latest_Banner).data if latest_Banner else None
 
         return Response(response_data)
     
     def _handle_combined_update(self, request, user):
         """Maneja la actualización combinada de datos y archivos"""
         
-        # Procesar archivos (avatar y background)
+        # Procesar archivos (avatar y Banner)
         file_errors = self._process_uploaded_files(request, user)
         if file_errors:
             return file_errors
@@ -93,10 +99,10 @@ class UserConfig(APIView):
                 'upload_method': 'upload_avatar_user',
                 'serializer': AvatarImageSerializer
             },
-            "background": {
-                'model': BackgroundUser,
-                'upload_method': 'upload_background_user',
-                'serializer': BackgroundImageSerializer
+            "Banner": {
+                'model': BannerUser,
+                'upload_method': 'upload_Banner_user',
+                'serializer': BannerImageSerializer
             }
         }
         
@@ -165,7 +171,7 @@ class UserConfig(APIView):
         data = request.data.copy()
         
         # Remover campos de archivos para evitar conflictos con el serializer
-        for file_field in ['avatar', 'background']:
+        for file_field in ['avatar', 'Banner']:
             if file_field in data:
                 del data[file_field]
         
@@ -188,8 +194,8 @@ class UserConfig(APIView):
         latest_avatar = AvatarUser.objects.filter(user=user).order_by("-upload_date").first()
         response_data["avatar"] = AvatarImageSerializer(latest_avatar).data if latest_avatar else None
         
-        # Incluir información del background
-        latest_background = BackgroundUser.objects.filter(user=user).order_by("-upload_date").first()
-        response_data["background"] = BackgroundImageSerializer(latest_background).data if latest_background else None
+        # Incluir información del Banner
+        latest_Banner = BannerUser.objects.filter(user=user).order_by("-upload_date").first()
+        response_data["Banner"] = BannerImageSerializer(latest_Banner).data if latest_Banner else None
         
         return response_data

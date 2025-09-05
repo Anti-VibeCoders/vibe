@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from .models import (
-    User, AvatarUser, BackgroundUser, Post, Comment, Follows,
+    User, AvatarUser, BannerUser, Post, Comment, Follows,
     FilesPost, Message, FilesMessage, Notification, Share
 )
 
 
 class UserSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
-    background = serializers.SerializerMethodField()
+    Banner = serializers.SerializerMethodField()
     
     class Meta:
         model = User
@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
             "website",
             "location",
             "avatar",
-            "background"
+            "Banner"
         ]
 
     def get_avatar(self, obj):
@@ -31,11 +31,11 @@ class UserSerializer(serializers.ModelSerializer):
             return AvatarImageSerializer(avatar).data
         return None
     
-    def get_background(self, obj):
-        # Obtenemos el background más reciente del usuario
-        background = BackgroundUser.objects.filter(user=obj).order_by('-upload_date').first()
-        if background:
-            return BackgroundImageSerializer(background).data
+    def get_Banner(self, obj):
+        # Obtenemos el Banner más reciente del usuario
+        Banner = BannerUser.objects.filter(user=obj).order_by('-upload_date').first()
+        if Banner:
+            return BannerImageSerializer(Banner).data
         return None
 
 
@@ -51,9 +51,9 @@ class AvatarImageSerializer(serializers.ModelSerializer):
         ]
 
 
-class BackgroundImageSerializer(serializers.ModelSerializer):
+class BannerImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BackgroundUser
+        model = BannerUser
         fields = ["file_path", "file_type", "file_size", "upload_date"]
 
 
@@ -131,7 +131,7 @@ class PostSerializer(serializers.ModelSerializer):
         read_only=True,
         source='filespost_set'
     )
-    user = serializers.StringRelatedField()
+    user = UserSerializer()  
 
     class Meta:
         model = Post
