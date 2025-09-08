@@ -3,6 +3,7 @@ import { Button } from "@/common/components/ui/button"
 import { Textarea } from '@/common/components/ui/textarea'
 import Emoji from "@/common/components/ui/emoji";
 import { handleCommentChange, handleEmojiSelect, maxChars } from "../data/comments";
+import { createComment } from "../data/comments";
 
 function CreateComment() {
     const [inputValue, setInputValue] = useState<string>('');
@@ -24,7 +25,10 @@ function CreateComment() {
                     <Button
                         type="submit"
                         className="px-4 h-max py-2 mb-1 bg-blue-500 font-semibold rounded-lg text-black cursor-pointer"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            createComment(inputValue, setInputValue)
+                        }}
                     >
                         Comentar
                     </Button>

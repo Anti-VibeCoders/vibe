@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-from django.dispatch import receiver as r
-from django.db.models.signals import pre_save
-from .services.supabase_service import SupabaseStorageService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -29,7 +26,7 @@ class AvatarUser(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
 
 
-class BackgroundUser(models.Model):
+class BannerUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     file_path = models.URLField(blank=True)
     file_type = models.CharField(max_length=50)
